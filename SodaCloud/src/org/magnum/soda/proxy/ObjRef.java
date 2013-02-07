@@ -51,6 +51,10 @@ public class ObjRef {
 		types_ = types;
 	}
 
+	public String getHost(){
+		return uri_.substring(0,uri_.indexOf("#"));
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		boolean match = false;

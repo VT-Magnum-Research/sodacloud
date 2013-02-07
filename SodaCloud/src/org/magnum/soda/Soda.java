@@ -16,6 +16,7 @@
 package org.magnum.soda;
 
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.DefaultNamingService;
@@ -66,7 +67,7 @@ public class Soda implements TransportListener {
 
 	@Subscribe
 	public void handleNamingServiceRequest(ObtainNamingServiceMsg msg) {
-		ObtainNamingServiceRespMsg resp = msg.createReply();
+		ObtainNamingServiceRespMsg resp = (ObtainNamingServiceRespMsg)msg.createReply();
 		resp.setNamingService(namingServiceRef_);
 		msgBus_.publish(resp);
 	}
@@ -120,6 +121,7 @@ public class Soda implements TransportListener {
 	@Override
 	public void connected() {
 		ObtainNamingServiceMsg msg = new ObtainNamingServiceMsg();
+		msg.setDestination(MetaAddress.META_ADDRESS.toString());
 		transport_.handleLocalOutboundMsg(msg);
 	}
 

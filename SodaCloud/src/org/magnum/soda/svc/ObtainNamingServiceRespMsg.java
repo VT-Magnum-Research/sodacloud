@@ -31,7 +31,7 @@ public class ObtainNamingServiceRespMsg extends Msg {
 	}
 
 	@Override
-	public Msg newInstance() {
+	public Msg createReplyMsg() {
 		return new ObtainNamingServiceRespMsg();
 	}
 

@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ LocalAddressTest.class, MagnumPipedClientServerTest.class,
+@SuiteClasses({ LocalAddressTest.class, SodaPipedClientServerTest.class,
 		MarshallerTest.class, MsgBusIntegrationTest.class,
 		ObjInvokerTest.class, ObjProxyTest.class, ObjRegistryUpdaterTest.class })
 public class AllTests {

@@ -64,6 +64,7 @@ public class ObjInvokerTest {
 		ObjInvocationMsg invoke = ObjInvocationMsgBuilder.objInvocationMsg()
 				.withInvocation(target)
 				.withTargetObjectId(ref)
+				.withSource(addr.toString())
 				.build();
 				
 		invoker.handleInvocation(invoke);
@@ -74,6 +75,7 @@ public class ObjInvokerTest {
 		verify(bus).publish(respc.capture());
 		
 		ObjInvocationRespMsg resp = respc.getValue();
+		assertEquals(addr.toString(), resp.getDestination());
 		assertNull(resp.getResult());
 		assertNull(resp.getException());
 		assertEquals(invoke.getId(),resp.getResponseTo());
@@ -102,6 +104,7 @@ public class ObjInvokerTest {
 		ObjInvocationMsg invoke = ObjInvocationMsgBuilder.objInvocationMsg()
 				.withInvocation(target)
 				.withTargetObjectId(ref)
+				.withSource(addr.toString())
 				.build();
 				
 		invoker.handleInvocation(invoke);
@@ -112,6 +115,7 @@ public class ObjInvokerTest {
 		verify(bus).publish(respc.capture());
 		
 		ObjInvocationRespMsg resp = respc.getValue();
+		assertEquals(addr.toString(), resp.getDestination());
 		assertEquals("b",resp.getResult());
 		assertNull(resp.getException());
 		assertEquals(invoke.getId(),resp.getResponseTo());
@@ -145,6 +149,7 @@ public class ObjInvokerTest {
 		ObjInvocationMsg invoke = ObjInvocationMsgBuilder.objInvocationMsg()
 				.withInvocation(target)
 				.withTargetObjectId(ref)
+				.withSource(addr.toString())
 				.build();
 				
 		invoker.handleInvocation(invoke);
@@ -155,6 +160,7 @@ public class ObjInvokerTest {
 		verify(bus).publish(respc.capture());
 		
 		ObjInvocationRespMsg resp = respc.getValue();
+		assertEquals(addr.toString(), resp.getDestination());
 		assertEquals(ref,resp.getResult());
 		assertNull(resp.getException());
 		assertEquals(invoke.getId(),resp.getResponseTo());
@@ -191,6 +197,7 @@ public class ObjInvokerTest {
 		ObjInvocationMsg invoke = ObjInvocationMsgBuilder.objInvocationMsg()
 				.withInvocation(target)
 				.withTargetObjectId(ref)
+				.withSource(addr.toString())
 				.build();
 				
 		invoker.handleInvocation(invoke);
@@ -201,6 +208,7 @@ public class ObjInvokerTest {
 		verify(bus).publish(respc.capture());
 		
 		ObjInvocationRespMsg resp = respc.getValue();
+		assertEquals(addr.toString(), resp.getDestination());
 		assertEquals(ref,resp.getResult());
 		assertNull(resp.getException());
 		assertEquals(invoke.getId(),resp.getResponseTo());

@@ -26,7 +26,11 @@ public class LocalAddress implements Address {
 
 	private String hostId_ = UUID.randomUUID().toString();
 	
-	private String uriBase_ = "mag://"+hostId_;
+	private String uriBase_ = "soda://"+hostId_;
+	
+	public String toString(){
+		return uriBase_;
+	}
 	
 	public String createObjUri(){
 		return uriBase_+"#"+UUID.randomUUID().toString();

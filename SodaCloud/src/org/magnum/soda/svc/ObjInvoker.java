@@ -54,7 +54,7 @@ public class ObjInvoker {
 		if (!Proxy.isProxyClass(o.getClass())) {
 			Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
 
-			ObjInvocationRespMsg resp = msg.createReply();
+			ObjInvocationRespMsg resp = (ObjInvocationRespMsg)msg.createReply();
 
 			try {
 				Object[] ex = inv.getParameters();

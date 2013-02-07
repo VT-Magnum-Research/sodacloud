@@ -41,4 +41,7 @@ public class UriAddress {
 		uri_ = uri;
 	}
 
+	public String toString(){
+		return uri_.toString();
+	}
 }

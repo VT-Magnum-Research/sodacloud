@@ -113,6 +113,7 @@ public class ObjProxy implements InvocationHandler {
 
 		ObjInvocationMsg msg = ObjInvocationMsgBuilder.objInvocationMsg()
 				.withInvocation(inv).withTargetObjectId(objectRef_)
+				.withDestination(objectRef_.getHost())
 				.build();
 
 		Object rslt = invokeSync(msg, msg.getId());

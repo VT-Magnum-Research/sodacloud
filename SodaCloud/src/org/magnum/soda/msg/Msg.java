@@ -25,10 +25,12 @@ public abstract class Msg {
 
 	private String source_;
 
+	private String destination_;
+
 	private String id_;
 
 	private String responseTo_;
-	
+
 	private boolean marked_;
 
 	public Msg() {
@@ -64,21 +66,31 @@ public abstract class Msg {
 		source_ = source;
 	}
 
-	public abstract Msg newInstance();
-	
+	public String getDestination() {
+		return destination_;
+	}
+
+	public void setDestination(String destination) {
+		destination_ = destination;
+	}
+
+	public abstract Msg createReplyMsg();
+
 	public Msg createReply() {
-		Msg reply = newInstance();
+		Msg reply = createReplyMsg();
 		reply.setResponseTo(getId());
+		reply.setDestination(getSource());
 		return reply;
 	}
-	
+
 	@JsonIgnore
-	public void mark(){
+	public void mark() {
 		marked_ = true;
 	}
-	
+
 	@JsonIgnore
-	public boolean isMarked(){
+	public boolean isMarked() {
 		return marked_;
 	}
+
 }

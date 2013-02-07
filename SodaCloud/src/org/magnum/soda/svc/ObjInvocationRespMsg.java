@@ -56,7 +56,7 @@ public class ObjInvocationRespMsg extends Msg {
 	}
 
 	@Override
-	public Msg newInstance() {
+	public Msg createReplyMsg() {
 		return null;
 	}
 

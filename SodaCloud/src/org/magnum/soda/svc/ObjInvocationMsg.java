@@ -51,14 +51,8 @@ public class ObjInvocationMsg extends Msg {
 	}
 
 	@Override
-	public Msg newInstance() {
-		return new ObjInvocationMsg();
-	}
-
-	@Override
-	public ObjInvocationRespMsg createReply() {
-		ObjInvocationRespMsg resp = new ObjInvocationRespMsg(this);
-		return resp;
+	public Msg createReplyMsg() {
+		return new ObjInvocationRespMsg(this);
 	}
 
 }

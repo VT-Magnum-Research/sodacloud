@@ -20,16 +20,8 @@ import org.magnum.soda.msg.Msg;
 public class ObtainNamingServiceMsg extends Msg{
 
 	@Override
-	public Msg newInstance() {
-		return new ObtainNamingServiceMsg();
+	public Msg createReplyMsg() {
+		return new ObtainNamingServiceRespMsg();
 	}
-
-	@Override
-	public ObtainNamingServiceRespMsg createReply() {
-		ObtainNamingServiceRespMsg resp = new ObtainNamingServiceRespMsg();
-		resp.setResponseTo(getId());
-		return resp;
-	}
-
 	
 }

@@ -18,8 +18,14 @@ package org.magnum.soda.transport;
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.Soda;
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.msg.MetaAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LocalPipeTransport {
+
+	private static final Logger Log = LoggerFactory
+			.getLogger(LocalPipeTransport.class);
 
 	private class BusHandler extends Transport {
 
@@ -41,7 +47,15 @@ public class LocalPipeTransport {
 
 		@Override
 		public void send(MsgContainer msg) {
-			counterpart_.receive(msg);
+			if (msg.getDestination().equals(counterpart_.getMyAddress().toString())
+					|| (msg.getDestination().equals(
+							MetaAddress.META_ADDRESS.toString()) && counterpart_ == server_)) {
+				counterpart_.receive(msg);
+			} else {
+				Log.error(
+						"Attempt to send a msg to address [{}] with a piped connection and neither end has the listed address.",
+						msg.getDestination(), msg.getMsg());
+			}
 		}
 
 		public void setCounterpart(BusHandler counterpart) {

@@ -37,7 +37,8 @@ public abstract class Transport {
 	private Marshaller marshaller_ = new Marshaller();
 	private MsgBus msgBus_;
 	private LocalAddress myAddress_;
-	private ExecutorService executor_ = Executors.newFixedThreadPool(DEFAULT_THREADS);
+	private ExecutorService executor_ = Executors
+			.newFixedThreadPool(DEFAULT_THREADS);
 
 	public Transport(MsgBus msgBus, LocalAddress addr) {
 		super();
@@ -62,17 +63,20 @@ public abstract class Transport {
 	public void handleLocalOutboundMsg(final Msg m) {
 		try {
 			if (!m.isMarked()) {
+				m.setSource(myAddress_.toString());
 				String json = marshaller_.toTransportFormat(m);
-				final MsgContainer cont = new MsgContainer(json.getBytes("UTF-8"));
-				
+				final MsgContainer cont = new MsgContainer(
+						json.getBytes("UTF-8"));
+				cont.setDestination(m.getDestination());
+
 				Runnable r = new Runnable() {
-					
+
 					@Override
 					public void run() {
 						send(cont);
 					}
 				};
-				
+
 				executor_.submit(r);
 			}
 		} catch (Exception e) {
@@ -95,6 +99,10 @@ public abstract class Transport {
 		} catch (Exception e) {
 			Log.error("Unexpected transport error", e);
 		}
+	}
+
+	public LocalAddress getMyAddress() {
+		return myAddress_;
 	}
 
 	public TransportListener getListener() {

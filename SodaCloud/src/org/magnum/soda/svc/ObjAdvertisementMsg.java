@@ -58,8 +58,8 @@ public class ObjAdvertisementMsg extends Msg {
 	}
 
 	@Override
-	public Msg newInstance() {
-		return new ObjAdvertisementMsg();
+	public Msg createReplyMsg() {
+		return null;
 	}
 
 	

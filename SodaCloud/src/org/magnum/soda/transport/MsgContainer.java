@@ -15,10 +15,11 @@
  ****************************************************************************/
 package org.magnum.soda.transport;
 
-
 public class MsgContainer {
 
 	private byte[] msg_;
+
+	private String destination_;
 
 	public MsgContainer() {
 	}
@@ -34,6 +35,14 @@ public class MsgContainer {
 
 	public void setMsg(byte[] msg) {
 		msg_ = msg;
+	}
+
+	public String getDestination() {
+		return destination_;
+	}
+
+	public void setDestination(String destination) {
+		destination_ = destination;
 	}
 
 }

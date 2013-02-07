@@ -76,4 +76,11 @@ class ObjInvocationMsgBuilderBase<GeneratorT extends ObjInvocationMsgBuilderBase
 
 		return (GeneratorT) this;
 	}
+
+	@SuppressWarnings("unchecked")
+	public GeneratorT withDestination(String aValue) {
+		instance.setDestination(aValue);
+
+		return (GeneratorT) this;
+	}
 }
