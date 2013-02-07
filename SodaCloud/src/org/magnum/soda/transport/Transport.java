@@ -1,0 +1,120 @@
+/*****************************************************************************
+ * Copyright [2013] [Jules White]                                            *
+ *                                                                           *
+ *  Licensed under the Apache License, Version 2.0 (the "License");          *
+ *  you may not use this file except in compliance with the License.         *
+ *  You may obtain a copy of the License at                                  *
+ *                                                                           *
+ *      http://www.apache.org/licenses/LICENSE-2.0                           *
+ *                                                                           *
+ *  Unless required by applicable law or agreed to in writing, software      *
+ *  distributed under the License is distributed on an "AS IS" BASIS,        *
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+ *  See the License for the specific language governing permissions and      *
+ *  limitations under the License.                                           *
+ ****************************************************************************/
+package org.magnum.soda.transport;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.magnum.soda.MsgBus;
+import org.magnum.soda.marshalling.Marshaller;
+import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.msg.Msg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.eventbus.Subscribe;
+
+public abstract class Transport {
+
+	private static final int DEFAULT_THREADS = 3;
+
+	private static final Logger Log = LoggerFactory.getLogger(Transport.class);
+
+	private TransportListener listener_;
+	private Marshaller marshaller_ = new Marshaller();
+	private MsgBus msgBus_;
+	private LocalAddress myAddress_;
+	private ExecutorService executor_ = Executors.newFixedThreadPool(DEFAULT_THREADS);
+
+	public Transport(MsgBus msgBus, LocalAddress addr) {
+		super();
+		msgBus_ = msgBus;
+		myAddress_ = addr;
+		msgBus_.subscribe(this);
+
+		init(myAddress_);
+	}
+
+	protected void init(LocalAddress addr) {
+	}
+
+	/**
+	 * This method receives msgs that are posted to the msgbus by local objects.
+	 * The method marshalls the msgs into a MsgContainer and asks the transport
+	 * implementation to send them.
+	 * 
+	 * @param m
+	 */
+	@Subscribe
+	public void handleLocalOutboundMsg(final Msg m) {
+		try {
+			if (!m.isMarked()) {
+				String json = marshaller_.toTransportFormat(m);
+				final MsgContainer cont = new MsgContainer(json.getBytes("UTF-8"));
+				
+				Runnable r = new Runnable() {
+					
+					@Override
+					public void run() {
+						send(cont);
+					}
+				};
+				
+				executor_.submit(r);
+			}
+		} catch (Exception e) {
+			Log.error("Unexpected transport error", e);
+		}
+	}
+
+	/**
+	 * This method should be called by Transport subclasses to unmarshall recvd
+	 * msgs and place them on the local msgbus.
+	 * 
+	 * @param msgc
+	 */
+	public void receive(MsgContainer msgc) {
+		try {
+			String json = new String(msgc.getMsg(), "UTF-8");
+			Msg msg = marshaller_.fromTransportFormat(Msg.class, json);
+			msg.mark();
+			msgBus_.publish(msg);
+		} catch (Exception e) {
+			Log.error("Unexpected transport error", e);
+		}
+	}
+
+	public TransportListener getListener() {
+		return listener_;
+	}
+
+	public void setListener(TransportListener listener) {
+		listener_ = listener;
+	}
+
+	public abstract void connect(Address addr);
+
+	public abstract void disconnect();
+
+	/**
+	 * This method should be overriden by Transport subclasses to send an
+	 * outbound msg.
+	 * 
+	 * @param msg
+	 */
+	public abstract void send(MsgContainer msg);
+
+}
