@@ -121,6 +121,10 @@ public class Soda implements TransportListener {
 		return namingService_;
 	}
 
+	protected ObjInvoker getInvoker(){
+		return objInvoker_;
+	}
+	
 	@Override
 	public void connected() {
 		try{

@@ -42,6 +42,8 @@ public class ObjInvoker {
 
 	private MsgBus msgBus_;
 
+	private InvocationDispatcher dispatcher_ = InvocationDispatcher.DEFAULT_DISPATCHER;
+
 	public ObjInvoker(LocalAddress addr, MsgBus bus, ObjRegistry registry,
 			ProxyFactory factory) {
 		super();
@@ -53,7 +55,7 @@ public class ObjInvoker {
 	}
 
 	@Subscribe
-	@Listener(delivery=Mode.Concurrent)
+	@Listener(delivery = Mode.Concurrent)
 	public void handleInvocation(ObjInvocationMsg msg) {
 		InvocationInfo inv = msg.getInvocation();
 		ObjRef targetid = msg.getTargetObjectId();
@@ -62,18 +64,18 @@ public class ObjInvoker {
 		if (o != null && !Proxy.isProxyClass(o.getClass())) {
 			Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
 
-			ObjInvocationRespMsg resp = (ObjInvocationRespMsg)msg.createReply();
+			ObjInvocationRespMsg resp = (ObjInvocationRespMsg) msg
+					.createReply();
 
 			try {
 				Object[] ex = inv.getParameters();
-				//this method will directly update the
-				//ex array in place
+				// this method will directly update the
+				// ex array in place
 				factory_.createProxiesFromRefsIfNeeded(ex);
-			
-			
-				Object rslt = inv.invoke(o);
+
+				Object rslt = dispatcher_.dispatch(inv, o);
 				rslt = factory_.convertToObjectRefIfNeeded(rslt);
-				
+
 				resp.setResult(rslt);
 			} catch (Exception t) {
 				resp.setException(t);
@@ -82,4 +84,13 @@ public class ObjInvoker {
 			msgBus_.publish(resp);
 		}
 	}
+
+	public InvocationDispatcher getDispatcher() {
+		return dispatcher_;
+	}
+
+	public void setDispatcher(InvocationDispatcher dispatcher) {
+		dispatcher_ = dispatcher;
+	}
+
 }

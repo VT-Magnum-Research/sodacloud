@@ -3,6 +3,7 @@ package org.magnum.soda.example.maint;
 import org.magnum.soda.Soda;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
+import org.magnum.soda.android.InvokeInUi;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -90,33 +92,28 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 					}
 				});
 
-		AndroidSoda.init("10.0.1.8", 8081, this);
+		AndroidSoda.init(this, "10.0.1.8", 8081, this);
 	}
 
 	@Override
-	public void connected(final Soda s) {
-		Thread t = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				MaintenanceReports reports = s.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
-				
-				reports.addListener(new MaintenanceListener() {
-					
-					@Override
-					public void reportAdded(MaintenanceReport r) {
-						Log.d("SODA", "Maintenance report added: "+r.getContents());
-					}
-				});
-				
-				for(int i = 0; i < 10; i++){
-					MaintenanceReport r = new MaintenanceReport();
-					r.setContents("Report Id:"+i);
-					reports.addReport(r);
-				}
+	public void connected(final AndroidSoda s) {
+		MaintenanceReports reports = s.get(MaintenanceReports.class,
+				MaintenanceReports.SVC_NAME);
+
+		reports.addListener(new MaintenanceListener() {
+
+			@InvokeInUi
+			public void reportAdded(MaintenanceReport r) {
+				Log.d("SODA", "Maintenance report added: " + r.getContents());
+				Toast.makeText(LoginActivity.this, "Report: "+r.getContents(), Toast.LENGTH_SHORT).show();
 			}
 		});
-		t.start();
+
+		for (int i = 0; i < 10; i++) {
+			MaintenanceReport r = new MaintenanceReport();
+			r.setContents("Report Id:" + i);
+			reports.addReport(r);
+		}
 	}
 
 	@Override

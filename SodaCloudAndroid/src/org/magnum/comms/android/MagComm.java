@@ -24,10 +24,10 @@ public class MagComm extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mag_comm);
 
-		AndroidSoda.init("10.0.1.8", 8081, new AndroidSodaListener() {
+		AndroidSoda.init(this, "10.0.1.8", 8081, new AndroidSodaListener() {
 			
 			@Override
-			public void connected(Soda s) {
+			public void connected(AndroidSoda s) {
 				soda_ = s;
 				init();
 			}

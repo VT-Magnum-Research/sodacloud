@@ -15,10 +15,9 @@
  ****************************************************************************/
 package org.magnum.soda.android;
 
-import org.magnum.soda.Soda;
 
 public interface AndroidSodaListener {
 
-	public void connected(Soda s);
+	public void connected(AndroidSoda s);
 	
 }
