@@ -18,6 +18,9 @@ package org.magnum.soda.transport;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Mode;
+
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.marshalling.Marshaller;
 import org.magnum.soda.msg.LocalAddress;
@@ -60,6 +63,7 @@ public abstract class Transport {
 	 * @param m
 	 */
 	@Subscribe
+	@Listener(delivery=Mode.Concurrent)
 	public void handleLocalOutboundMsg(final Msg m) {
 		try {
 			if (!m.isMarked()) {

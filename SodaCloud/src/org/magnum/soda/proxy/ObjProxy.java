@@ -19,6 +19,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Mode;
+
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.svc.InvocationInfo;
@@ -45,7 +48,9 @@ public class ObjProxy implements InvocationHandler {
 			msgBus_.subscribe(this);
 		}
 
+
 		@Subscribe
+		@Listener(delivery=Mode.Concurrent)
 		public void handleResponse(ObjInvocationRespMsg resp) {
 			if (respId_.equals(resp.getResponseTo())) {
 				response_ = resp;

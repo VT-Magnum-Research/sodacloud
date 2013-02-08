@@ -136,8 +136,14 @@ public class ProxyFactory {
 		}
 		
 		String cls = v.getClass().getName();
-		Boolean bv = byValueClasses_.get(cls);
-		boolean byval = (bv != null) ? bv : false;
+		boolean byval = false;
+		if(v.getClass().getAnnotation(ByValue.class) != null){
+			byval = true;
+		}
+		else {
+			Boolean bv = byValueClasses_.get(cls);
+			byval = (bv != null) ? bv : false;
+		}
 		if (!byval) {
 			ObjRef ref = objRegistry_.publish(v);
 			v = ref;

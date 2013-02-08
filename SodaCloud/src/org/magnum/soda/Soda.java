@@ -15,6 +15,9 @@
  ****************************************************************************/
 package org.magnum.soda;
 
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Mode;
+
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
@@ -43,7 +46,7 @@ public class Soda implements TransportListener {
 	private NamingService namingService_ = new DefaultNamingService();
 
 	private LocalAddress localAddress_ = new LocalAddress();
-	private GuavaMsgBus msgBus_ = new GuavaMsgBus();
+	private MBassyMsgBus msgBus_ = new MBassyMsgBus();
 	private DefaultObjRegistry objRegistry_ = new DefaultObjRegistry(
 			localAddress_);
 	private ProxyFactory proxyFactory_ = new ProxyFactory(objRegistry_,
@@ -72,6 +75,7 @@ public class Soda implements TransportListener {
 	}
 
 	@Subscribe
+	@Listener(delivery=Mode.Concurrent)
 	public void handleNamingServiceRequest(ObtainNamingServiceMsg msg) {
 		ObtainNamingServiceRespMsg resp = (ObtainNamingServiceRespMsg) msg
 				.createReply();
@@ -83,7 +87,7 @@ public class Soda implements TransportListener {
 		return localAddress_;
 	}
 
-	public GuavaMsgBus getMsgBus() {
+	public MBassyMsgBus getMsgBus() {
 		return msgBus_;
 	}
 

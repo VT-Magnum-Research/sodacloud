@@ -15,6 +15,11 @@
  ****************************************************************************/
 package org.magnum.soda.proxy;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * This annotation marks classes
  * that should be passed by value
@@ -24,6 +29,8 @@ package org.magnum.soda.proxy;
  * @author jules
  *
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 public @interface ByValue {
 
 }

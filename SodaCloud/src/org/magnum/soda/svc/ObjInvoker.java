@@ -17,6 +17,9 @@ package org.magnum.soda.svc;
 
 import java.lang.reflect.Proxy;
 
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Mode;
+
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.msg.LocalAddress;
@@ -50,6 +53,7 @@ public class ObjInvoker {
 	}
 
 	@Subscribe
+	@Listener(delivery=Mode.Concurrent)
 	public void handleInvocation(ObjInvocationMsg msg) {
 		InvocationInfo inv = msg.getInvocation();
 		ObjRef targetid = msg.getTargetObjectId();

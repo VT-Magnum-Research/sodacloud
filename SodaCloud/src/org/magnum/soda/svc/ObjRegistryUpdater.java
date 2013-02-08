@@ -15,6 +15,9 @@
  ****************************************************************************/
 package org.magnum.soda.svc;
 
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Mode;
+
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
@@ -40,6 +43,7 @@ public class ObjRegistryUpdater {
 	}
 
 	@Subscribe
+	@Listener(delivery=Mode.Concurrent)
 	public void updateRegistry(ObjAdvertisementMsg advmsg) {
 		ObjRef id = advmsg.getObjectId();
 

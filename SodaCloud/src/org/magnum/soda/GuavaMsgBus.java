@@ -18,9 +18,11 @@ package org.magnum.soda;
 import com.google.common.eventbus.EventBus;
 
 /**
- * The default msg bus that transports messages
- * locally between the various components of
- * Soda.
+ * This msg bus has issues with lots of
+ * concurrent connections b/c it does
+ * synchronous event dispatch....
+ * 
+ * need to fix this guy...
  * 
  * @author jules
  *
