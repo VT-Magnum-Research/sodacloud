@@ -33,7 +33,7 @@ public class LocalAddress implements Address {
 	}
 	
 	public String createObjUri(){
-		return uriBase_+"#"+UUID.randomUUID().toString();
+		return ObjRef.createObjUri(uriBase_, UUID.randomUUID().toString());
 	}
 	
 	public boolean isALocalObject(ObjRef ref){

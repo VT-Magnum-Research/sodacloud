@@ -35,7 +35,7 @@ public class SodaPipedClientServerTest {
 		// This test emulates both a client and server on the same machine
 		// but does full messaging and marshalling as if a real network
 		// connection were being used.
-		Soda server = new Soda();
+		Soda server = new Soda(true);
 		Soda client = new Soda();
 		
 		// Extra boiler plate code b/c we want to fake a network connection

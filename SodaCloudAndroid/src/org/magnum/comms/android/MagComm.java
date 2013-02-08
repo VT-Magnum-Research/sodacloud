@@ -2,14 +2,14 @@ package org.magnum.comms.android;
 
 import java.util.UUID;
 
-import org.magnum.comms.msg.Msg;
+import org.magnum.soda.Soda;
+import org.magnum.soda.android.AndroidSoda;
+import org.magnum.soda.android.AndroidSodaListener;
+import org.magnum.soda.svc.PingSvc;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import de.tavendo.autobahn.Autobahn;
-import de.tavendo.autobahn.AutobahnConnection;
 
 public class MagComm extends Activity {
 
@@ -17,46 +17,39 @@ public class MagComm extends Activity {
 
 	private String me_ = UUID.randomUUID().toString();
 
-	private final AutobahnConnection mConnection = new AutobahnConnection();
+	private Soda soda_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mag_comm);
 
-		final String wsuri = "ws://10.0.1.8:8081";
-
-		mConnection.connect(wsuri, new Autobahn.SessionHandler() {
-
+		AndroidSoda.init("10.0.1.8", 8081, new AndroidSodaListener() {
+			
 			@Override
-			public void onOpen() {
-				testPubSub();
-			}
-
-			@Override
-			public void onClose(int code, String reason) {
-				Log.e(TAG, reason);
+			public void connected(Soda s) {
+				soda_ = s;
+				init();
 			}
 		});
 	}
 
-	private void testPubSub() {
-
-		mConnection.subscribe("http://example.com/events#myevent1", Msg.class,
-				new Autobahn.EventHandler() {
-
-					@Override
-					public void onEvent(String topic, Object event) {
-						Msg m = (Msg) event;
-						if (!me_.equals(m.getSource())) {
-							m.setPayload("asdf");
-							m.setSource(me_);
-							Log.d(TAG, "" + event);
-							mConnection.publish(
-									"http://example.com/events#myevent1", m);
-						}
-					}
-				});
+	public void init() {
+		
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				PingSvc p = soda_.get(PingSvc.class, PingSvc.SVC_NAME);
+				while(true){
+					p.ping();
+					try{
+						Thread.sleep(5000);
+					}catch(Exception e){break;}
+				}
+			}
+		});
+		t.start();
 	}
 
 	@Override

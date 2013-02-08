@@ -16,6 +16,7 @@
 package org.magnum.soda.proxy;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 public class ObjRef {
 
@@ -76,4 +77,8 @@ public class ObjRef {
 				+ "]";
 	}
 
+	public static String createObjUri(String uribase, String oid){
+		return uribase +"#"+oid;
+	}
+	
 }

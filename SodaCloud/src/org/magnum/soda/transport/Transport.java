@@ -66,7 +66,7 @@ public abstract class Transport {
 				m.setSource(myAddress_.toString());
 				String json = marshaller_.toTransportFormat(m);
 				final MsgContainer cont = new MsgContainer(
-						json.getBytes("UTF-8"));
+						json);
 				cont.setDestination(m.getDestination());
 
 				Runnable r = new Runnable() {
@@ -92,7 +92,7 @@ public abstract class Transport {
 	 */
 	public void receive(MsgContainer msgc) {
 		try {
-			String json = new String(msgc.getMsg(), "UTF-8");
+			String json = msgc.getMsg();
 			Msg msg = marshaller_.fromTransportFormat(Msg.class, json);
 			msg.mark();
 			msgBus_.publish(msg);
@@ -111,6 +111,14 @@ public abstract class Transport {
 
 	public void setListener(TransportListener listener) {
 		listener_ = listener;
+	}
+
+	public ExecutorService getExecutor() {
+		return executor_;
+	}
+
+	public void setExecutor(ExecutorService executor) {
+		executor_ = executor;
 	}
 
 	public abstract void connect(Address addr);

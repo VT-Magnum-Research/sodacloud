@@ -17,7 +17,7 @@ package org.magnum.soda.transport;
 
 import java.net.URI;
 
-public class UriAddress {
+public class UriAddress implements Address {
 	private URI uri_;
 
 	public UriAddress(URI uri) {

@@ -37,7 +37,7 @@ public class MsgBusIntegrationTest {
 	private GuavaMsgBus bus = new GuavaMsgBus();
 	private DefaultObjRegistry reg = new DefaultObjRegistry(addr);
 	private ProxyFactory factory = new ProxyFactory(reg, addr, bus);
-	private ObjInvoker inovker = new ObjInvoker(bus, reg, factory);
+	private ObjInvoker inovker = new ObjInvoker(addr, bus, reg, factory);
 	private ObjRegistryUpdater updater = new ObjRegistryUpdater(factory, reg);
 	
 	@Test

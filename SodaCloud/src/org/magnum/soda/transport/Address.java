@@ -15,6 +15,9 @@
  ****************************************************************************/
 package org.magnum.soda.transport;
 
+import java.util.UUID;
+
 public interface Address {
+
 
 }

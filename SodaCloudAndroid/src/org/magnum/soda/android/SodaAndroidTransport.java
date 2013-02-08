@@ -1,10 +1,21 @@
-/* 
- **
- ** Copyright 2013, Jules White
- **
- ** 
- */
+/*****************************************************************************
+ * Copyright [2013] [Jules White]                                            *
+ *                                                                           *
+ *  Licensed under the Apache License, Version 2.0 (the "License");          *
+ *  you may not use this file except in compliance with the License.         *
+ *  You may obtain a copy of the License at                                  *
+ *                                                                           *
+ *      http://www.apache.org/licenses/LICENSE-2.0                           *
+ *                                                                           *
+ *  Unless required by applicable law or agreed to in writing, software      *
+ *  distributed under the License is distributed on an "AS IS" BASIS,        *
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+ *  See the License for the specific language governing permissions and      *
+ *  limitations under the License.                                           *
+ ****************************************************************************/
 package org.magnum.soda.android;
+
+import java.util.concurrent.CountDownLatch;
 
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.msg.LocalAddress;
@@ -12,19 +23,29 @@ import org.magnum.soda.transport.Address;
 import org.magnum.soda.transport.MsgContainer;
 import org.magnum.soda.transport.Transport;
 import org.magnum.soda.transport.UriAddress;
+import org.magnum.soda.transport.wamp.Wamp;
+import org.magnum.soda.transport.wamp.WampConnection;
+import org.magnum.soda.transport.wamp.Wamp.EventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import de.tavendo.autobahn.Autobahn;
-import de.tavendo.autobahn.Autobahn.EventHandler;
-import de.tavendo.autobahn.AutobahnConnection;
+import android.os.Handler;
 
 public class SodaAndroidTransport extends Transport implements
-		Autobahn.SessionHandler, EventHandler {
+		Wamp.ConnectionHandler, EventHandler {
 
-	private final AutobahnConnection mConnection = new AutobahnConnection();
+	
+	private static final Logger Log = LoggerFactory
+			.getLogger(SodaAndroidTransport.class);
+	
+	private final WampConnection mConnection = new WampConnection();
+
+	private CountDownLatch connectGate_;
 
 	private LocalAddress myAddress_;
 
-	public SodaAndroidTransport(MsgBus msgBus, LocalAddress addr) {
+	public SodaAndroidTransport(MsgBus msgBus,
+			LocalAddress addr) {
 		super(msgBus, addr);
 		myAddress_ = addr;
 	}
@@ -33,7 +54,6 @@ public class SodaAndroidTransport extends Transport implements
 	public void onOpen() {
 		String inbound = getInboundChannel(myAddress_);
 		mConnection.subscribe(inbound, MsgContainer.class, this);
-		
 		getListener().connected();
 	}
 
@@ -43,9 +63,10 @@ public class SodaAndroidTransport extends Transport implements
 	}
 
 	@Override
-	public void connect(Address arg0) {
+	public void connect(final Address arg0) {
 		if (arg0 instanceof UriAddress) {
-			mConnection.connect(((UriAddress) arg0).getUri().toString(), this);
+			String srvr = ((UriAddress) arg0).getUri().toString();
+			mConnection.connect(srvr, SodaAndroidTransport.this);
 		} else {
 			throw new RuntimeException(
 					"Only UriAddresses are supported by this transport.");
@@ -59,13 +80,20 @@ public class SodaAndroidTransport extends Transport implements
 
 	@Override
 	public void onEvent(String arg0, Object arg1) {
-		MsgContainer c = (MsgContainer)arg1;
-		receive(c);
+		final MsgContainer c = (MsgContainer) arg1;
+		Log.debug("Client Receiving topic:[{}] msg:[{}]",arg0, c.getMsg());
+		if(c.getMsg() == null){
+			Log.error("Malformed msg received [{}]",c.getMsg());
+		}
+		else {
+			receive(c);
+		}
 	}
 
 	@Override
 	public void send(MsgContainer arg0) {
 		String chnl = getOutboundChannel(arg0);
+		Log.debug("Client Sending topic:[{}] msg:[{}]",chnl, arg0.getMsg());
 		mConnection.publish(chnl, arg0);
 	}
 

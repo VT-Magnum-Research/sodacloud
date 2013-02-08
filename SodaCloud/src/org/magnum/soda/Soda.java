@@ -16,7 +16,6 @@
 package org.magnum.soda;
 
 import org.magnum.soda.msg.LocalAddress;
-import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.DefaultNamingService;
@@ -49,7 +48,7 @@ public class Soda implements TransportListener {
 			localAddress_);
 	private ProxyFactory proxyFactory_ = new ProxyFactory(objRegistry_,
 			localAddress_, msgBus_);
-	private ObjInvoker objInvoker_ = new ObjInvoker(msgBus_, objRegistry_,
+	private ObjInvoker objInvoker_ = new ObjInvoker(localAddress_, msgBus_, objRegistry_,
 			proxyFactory_);
 	private ObjRegistryUpdater objRegistryUpdater_ = new ObjRegistryUpdater(
 			proxyFactory_, objRegistry_);
@@ -57,6 +56,13 @@ public class Soda implements TransportListener {
 	public Soda() {
 		namingServiceRef_ = objRegistry_.publish(namingService_);
 		msgBus_.subscribe(this);
+	}
+	
+	public Soda(boolean becomeserver){
+		this();
+		if(becomeserver){
+			getObjRegistry().insert(NamingService.ROOT_NAMING_SVC, getNamingService());
+		}
 	}
 
 	public Soda(Transport t) {
@@ -67,25 +73,10 @@ public class Soda implements TransportListener {
 
 	@Subscribe
 	public void handleNamingServiceRequest(ObtainNamingServiceMsg msg) {
-		ObtainNamingServiceRespMsg resp = (ObtainNamingServiceRespMsg)msg.createReply();
+		ObtainNamingServiceRespMsg resp = (ObtainNamingServiceRespMsg) msg
+				.createReply();
 		resp.setNamingService(namingServiceRef_);
 		msgBus_.publish(resp);
-	}
-
-	@Subscribe
-	public void handleNamingServiceResponse(ObtainNamingServiceRespMsg msg) {
-		try {
-			ObjRef ns = msg.getNamingService();
-			if (ns != null) {
-				NamingService naming = (NamingService) proxyFactory_
-						.createProxiesFromRefsIfNeeded(ns);
-				namingService_.setParent(naming);
-
-				Log.debug("Successfully obtained the server's naming service");
-			}
-		} catch (Exception e) {
-			Log.error("Unexpected error obtaining a reference to the server's naming service.");
-		}
 	}
 
 	public LocalAddress getLocalAddress() {
@@ -113,16 +104,30 @@ public class Soda implements TransportListener {
 	}
 
 	public void connect(Transport t, Address addr) {
+		setTransport(t);
+		connect(addr);
+	}
+
+	public void setTransport(Transport t) {
 		transport_ = t;
 		transport_.setListener(this);
-		connect(addr);
+	}
+
+	protected NamingService getNamingService() {
+		return namingService_;
 	}
 
 	@Override
 	public void connected() {
-		ObtainNamingServiceMsg msg = new ObtainNamingServiceMsg();
-		msg.setDestination(MetaAddress.META_ADDRESS.toString());
-		transport_.handleLocalOutboundMsg(msg);
+		try{
+			ObjRef ref = NamingService.ROOT_NAMING_SVC;
+			NamingService svc = (NamingService)proxyFactory_.createProxy(ref);
+			namingService_.setParent(svc);
+		}
+		catch(Exception e){
+			Log.error("Error looking up root naming service",e);
+		}
+		
 	}
 
 	@Override

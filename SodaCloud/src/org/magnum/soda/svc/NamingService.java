@@ -15,7 +15,16 @@
  ****************************************************************************/
 package org.magnum.soda.svc;
 
+import org.magnum.soda.msg.MetaAddress;
+import org.magnum.soda.proxy.ObjRef;
+
 public interface NamingService {
+
+	public static final String SVC_NAME = "naming";
+
+	public static final ObjRef ROOT_NAMING_SVC = new ObjRef(
+			ObjRef.createObjUri(MetaAddress.META_ADDRESS.toString(), SVC_NAME),
+			NamingService.class.getName());
 
 	public <T> T get(Class<T> type, String name);
 

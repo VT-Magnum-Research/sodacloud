@@ -17,32 +17,32 @@ package org.magnum.soda.transport;
 
 public class MsgContainer {
 
-	private byte[] msg_;
+	private String msg;
 
-	private String destination_;
+	private String destination;
 
 	public MsgContainer() {
 	}
 
-	public MsgContainer(byte[] msg) {
+	public MsgContainer(String msg) {
 		super();
-		msg_ = msg;
+		this.msg = msg;
 	}
 
-	public byte[] getMsg() {
-		return msg_;
+	public String getMsg() {
+		return this.msg;
 	}
 
-	public void setMsg(byte[] msg) {
-		msg_ = msg;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
 	public String getDestination() {
-		return destination_;
+		return this.destination;
 	}
 
 	public void setDestination(String destination) {
-		destination_ = destination;
+		this.destination = destination;
 	}
 
 }

@@ -19,6 +19,7 @@ import java.lang.reflect.Proxy;
 
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
+import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.slf4j.Logger;
@@ -31,17 +32,20 @@ public class ObjInvoker {
 	private static final Logger Log = LoggerFactory.getLogger(ObjInvoker.class);
 
 	private ObjRegistry registry_;
-	
+
 	private ProxyFactory factory_;
+
+	private LocalAddress myAddress_;
 
 	private MsgBus msgBus_;
 
-	public ObjInvoker(MsgBus bus, ObjRegistry registry, ProxyFactory factory) {
+	public ObjInvoker(LocalAddress addr, MsgBus bus, ObjRegistry registry,
+			ProxyFactory factory) {
 		super();
 		factory_ = factory;
 		msgBus_ = bus;
 		registry_ = registry;
-
+		myAddress_ = addr;
 		msgBus_.subscribe(this);
 	}
 
@@ -51,7 +55,7 @@ public class ObjInvoker {
 		ObjRef targetid = msg.getTargetObjectId();
 
 		Object o = registry_.get(targetid);
-		if (!Proxy.isProxyClass(o.getClass())) {
+		if (o != null && !Proxy.isProxyClass(o.getClass())) {
 			Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
 
 			ObjInvocationRespMsg resp = (ObjInvocationRespMsg)msg.createReply();

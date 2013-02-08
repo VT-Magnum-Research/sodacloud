@@ -55,7 +55,7 @@ public class ObjInvokerTest {
 		ObjRef ref = addr.createObjRef(testme);
 		when(reg.get(ref)).thenReturn(testme);
 		
-		ObjInvoker invoker = new ObjInvoker(bus, reg, factory);
+		ObjInvoker invoker = new ObjInvoker(addr, bus, reg, factory);
 		
 		InvocationInfo target = InvocationInfoBuilder.invocationInfo()
 				.withMethod("run")
@@ -94,7 +94,7 @@ public class ObjInvokerTest {
 		when(reg.get(ref)).thenReturn(testme);
 		when(testme.foo("a")).thenReturn("b");
 		
-		ObjInvoker invoker = new ObjInvoker(bus, reg, factory);
+		ObjInvoker invoker = new ObjInvoker(addr, bus, reg, factory);
 		
 		InvocationInfo target = InvocationInfoBuilder.invocationInfo()
 				.withMethod("foo")
@@ -136,7 +136,7 @@ public class ObjInvokerTest {
 		when(reg.publish(testme)).thenReturn(ref);
 		
 		
-		ObjInvoker invoker = new ObjInvoker(bus, reg, factory);
+		ObjInvoker invoker = new ObjInvoker(addr, bus, reg, factory);
 		
 		Object[] args = new Object[]{new String[]{"a","b"},2,new Integer[]{4,5},testme};
 		when(testme.bar((String[])args[0],(Integer)args[1],(Integer[])args[2],(TestMe)args[3])).thenReturn(testme);
@@ -181,7 +181,7 @@ public class ObjInvokerTest {
 		when(reg.publish(testme)).thenReturn(ref);
 		
 		
-		ObjInvoker invoker = new ObjInvoker(bus, reg, factory);
+		ObjInvoker invoker = new ObjInvoker(addr, bus, reg, factory);
 		
 		//Note that rather than directly passing "testme" we pass a reference
 		//to it as the last arg that must be dynamically converted back to 
