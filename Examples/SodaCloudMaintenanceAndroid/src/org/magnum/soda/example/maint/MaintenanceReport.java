@@ -6,9 +6,9 @@
  */
 package org.magnum.soda.example.maint;
 
-import org.magnum.soda.proxy.ByValue;
+import org.magnum.soda.proxy.SodaByValue;
 
-@ByValue
+@SodaByValue
 public class MaintenanceReport {
 
 	private int id_;
