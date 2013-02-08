@@ -57,7 +57,7 @@ public class AndroidInvocationDispatcher implements InvocationDispatcher {
 	public Object dispatch(final InvocationInfo inv, final Object target)
 			throws Exception {
 		Method m = inv.resolve(target.getClass());
-		if (m.getAnnotation(InvokeInUi.class) != null) {
+		if (m.getAnnotation(SodaInvokeInUi.class) != null) {
 			final AsyncResultCatcher c = new AsyncResultCatcher();
 			Runnable r = new Runnable() {
 

@@ -28,6 +28,7 @@ import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
+import org.magnum.soda.proxy.SodaAsync;
 import org.magnum.soda.proxy.ObjProxy.ResponseCatcher;
 import org.magnum.soda.svc.InvocationInfo;
 import org.magnum.soda.svc.ObjInvocationMsg;
@@ -36,6 +37,13 @@ import org.mockito.ArgumentCaptor;
 
 public class ObjProxyTest {
 
+	public interface ObjectSync {
+		@SodaAsync
+		public void async();
+		
+		public void sync();
+	}
+	
 	public interface TestObj {
 		public boolean equals(Object o);
 
@@ -262,6 +270,45 @@ public class ObjProxyTest {
 		verify(reg).publish(b2);
 		
 		assertEquals(b2, replyObj_);
+	}
+	
+	@Test
+	public void testSyncAndAsyncBehavior() {
+		MsgBus bus = mock(MsgBus.class);
+		ObjRegistry reg = mock(ObjRegistry.class);
+		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+
+		ObjRef ref = myAddress_.createObjRef(ObjectSync.class);
+		final ObjectSync b = factory.createProxy(ObjectSync.class, ref);
+
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				reply_ = false;
+				b.async();
+				reply_ = true;
+			}
+		});
+		t.start();
+		
+		sleep(50);
+		assertEquals(true,reply_);
+		
+		t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				reply_ = false;
+				b.sync();
+				reply_ = true;
+			}
+		});
+		t.start();
+		
+		sleep(50);
+		assertEquals(false,reply_);
+
 	}
 	
 	@Test

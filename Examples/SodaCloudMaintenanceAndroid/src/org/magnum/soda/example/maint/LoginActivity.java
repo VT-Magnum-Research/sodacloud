@@ -1,9 +1,8 @@
 package org.magnum.soda.example.maint;
 
-import org.magnum.soda.Soda;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
-import org.magnum.soda.android.InvokeInUi;
+import org.magnum.soda.android.SodaInvokeInUi;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -102,7 +101,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 
 		reports.addListener(new MaintenanceListener() {
 
-			@InvokeInUi
+			@SodaInvokeInUi
 			public void reportAdded(MaintenanceReport r) {
 				Log.d("SODA", "Maintenance report added: " + r.getContents());
 				Toast.makeText(LoginActivity.this, "Report: "+r.getContents(), Toast.LENGTH_SHORT).show();

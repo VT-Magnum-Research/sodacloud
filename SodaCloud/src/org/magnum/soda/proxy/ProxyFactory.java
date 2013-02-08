@@ -137,7 +137,7 @@ public class ProxyFactory {
 		
 		String cls = v.getClass().getName();
 		boolean byval = false;
-		if(v.getClass().getAnnotation(ByValue.class) != null){
+		if(v.getClass().getAnnotation(SodaByValue.class) != null){
 			byval = true;
 		}
 		else {

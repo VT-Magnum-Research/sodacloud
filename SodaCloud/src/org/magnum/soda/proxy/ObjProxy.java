@@ -81,7 +81,7 @@ public class ObjProxy implements InvocationHandler {
 	private ProxyFactory factory_;
 
 	private ObjRef objectRef_;
-
+	
 	public ObjProxy(ProxyFactory fact, MsgBus msgBus, ObjRef objid) {
 		super();
 		objectRef_ = objid;
@@ -121,11 +121,22 @@ public class ObjProxy implements InvocationHandler {
 				.withDestination(objectRef_.getHost())
 				.build();
 
-		Object rslt = invokeSync(msg, msg.getId());
+		
+		Object rslt = null;
+		
+		if(arg1.getReturnType() == void.class && arg1.getAnnotation(SodaAsync.class) != null){
+			invokeAsync(msg);
+		}
+		else {
+			rslt = invokeSync(msg, msg.getId());
+		}
 
 		return rslt;
 	}
 
+	private void invokeAsync(ObjInvocationMsg msg){
+		msgBus_.publish(msg);
+	}
 
 	private Object invokeSync(ObjInvocationMsg msg, String respid)
 			throws Throwable {

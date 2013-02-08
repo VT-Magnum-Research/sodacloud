@@ -15,6 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.svc;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -67,6 +68,18 @@ public class InvocationInfo {
 		}catch(Exception e){}
 		
 		return m;
+	}
+	
+	public boolean checkForAnnotation(Class<?>[] targets, Class<? extends Annotation> anno){
+		boolean hasit = false;
+		for(Class<?> c : targets){
+			Method m = resolve(c);
+		    if( m != null && m.getAnnotation(anno) != null){
+		    	hasit = true;
+		    	break;
+		    }
+		}
+		return hasit;
 	}
 
 	@Override
