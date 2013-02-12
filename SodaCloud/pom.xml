@@ -1,9 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>VT-Magnum-Research</groupId>
+  <groupId>org.magnum.soda</groupId>
   <artifactId>SodaCloud</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <name>SodaCloud</name>
+  <description>Shared Object Distribution Cloud</description>
+  <url>https://github.com/VT-Magnum-Research/sodacloud</url>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
