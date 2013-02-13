@@ -12,48 +12,48 @@
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
-			<version>4.1.1.4</version>
+			<version>2.2.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.magnum.soda</groupId>
 			<artifactId>SodaCloud</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>junit</artifactId>
+					<groupId>junit</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
 		<sourceDirectory>src</sourceDirectory>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.5.0</version>
 					<extensions>true</extensions>
+					<configuration>
+						<sdk>
+							<platform>16</platform>
+						</sdk>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-				<configuration>
-					<sdk>
-						<platform>8</platform>
-					</sdk>
-				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
-			</plugin>
-			<plugin>
-				<groupId>
-					com.jayway.maven.plugins.android.generation2
-				</groupId>
-				<artifactId>android-maven-plugin</artifactId>
-<!-- 				<version>3.5.0</version> -->
 			</plugin>
 		</plugins>
 	</build>
