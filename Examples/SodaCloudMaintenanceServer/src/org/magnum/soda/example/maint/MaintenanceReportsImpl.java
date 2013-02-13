@@ -9,6 +9,9 @@ package org.magnum.soda.example.maint;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.magnum.soda.Callback;
+import org.magnum.soda.proxy.SodaAsync;
+
 public class MaintenanceReportsImpl implements MaintenanceReports {
 
 	private List<MaintenanceListener> listeners_ = new LinkedList<MaintenanceListener>();
@@ -21,6 +24,12 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 		for(MaintenanceListener l : listeners_){
 			l.reportAdded(r);
 		}
+	}
+
+	@Override
+	@SodaAsync
+	public void getReports(Callback<List<MaintenanceReport>> callback) {
+		callback.handle(reports_);
 	}
 
 	@Override
