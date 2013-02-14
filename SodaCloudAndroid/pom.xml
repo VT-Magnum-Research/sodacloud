@@ -9,6 +9,13 @@
 	<packaging>apk</packaging>
 	<artifactId>SodaCloudAndroid</artifactId>
 	<dependencies>
+<dependency>
+    <groupId>com.google.android</groupId>
+    <artifactId>android</artifactId>
+    <version>4.1</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/lib/android.jar</systemPath>
+</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
