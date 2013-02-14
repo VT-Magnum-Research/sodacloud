@@ -15,6 +15,8 @@
  ****************************************************************************/
 package org.magnum.soda;
 
+import java.util.List;
+
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.Mode;
 
@@ -123,6 +125,23 @@ public class Soda implements TransportListener {
 
 	protected ObjInvoker getInvoker(){
 		return objInvoker_;
+	}
+	
+	public SodaBinding bind(Object o){
+		SodaBinding b = new SodaBinding();
+		
+		if(true){
+			throw new RuntimeException();
+		}
+		
+		return b;
+	}
+	
+	public <T> SodaQuery<T> find(Class<T> type, SodaContext ctx){
+		if(true){
+			throw new RuntimeException();
+		}
+		return new SodaQuery<T>();
 	}
 	
 	@Override

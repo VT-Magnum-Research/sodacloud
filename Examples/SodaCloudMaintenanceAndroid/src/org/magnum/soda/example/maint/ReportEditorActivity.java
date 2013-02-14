@@ -6,11 +6,14 @@
 */
 package org.magnum.soda.example.maint;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
+import org.magnum.soda.android.SodaInvokeInUi;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -61,24 +64,27 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 
 	@Override
 	public void connected(final AndroidSoda s) {
-		reports_ = s.get(MaintenanceReports.class,
-				MaintenanceReports.SVC_NAME);
-
-		reports_.addListener(new MaintenanceListener() {
-
-			@Override
-			public void reportAdded(final MaintenanceReport r) {
-				Log.d("SODA", "Maintenance report added: " + r.getContents());
-				s.inUi(new Runnable() {
-					
-					@Override
-					public void run() {
-						Toast.makeText(ReportEditorActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
-					}
-				});
+		reports_ = s.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
+		reports_.getReports(new Callback<List<MaintenanceReport>>() {
+			@SodaInvokeInUi
+			public void handle(List<MaintenanceReport> arg0) {
+				updateReports(arg0);
 			}
 		});
 
+		reports_.addListener(new MaintenanceListener() {
+
+			@SodaInvokeInUi
+			public void reportAdded(final MaintenanceReport r) {
+				Log.d("SODA", "Maintenance report added: " + r.getContents());
+				Toast.makeText(ReportEditorActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
+			}
+		});
+
+	}
+	
+	public void updateReports(List<MaintenanceReport> reports){
+		
 	}
 
 
