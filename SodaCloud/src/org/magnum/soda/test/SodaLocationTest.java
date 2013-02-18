@@ -37,14 +37,14 @@ public class SodaLocationTest {
 	@Test
 	public void testWriterDrivenGeoLookup() {
 
-		Soda soda = null;
+		Soda soda = new Soda();
 
 		Runnable r = mock(Runnable.class);
 
 		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
-				.of(100.0, -100.0).atAccuracy(Accuracy.FINE));
+				.of(45.0, -100.0).atAccuracy(Accuracy.FINE));
 
-		List<Runnable> l = soda.find(Runnable.class, SodaLocation.at(100.0, -100.0)).now();
+		List<Runnable> l = soda.find(Runnable.class, SodaLocation.at(45.0, -100.0)).now();
 
 		assertNotNull(l);
 		assertSame(r, l.get(0));
@@ -53,14 +53,14 @@ public class SodaLocationTest {
 	@Test
 	public void testWriterDrivenAsyncGeoLookup() {
 
-		Soda soda = null;
+		Soda soda = new Soda();
 
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = mock(Callback.class);
 		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
-				.of(100.0, -100.0).atAccuracy(Accuracy.FINE));
+				.of(45.0, -100.0).atAccuracy(Accuracy.FINE));
 
-		soda.find(Runnable.class, SodaLocation.at(100.0, -100.0)).async(hdlr);
+		soda.find(Runnable.class, SodaLocation.at(45.0, -100.0)).async(hdlr);
 
 		TestUtil.sleep(10);
 		
@@ -74,14 +74,14 @@ public class SodaLocationTest {
 	@Test
 	public void testWriterDrivenAsyncListGeoLookup() {
 
-		Soda soda = null;
+		Soda soda = new Soda();
 
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = (Callback<List<Runnable>>)mock(Callback.class);
 		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
-				.of(100.0, -100.0).atAccuracy(Accuracy.FINE));
+				.of(45.0, -100.0).atAccuracy(Accuracy.FINE));
 
-		soda.find(Runnable.class, SodaLocation.at(100.0, -100.0)).async(hdlr);
+		soda.find(Runnable.class, SodaLocation.at(45.0, -100.0)).async(hdlr);
 
 		TestUtil.sleep(10);
 		
@@ -94,27 +94,27 @@ public class SodaLocationTest {
 
 	@Test
 	public void testReaderDrivenGeoLookup() {
-		Soda soda = null;
+		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
-		soda.bind(r).to(SodaLocation.at(100, -100));
+		soda.bind(r).to(SodaLocation.at(45.0, -100));
 
 		List<Runnable> r2 = soda.find(Runnable.class, SodaLocation
-				.within(Proximity.TWENTY_METERS).of(100.0, -100.0)
+				.within(Proximity.TWENTY_METERS).of(45.0, -100.0)
 				.atAccuracy(Accuracy.FINE)).now();
 		
 		assertNotNull(r2);
-		assertSame(r, r2);
+		assertSame(r, r2.get(0));
 	}
 
 	@Test
 	public void testReaderDrivenAsyncGeoLookup() {
-		Soda soda = null;
+		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = mock(Callback.class);
-		soda.bind(r).to(SodaLocation.at(100, -100));
+		soda.bind(r).to(SodaLocation.at(45.0, -100));
 
 		soda.find(Runnable.class, SodaLocation
-				.within(Proximity.TWENTY_METERS).of(100.0, -100.0)
+				.within(Proximity.TWENTY_METERS).of(45.0, -100.0)
 				.atAccuracy(Accuracy.FINE)).async(hdlr);
 		
 		TestUtil.sleep(10);
