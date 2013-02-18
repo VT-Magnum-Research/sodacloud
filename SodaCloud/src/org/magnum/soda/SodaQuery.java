@@ -15,21 +15,30 @@
  ****************************************************************************/
 package org.magnum.soda;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SodaQuery<T> {
 
-	public List<T> now(){
-		if(true){
-			throw new RuntimeException();
-		}
-		return null;
+	private List<T> list_;
+
+	public SodaQuery() {
+		list_ = new ArrayList<T>();
 	}
-	
-	public void async(Callback<List<T>> hdlr){
-		if(true){
-			throw new RuntimeException();
-		}
+
+	public SodaQuery(T t) {
+		list_ = new ArrayList<T>();
+		list_.add(t);
+	}
+
+	public List<T> now() {
+
+		return list_;
+	}
+
+	public void async(Callback<List<T>> hdlr) {
+
+		hdlr.handle(list_);
 	}
 
 }
