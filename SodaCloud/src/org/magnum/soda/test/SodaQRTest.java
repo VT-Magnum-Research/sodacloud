@@ -34,7 +34,7 @@ public class SodaQRTest {
 
 	@Test
 	public void testQRDrivenLookup() {
-		Soda soda = null;
+		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = mock(Callback.class);
 		
@@ -55,7 +55,7 @@ public class SodaQRTest {
 	
 	@Test
 	public void testQRDrivenAsyncLookup() {
-		Soda soda = null;
+		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
 		Callback<Runnable> hdlr = mock(Callback.class);
 		
