@@ -15,7 +15,9 @@
  ****************************************************************************/
 package org.magnum.soda;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.Mode;
@@ -53,20 +55,24 @@ public class Soda implements TransportListener {
 			localAddress_);
 	private ProxyFactory proxyFactory_ = new ProxyFactory(objRegistry_,
 			localAddress_, msgBus_);
-	private ObjInvoker objInvoker_ = new ObjInvoker(localAddress_, msgBus_, objRegistry_,
-			proxyFactory_);
+	private ObjInvoker objInvoker_ = new ObjInvoker(localAddress_, msgBus_,
+			objRegistry_, proxyFactory_);
 	private ObjRegistryUpdater objRegistryUpdater_ = new ObjRegistryUpdater(
 			proxyFactory_, objRegistry_);
+
+	private Map<Runnable, SodaBinding> ctxRunnableObjBinding_ = null;
 
 	public Soda() {
 		namingServiceRef_ = objRegistry_.publish(namingService_);
 		msgBus_.subscribe(this);
+		ctxRunnableObjBinding_ = new HashMap<Runnable, SodaBinding>();
 	}
-	
-	public Soda(boolean becomeserver){
+
+	public Soda(boolean becomeserver) {
 		this();
-		if(becomeserver){
-			getObjRegistry().insert(NamingService.ROOT_NAMING_SVC, getNamingService());
+		if (becomeserver) {
+			getObjRegistry().insert(NamingService.ROOT_NAMING_SVC,
+					getNamingService());
 		}
 	}
 
@@ -77,7 +83,7 @@ public class Soda implements TransportListener {
 	}
 
 	@Subscribe
-	@Listener(delivery=Mode.Concurrent)
+	@Listener(delivery = Mode.Concurrent)
 	public void handleNamingServiceRequest(ObtainNamingServiceMsg msg) {
 		ObtainNamingServiceRespMsg resp = (ObtainNamingServiceRespMsg) msg
 				.createReply();
@@ -123,38 +129,55 @@ public class Soda implements TransportListener {
 		return namingService_;
 	}
 
-	protected ObjInvoker getInvoker(){
+	protected ObjInvoker getInvoker() {
 		return objInvoker_;
 	}
-	
-	public SodaBinding bind(Object o){
+
+	public SodaBinding bind(Object o) {
+
 		SodaBinding b = new SodaBinding();
-		
-		if(true){
+		if (o instanceof Runnable) {
+			this.ctxRunnableObjBinding_.put((Runnable) o, b);
+		} else {
 			throw new RuntimeException();
 		}
-		
 		return b;
+
 	}
-	
-	public <T> SodaQuery<T> find(Class<T> type, SodaContext ctx){
-		if(true){
-			throw new RuntimeException();
+
+	public <T> SodaQuery<T> find(Class<T> type, SodaContext ctx) {
+
+		SodaQuery<Runnable> sq = null;
+		if (type == Runnable.class) {
+			Iterator<Runnable> itrRunnable = this.ctxRunnableObjBinding_
+					.keySet().iterator();
+			while (itrRunnable.hasNext()) {
+				Runnable r = (Runnable) itrRunnable.next();
+				SodaBinding sb = this.ctxRunnableObjBinding_.get(r);
+				Iterator<SodaContext> itrSodaBinding = sb.getContexts_()
+						.iterator();
+				while (itrSodaBinding.hasNext()) {
+					SodaContext stx = itrSodaBinding.next();
+					if (stx.equals(ctx)) {
+						sq = new SodaQuery<Runnable>(r);
+					}
+				}
+
+			}
 		}
-		return new SodaQuery<T>();
+		return (SodaQuery<T>) sq;
 	}
-	
+
 	@Override
 	public void connected() {
-		try{
+		try {
 			ObjRef ref = NamingService.ROOT_NAMING_SVC;
-			NamingService svc = (NamingService)proxyFactory_.createProxy(ref);
+			NamingService svc = (NamingService) proxyFactory_.createProxy(ref);
 			namingService_.setParent(svc);
+		} catch (Exception e) {
+			Log.error("Error looking up root naming service", e);
 		}
-		catch(Exception e){
-			Log.error("Error looking up root naming service",e);
-		}
-		
+
 	}
 
 	@Override
