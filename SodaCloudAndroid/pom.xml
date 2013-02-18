@@ -9,18 +9,11 @@
 	<packaging>apk</packaging>
 	<artifactId>SodaCloudAndroid</artifactId>
 	<dependencies>
-<dependency>
-    <groupId>com.google.android</groupId>
-    <artifactId>android</artifactId>
-    <version>4.1</version>
-    <scope>system</scope>
-    <systemPath>${project.basedir}/lib/android.jar</systemPath>
-</dependency>
 		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<version>2.2.1</version>
-			<scope>provided</scope>
+				<groupId>com.google.android</groupId>
+				<artifactId>android</artifactId>
+				<version>4.0.1.2</version>
+				<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.magnum.soda</groupId>
@@ -44,11 +37,6 @@
 					<artifactId>android-maven-plugin</artifactId>
 					<version>3.5.0</version>
 					<extensions>true</extensions>
-					<configuration>
-						<sdk>
-							<platform>16</platform>
-						</sdk>
-					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -57,10 +45,12 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<configuration>
+					<sdk>
+					<!-- platform or api level (api level 4 = platform 1.6)-->
+						<platform>14</platform>
+					</sdk>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
