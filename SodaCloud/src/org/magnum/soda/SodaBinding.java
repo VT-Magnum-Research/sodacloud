@@ -22,6 +22,10 @@ public class SodaBinding {
 
 	private List<SodaContext> contexts_ = new LinkedList<SodaContext>();
 	
+	public List<SodaContext> getContexts_() {
+		return contexts_;
+	}
+
 	public SodaBinding to(SodaContext ctx){
 		contexts_.add(ctx);
 		return this;
