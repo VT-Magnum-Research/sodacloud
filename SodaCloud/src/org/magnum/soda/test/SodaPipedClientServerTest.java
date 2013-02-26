@@ -46,6 +46,7 @@ public class SodaPipedClientServerTest {
 		// A fake runnable
 		Runnable r = mock(Runnable.class);
 		
+		
 		// First, we create an executor service and bind
 		// it to the name "executor" on the server's NamingService
 		ExecutorService exc = Executors.newFixedThreadPool(2);

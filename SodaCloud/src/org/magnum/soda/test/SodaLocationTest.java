@@ -28,8 +28,10 @@ import org.junit.Test;
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
 import org.magnum.soda.ctx.SodaLocation;
+import org.magnum.soda.ctx.SodaQR;
 import org.magnum.soda.ctx.SodaLocation.Accuracy;
 import org.magnum.soda.ctx.SodaLocation.Proximity;
+import org.magnum.soda.test.SodaQRTest.TestA;
 import org.mockito.ArgumentCaptor;
 
 public class SodaLocationTest {
@@ -126,5 +128,43 @@ public class SodaLocationTest {
 		assertTrue(l.contains(r));
 	}
 	
+	
+	public interface TestA {}
+	
+	public interface TestB {}
+	
+	public interface TestC extends TestA{}
+	
+	@Test
+	public void testPolymorphicLookup() {
+		Soda soda = new Soda();
+		TestC r = mock(TestC.class);
+		TestB r2 = mock(TestB.class);
+		TestA r3 = mock(TestA.class);
+		
+		Callback<List<TestA>> hdlr = mock(Callback.class);
+		
+		soda.bind(r).to(SodaLocation.at(45.0, -100));
+		soda.bind(r2).to(SodaLocation.at(45.0, -100));
+		soda.bind(r3).to(SodaLocation.at(45.0, -100));
+		
+		SodaQR qr2 = SodaQR.create();
+		soda.bind(r2).to(qr2);
+		soda.bind(r3).to(qr2);
+
+		soda.find(TestA.class, SodaLocation
+				.within(Proximity.TWENTY_METERS).of(45.0, -100.0)
+				.atAccuracy(Accuracy.FINE)).async(hdlr);
+		
+		TestUtil.sleep(10);
+		
+		ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
+		verify(hdlr).handle(captor.capture());
+		List l = captor.getValue();
+		assertEquals(2,l.size());
+		assertTrue(l.contains(r));
+		assertTrue(l.contains(r3));
+		
+	}
 
 }

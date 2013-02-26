@@ -15,15 +15,33 @@
  ****************************************************************************/
 package org.magnum.soda.test;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static org.junit.Assert.*;
 
-@RunWith(Suite.class)
-@SuiteClasses({ LocalAddressTest.class, MarshallerTest.class,
-		MsgBusIntegrationTest.class, ObjInvokerTest.class, ObjProxyTest.class,
-		ObjRegistryUpdaterTest.class, SodaLocationTest.class,
-		SodaPipedClientServerTest.class, SodaQRTest.class, StatsTest.class })
-public class AllTests {
+import java.util.List;
+
+import org.junit.Test;
+import org.omg.PortableInterceptor.RequestInfo;
+
+public class StatsTest {
+
+	@Test
+	public void test() {
+//		Stats stats = null;
+//		
+//		Object[] params = null;
+//		Stat reqtime = RequestInfo.requestInfo()
+//				.withId("foo")
+//				.atTime(System.currentTimeMillis())
+//				.withDuration(100)
+//				.withParams(params)
+//				.build();
+//		
+//		stats.record(reqtime);
+//		
+//		List<Stat> recorded = stats.between(System.currentTimeMillis() - 100, System.currentTimeMillis());
+//		assertEquals(1,recorded.size());
+//		Stat stat = recorded.get(0);
+//		assertEquals(reqtime,stat);
+	}
 
 }
