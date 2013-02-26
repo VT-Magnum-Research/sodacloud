@@ -26,5 +26,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/core.jar"/>
+	<classpathentry kind="lib" path="lib/javase.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
