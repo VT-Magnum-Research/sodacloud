@@ -39,6 +39,7 @@ public class ProxyFactory {
 			.put(Byte.class.getName(), true)
 			.put(ObjRef.class.getName(), true)
 			.put(Class.class.getName(), true)
+			.put(byte[].class.getName(), true)
 			.build();
 
 	private MsgBus msgBus_;

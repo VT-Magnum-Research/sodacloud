@@ -20,8 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.awt.Event;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
+import java.util.UUID;
 
 import org.junit.Test;
 import org.magnum.soda.MsgBus;
@@ -40,6 +43,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MarshallerTest {
 
+	public static class TestObj {
+		private byte[] data;
+		private String name;
+		public byte[] getData() {
+			return data;
+		}
+		public void setData(byte[] data) {
+			this.data = data;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+	}
+	
 	@Test
 	public void test() throws Exception {
 		ObjRegistry reg = mock(ObjRegistry.class);
@@ -76,6 +97,16 @@ public class MarshallerTest {
 		assertEquals("bar", info.getMethod());
 		assertArrayEquals(types, info.getParameterTypes());
 		assertArrayEquals(args, info.getParameters());
+		
+		TestObj obj = new TestObj();
+		obj.setData((new SecureRandom()).generateSeed(1025));
+		obj.setName(UUID.randomUUID().toString());
+		
+		String json = marsh.toTransportFormat(obj);
+		TestObj recvd = marsh.fromTransportFormat(TestObj.class, json);
+		
+		assertEquals(obj.getName(),recvd.getName());
+		assertArrayEquals(obj.getData(), recvd.getData());
 	}
 
 

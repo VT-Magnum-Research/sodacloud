@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.security.SecureRandom;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -29,6 +30,39 @@ import org.magnum.soda.transport.LocalPipeTransport;
 
 public class SodaPipedClientServerTest {
 
+	private byte[] data_;
+	
+	public interface Foo {
+		public void recv(byte[] data);
+	}
+	
+	public class FooImpl implements Foo{
+		public void recv(byte[] data){
+			System.out.println(data);
+			data_ = data;
+		}
+	}
+	
+	@Test
+	public void testBinary() throws Exception {
+		Soda server = new Soda(true);
+		Soda client = new Soda();
+		
+		LocalPipeTransport transport = new LocalPipeTransport(server, client);
+		client.connect(transport.getClientTransport(),null);
+		
+		FooImpl f = new FooImpl();
+		server.bind(f,"foo");
+		
+		byte[] d = new SecureRandom().generateSeed(1025);
+		Foo fp = client.get(Foo.class, "foo");
+		fp.recv(d);
+		
+		TestUtil.sleep(10);
+		
+		assertArrayEquals(d, data_);
+	}
+	
 	@Test
 	public void test() throws Exception {
 		
