@@ -51,6 +51,22 @@ public class SodaLocationTest {
 	}
 	
 	@Test
+	public void testWriterDrivenGeoLookup2() {
+
+		Soda soda = new Soda();
+
+		Runnable r = mock(Runnable.class);
+
+		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
+				.of("cb0b").atAccuracy(Accuracy.FINE));
+
+		List<Runnable> l = soda.find(Runnable.class, SodaLocation.at("cb0b")).now();
+
+		assertNotNull(l);
+		assertSame(r, l.get(0));
+	}
+	
+	@Test
 	public void testWriterDrivenAsyncGeoLookup() {
 
 		Soda soda = new Soda();

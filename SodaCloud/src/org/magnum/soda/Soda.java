@@ -167,7 +167,34 @@ public class Soda implements TransportListener {
 		}
 		return (SodaQuery<T>) sq;
 	}
-
+	
+	//return the nearest N locations of the given geohash
+//	public <T> SodaQuery<T> findNearest(Class<T> type, SodaContext ctx) {
+//		
+//	}
+	
+	/*function getNearest(currentLocation, locations, maxNeighbors) {
+		  var matching = {},
+		      accuracy = 12,
+		      matchCount = 0;
+		  while (matchCount < maxNeighbors &amp;&amp; accuracy > 0) {
+		    var cmpHash = currentLocation.geoHash.substring(0,accuracy);
+		    for (var i = 0; i < locations.length; i++) {
+		      if (locations[i].geoHash in matching) continue; //don't re-check ones that have already matched
+		      if (locations[i].geoHash.substring(0,accuracy) === cmpHash) {
+		        matching[locations[i].geoHash] = locations[i];
+		        matchCount++;
+		        if (matchCount === maxNeighbors) break;
+		      }
+		    }
+		    accuracy--;
+		  }
+		  var tmp = [];
+		  for (var geoHash in matching) {
+		    tmp.push(matching[geoHash]);
+		  }
+		  return tmp;
+		}*/
 	@Override
 	public void connected() {
 		try {
