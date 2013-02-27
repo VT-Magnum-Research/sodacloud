@@ -22,11 +22,15 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
+import org.magnum.soda.SodaBinding;
+import org.magnum.soda.SodaContext;
+import org.magnum.soda.SodaQuery;
 import org.magnum.soda.ctx.SodaQR;
 import org.mockito.ArgumentCaptor;
 
@@ -70,4 +74,52 @@ public class SodaQRTest {
 		assertNotNull(l);
 		assertSame(r, l.get(0));
 	}
+	
+	public interface TestA {}
+	
+	public interface TestB {}
+	
+	public interface TestC extends TestA{}
+	
+	@Test
+	public void testQRDrivenLookupPolymorphic() {
+		Soda soda = new Soda();
+		TestC r = mock(TestC.class);
+		TestB r2 = mock(TestB.class);
+		TestA r3 = mock(TestA.class);
+		
+		Callback<List<TestA>> hdlr = mock(Callback.class);
+		
+		SodaQR qr = SodaQR.create();
+		soda.bind(r).to(qr);
+		
+		SodaQR qr2 = SodaQR.create();
+		soda.bind(r2).to(qr2);
+		soda.bind(r3).to(qr2);
+
+		byte[] data = qr.getImageData();
+		soda.find(TestA.class, SodaQR.fromImageData(data)).async(hdlr);
+		
+		TestUtil.sleep(10);
+		
+		ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
+		verify(hdlr).handle(captor.capture());
+		List l = captor.getValue();
+		assertEquals(1,l.size());
+		assertTrue(l.contains(r));
+		
+		
+		
+		data = qr2.getImageData();
+		soda.find(TestA.class, SodaQR.fromImageData(data)).async(hdlr);
+		
+		TestUtil.sleep(10);
+		
+		captor = ArgumentCaptor.forClass(List.class);
+		verify(hdlr).handle(captor.capture());
+		l = captor.getValue();
+		assertEquals(1,l.size());
+		assertTrue(l.contains(r));
+	}
+
 }

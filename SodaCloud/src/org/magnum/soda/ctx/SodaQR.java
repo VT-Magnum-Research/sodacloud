@@ -16,53 +16,43 @@
 package org.magnum.soda.ctx;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
+import java.util.Hashtable;
 
 import org.magnum.soda.SodaContext;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.ReaderException;
+import com.google.zxing.Result;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 public class SodaQR implements SodaContext {
 
-	// To store image and context mapping
-	static Map<SodaQR, BufferedImage> ctxImages_;
+	private static final int qrSize = 125;
 
-	// Give SodaContext a Name. Can be a Unique identifier.
-	private String ctxName_;
-
-	public String getCtxName_() {
-		return ctxName_;
-	}
-
-	public void setCtxName_(String ctxName_) {
-		this.ctxName_ = ctxName_;
-	}
+	private BufferedImage qrCodeImage_;
 
 	// variable used in overriding hashcode for this object
 	private volatile int ctxHashCode_ = 0;
-
-	static {
-		ctxImages_ = new HashMap<SodaQR, BufferedImage>();
-	}
 
 	/**
 	 * Constructors
 	 */
 	private SodaQR() {
-
+		this.qrCodeImage_=new BufferedImage(qrSize, qrSize,
+				BufferedImage.TYPE_INT_RGB);
 	}
-
-	private SodaQR(String name) {
-		setCtxName_(name);
-	}
+	
 
 	/**
 	 * @param name
@@ -72,28 +62,57 @@ public class SodaQR implements SodaContext {
 
 		SodaQR ctxQR = new SodaQR();
 
-		BufferedImage img = null;
 		try {
-			// Image location can be changed to anything else
-			img = ImageIO.read(new File("strawberry.jpg"));
+			Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(
+					2);
+			hints.put(EncodeHintType.CHARACTER_SET, "ISO-8859-1");
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix byteMatrix = qrCodeWriter.encode("TestData",
+					BarcodeFormat.QR_CODE, qrSize, qrSize, hints);
+			// Make the BufferedImage that are to hold the QRCode
+			BufferedImage image = populateBufImg(byteMatrix, ctxQR.qrCodeImage_);
 
-		} catch (IOException e) {
-			// create Dummy image for testing
-			if (img == null) {
-				BufferedImage dummy = new BufferedImage(4, 4,
-						BufferedImage.TYPE_INT_RGB);
-				Color c = Color.BLUE;
+			// To check the generated qrcode in file
+			
+			/* File qrFile = new File("test.png"); ImageIO.write(image, "png",
+			  qrFile);*/
+			
+			ctxQR.qrCodeImage_ = image;
 
-				int color = c.getRGB();
-				for (int x = 0; x < dummy.getWidth(); x++) {
-					for (int y = 0; y < dummy.getHeight(); y++) {
-						dummy.setRGB(x, y, color);
-					}
-				}
-				img = dummy;
-			}
+		} catch (Exception e) {
+			throw new RuntimeException();
 		}
-		ctxImages_.put(ctxQR, img);
+		return ctxQR;
+	}
+
+	/**
+	 * @param Data
+	 * @return
+	 */
+	public static SodaQR create(String Data) {
+
+		SodaQR ctxQR = new SodaQR();
+
+		try {
+			Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(
+					2);
+			hints.put(EncodeHintType.CHARACTER_SET, "ISO-8859-1");
+			QRCodeWriter qrCodeWriter = new QRCodeWriter();
+			BitMatrix byteMatrix = qrCodeWriter.encode(Data,
+					BarcodeFormat.QR_CODE, qrSize, qrSize, hints);
+			// Make the BufferedImage that are to hold the QRCode
+			BufferedImage image = populateBufImg(byteMatrix, ctxQR.qrCodeImage_);
+
+			// To check the generated qrcode in file
+			/*
+			 * File qrFile = new File("test.png"); ImageIO.write(image, "png",
+			 * qrFile);
+			 */
+			ctxQR.qrCodeImage_ = image;
+
+		} catch (WriterException e) {
+			throw new RuntimeException();
+		}
 		return ctxQR;
 	}
 
@@ -101,26 +120,36 @@ public class SodaQR implements SodaContext {
 	 * @param data
 	 * @return
 	 */
-	public static SodaQR fromImageData(byte[] data) {
+	public static SodaQR fromImageData(byte[] b) {
 
+
+		SodaQR newQR = new SodaQR();
 		try {
-			Iterator<SodaQR> itr = ctxImages_.keySet().iterator();
 
-			while (itr.hasNext()) {
-				SodaQR temp = itr.next();
-				BufferedImage img = ctxImages_.get(temp);
+			String data;
+			data = new String(b, "ISO-8859-1");
+			// get a byte matrix for the data
+			BitMatrix matrix = null;
 
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(img, "PNG", baos);
-				baos.flush();
-				byte[] imageInByte = baos.toByteArray();
-				baos.close();
-				if (Arrays.equals(imageInByte, data)) {
-					return temp;
-				}
+			com.google.zxing.Writer writer = new MultiFormatWriter();
+			try {
+				Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(
+						2);
+				hints.put(EncodeHintType.CHARACTER_SET, "ISO-8859-1");
+				matrix = writer.encode(data,
+						com.google.zxing.BarcodeFormat.QR_CODE, qrSize, qrSize,
+						hints);
+			} catch (com.google.zxing.WriterException e) {
 			}
 
-		} catch (IOException e) {
+			BufferedImage image = populateBufImg(matrix, newQR.qrCodeImage_);
+
+			if (image != null) {
+				newQR.qrCodeImage_ = image;
+				return newQR;
+			}
+
+		} catch (Exception e) {
 			if (true) {
 				throw new RuntimeException();
 			}
@@ -135,30 +164,57 @@ public class SodaQR implements SodaContext {
 	public byte[] getImageData() {
 		try {
 
-			if (ctxImages_.containsKey(this)) {
-				BufferedImage img = ctxImages_.get(this);
-				// Create output stream
-				final ByteArrayOutputStream out = new ByteArrayOutputStream();
+			BufferedImage originalImage = this.qrCodeImage_;
+			
+			Result result=getDecodedResult(originalImage);
+			
+			return result.getText().getBytes();
 
-				// Get image writer for format NOTE: We can get metadata from
-				// image to exploit is properties like file format..
-				final ImageWriter writer = (ImageWriter) ImageIO
-						.getImageWritersByFormatName("PNG").next();
-
-				// Write out image
-				writer.setOutput(ImageIO.createImageOutputStream(out));
-				writer.write(img);
-
-				// Return the image data
-				return out.toByteArray();
-
-			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new RuntimeException();
 		}
 
-		return null;
+	}
+	
+	private Result getDecodedResult(BufferedImage originalImage)
+	{
+		LuminanceSource source = new BufferedImageLuminanceSource(
+				originalImage);
+		BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
+		// decode the barcode
+		QRCodeReader reader = new QRCodeReader();
+
+		Result result = null;
+		try {
+			result = reader.decode(bitmap);
+		} catch (ReaderException e) {
+		}
+		return result;
+
+	}
+
+	private static BufferedImage populateBufImg(BitMatrix byteMatrix,
+			BufferedImage image	) {
+		
+		image.createGraphics();
+
+		int matrixWidth = byteMatrix.getWidth();
+		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		graphics.setColor(Color.WHITE);
+		graphics.fillRect(0, 0, matrixWidth, matrixWidth);
+		// Paint and save the image using the ByteMatrix
+		graphics.setColor(Color.BLACK);
+
+		for (int i = 0; i < matrixWidth; i++) {
+			for (int j = 0; j < matrixWidth; j++) {
+				if (byteMatrix.get(i, j)) {
+					graphics.fillRect(i, j, 1, 1);
+				}
+			}
+		}
+
+		return image;
 	}
 
 	/*
@@ -166,25 +222,54 @@ public class SodaQR implements SodaContext {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	// @Override
-	/*
-	 * public boolean equals(Object obj) { if (this == obj) { return true; } if
-	 * (!(obj instanceof SodaQR)) { return false; } SodaQR qr = (SodaQR) obj;
-	 * return ctxName_.equals(qr.getCtxName_());
-	 * 
-	 * }
-	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof SodaQR)) {
+			return false;
+		}
+		SodaQR qr = (SodaQR) obj;
+
+		int width;
+		int height;
+		boolean imagesEqual = true;
+
+		if (this.qrCodeImage_.getWidth() == (width = qr.qrCodeImage_.getWidth())
+				&& this.qrCodeImage_.getHeight() == (height = qr.qrCodeImage_
+						.getHeight())) {
+
+			for (int x = 0; imagesEqual == true && x < width; x++) {
+				for (int y = 0; imagesEqual == true && y < height; y++) {
+					if (this.qrCodeImage_.getRGB(x, y) != qr.qrCodeImage_
+							.getRGB(x, y)) {
+						imagesEqual = false;
+					}
+				}
+			}
+		} else {
+			imagesEqual = false;
+		}
+		return imagesEqual;
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
-	// @Override
-	/*
-	 * public int hashCode() { final int multiplier = 23; if (ctxHashCode_ == 0)
-	 * { int code = 133; code = multiplier * code +
-	 * this.hashCode();//this.ctxName_.hashCode(); ctxHashCode_ = code; } return
-	 * ctxHashCode_; }
-	 */
+	@Override
+	public int hashCode() {
+		final int multiplier = 23;
+		if (ctxHashCode_ == 0) {
+			int code = 133;
+			code = multiplier * code 
+					+ this.getDecodedResult(this.qrCodeImage_).getText().hashCode();
+			ctxHashCode_ = code;
+		}
+		return ctxHashCode_;
+	}
 
 }
