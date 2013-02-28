@@ -6,7 +6,7 @@ import org.magnum.soda.android.SodaInvokeInUi;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+//import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -173,7 +173,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			showProgress(true);
+			//showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
 		}
@@ -182,7 +182,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	/**
 	 * Shows the progress UI and hides the login form.
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	/*@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
@@ -218,7 +218,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
-	}
+	}*/
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
@@ -251,7 +251,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
-			showProgress(false);
+			//showProgress(false);
 
 			if (success) {
 				finish();
@@ -265,7 +265,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
-			showProgress(false);
+			//showProgress(false);
 		}
 	}
 }
