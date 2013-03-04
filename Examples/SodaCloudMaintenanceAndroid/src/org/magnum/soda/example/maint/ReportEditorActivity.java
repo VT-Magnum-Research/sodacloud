@@ -7,15 +7,14 @@
 package org.magnum.soda.example.maint;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import org.magnum.soda.Callback;
-import org.magnum.soda.Soda;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +39,9 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 		
 		reportContent_ = (EditText)findViewById(R.id.reportEditText);
 		reportButton_ = (Button)findViewById(R.id.addReportButton);
-		
+		Intent callingintent = getIntent();
+        String content = callingintent.getStringExtra("description");
+		reportContent_.setText(content);
 		reportButton_.setOnClickListener(new View.OnClickListener() {
 			
 			final String content = reportContent_.getText().toString();

@@ -8,6 +8,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 //import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -92,13 +94,15 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 				});
 
 		AndroidSoda.init(this, "10.0.1.8", 8081, this);
+		
 	}
 
 	@Override
 	public void connected(final AndroidSoda s) {
+		Log.d("SODA", "connected() in LoginActivity being called.");
 		MaintenanceReports reports = s.get(MaintenanceReports.class,
 				MaintenanceReports.SVC_NAME);
-
+        
 		reports.addListener(new MaintenanceListener() {
 
 			@SodaInvokeInUi
@@ -174,7 +178,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			//showProgress(true);
-			mAuthTask = new UserLoginTask();
+			mAuthTask = new UserLoginTask(this);
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -225,6 +229,11 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		private Context mcontext;
+		
+		public UserLoginTask(Context context) {
+			mcontext = context;
+		}
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// TODO: attempt authentication against a network service.
@@ -254,7 +263,8 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			//showProgress(false);
 
 			if (success) {
-				finish();
+				Intent i =new Intent(mcontext, MainActivity.class);
+				startActivity(i);
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
