@@ -1,5 +1,6 @@
 <resources>
 
     <string name="app_name">SodaCloudAndroidMaintenance</string>
+    <string name="Photo">Photo</string>
 
 </resources>

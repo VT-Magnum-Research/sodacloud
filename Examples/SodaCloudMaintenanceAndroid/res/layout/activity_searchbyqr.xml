@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/QRImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+
+    <Button
+        android:id="@+id/getQRCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Read QRCode" />
+
+    <Button
+        android:id="@+id/searchQRReports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get QR Report" />
+
+</LinearLayout>
