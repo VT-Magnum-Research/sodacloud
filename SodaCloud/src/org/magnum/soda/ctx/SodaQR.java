@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.magnum.soda.SodaContext;
 
@@ -41,6 +42,7 @@ public class SodaQR implements SodaContext {
 	private static final int qrSize = 125;
 
 	private BufferedImage qrCodeImage_;
+	
 
 	// variable used in overriding hashcode for this object
 	private volatile int ctxHashCode_ = 0;
@@ -231,6 +233,7 @@ public class SodaQR implements SodaContext {
 			return false;
 		}
 		SodaQR qr = (SodaQR) obj;
+		
 
 		int width;
 		int height;

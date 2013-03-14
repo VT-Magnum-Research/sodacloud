@@ -2,21 +2,25 @@ package org.magnum.soda.example.maint;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
-import org.magnum.soda.example.maint.SearchByLocationActivity.GetReportListTask;
+import org.magnum.soda.svc.PingSvc;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -24,39 +28,67 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images.Media;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.SimpleAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchByQRActivity extends Activity implements AndroidSodaListener {
+	//host
+	private String mHost="192.168.137.1";
 	// UI references.
 	private Button getQRImage;
 	private Button getReport;
 	private ImageView qrImage;
 	private Bitmap qrBitmap;
+	private ListView searchResultList;
+	private static SimpleAdapter mAdapter;
+	private List<MaintenanceReport> mReportList=new ArrayList<MaintenanceReport>();
+	private List<HashMap<String,String>> mDisplayList=new ArrayList<HashMap<String,String>>();
+	
+	
 	Context ctx_ = this;
 	static boolean imageLoaded = false;
+	static Boolean mDataExecuted =false;
 	private byte dataBytes[];
-	private String mCurrentPhotoPath;
 	private static final int CAPTURE_IMAGE = 200;
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
+	
+	private AndroidSodaListener asl_=null;
+	
+	private AndroidSoda as=null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		asl_=this;
 
 		setContentView(R.layout.activity_searchbyqr);
 
 		getQRImage = (Button) findViewById(R.id.getQRCode);
 		getReport = (Button) findViewById(R.id.searchQRReports);
 		qrImage = (ImageView) findViewById(R.id.QRImage);
+		searchResultList = (ListView) findViewById(R.id.QR_ListView);
 
+		/*HashMap<String, String> map1 = new HashMap<String, String>();
+		map1.put("itemDescription","sample");
+		mDisplayList.add(map1);*/
+		mAdapter = new SimpleAdapter(
+				this,
+				mDisplayList,// data source
+				R.layout.listview_item_nocheckbox,
+				new String[] {"itemDescription" },
+				new int[] { R.id.item_description });
+		mAdapter.notifyDataSetChanged();
+		searchResultList.setAdapter(mAdapter);
+		
+		
 		getQRImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -74,11 +106,9 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 							}
 						}
 
-						if (img != null) {
-							Bitmap bm = BitmapFactory.decodeFile(img
-									.getAbsolutePath());
+						if (qrBitmap != null) {
 							ByteArrayOutputStream blob = new ByteArrayOutputStream();
-							bm.compress(CompressFormat.PNG,
+							qrBitmap.compress(CompressFormat.PNG,
 									0 /* ignored for PNG */, blob);
 							dataBytes = blob.toByteArray();
 						}
@@ -86,29 +116,107 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 				});
 			}
 		});
+		
 
 		getReport.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
-				AndroidSoda.async(new Runnable() {
+			
+				if(imageLoaded &&dataBytes!=null)
+				{
+				AndroidSoda.init(ctx_, mHost, 8081, asl_);
+				
+				Log.d("onClick:","before async connected");
+												
+				Future<?> Result=AndroidSoda.async(new Runnable() {
 					@Override
+					@SodaInvokeInUi
 					public void run() {
-						if (dataBytes != null) {
+						if (dataBytes != null && as !=null) {
+
+
+						Log.e("conected","------------------------------------");
+						as.connected();
+						PingSvc pv;							
+						pv=as.get(PingSvc.class, "ping");						
+						pv.ping();
+						
+						MaintenanceReports reportHandle=as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
+						reportHandle.getReports(new Callback<List<MaintenanceReport>>() {
+							@SodaInvokeInUi
+							public void handle(List<MaintenanceReport> arg0) {
+								mReportList=arg0;
+								populateList();
+							}
+						});
+
+						Log.e("obtained","------------------------------------");
+						
+					
+						Log.e("size",":"+mDisplayList.size());
+						
 
 						}
 					}
 				});
+				
+						
+				
+				}
 			}
 		});
+		
+		getReport.setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				Log.e("size2",":"+mDisplayList.size());
+				mAdapter.notifyDataSetChanged();
+				return false;
+			}
+		});
+		searchResultList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 
-		AndroidSoda.init(this, "10.0.1.8", 8081, this);
+				@SuppressWarnings("unchecked")
+				HashMap<String, String> map = (HashMap<String, String>) searchResultList
+						.getItemAtPosition(position);
+				String des = map.get("itemDescription");
+				ReportDetailIntent(des);
+			}});
+
+
 
 	}
+	
+	private void populateList()
+	{
+		Iterator<MaintenanceReport> itr=mReportList.iterator();
+
+		while(itr.hasNext())
+		{
+			HashMap<String, String> map = new HashMap<String, String>();
+			MaintenanceReport temp=((MaintenanceReport)itr.next());
+			Log.e("-- items--",temp.getCreatorId());
+	        map.put("itemDescription",temp.getContents());
+			mDisplayList.add(map);
+			
+		}	
+
+		
+	}
+	
+	private void ReportDetailIntent(String descript){		
+    	Intent i =new Intent(this, ReportEditorActivity.class);
+    	i.putExtra("description", descript);
+		startActivity(i);
+    }
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 
-	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	Uri fileUri = null;
 	static File img = null;
 
@@ -117,13 +225,12 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 		File f = null;
 		try {
 			f = setUpPhotoFile("target");
-			mCurrentPhotoPath = f.getAbsolutePath();
+			f.getAbsolutePath();
 			takePictureIntent
 					.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 		} catch (IOException e) {
 			e.printStackTrace();
 			f = null;
-			mCurrentPhotoPath = null;
 		}
 
 		startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
@@ -141,6 +248,7 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 					qrImage.setImageBitmap(qrBitmap);
 					qrImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 					qrImage.setAdjustViewBounds(true);
+					imageLoaded=true;
 				} else
 					Log.i("getup", "failure of loading image.");
 			}
@@ -221,82 +329,16 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	private File setUpPhotoFile(String name) throws IOException {
 
 		File f = createImageFile(name);
-		mCurrentPhotoPath = f.getAbsolutePath();
+		f.getAbsolutePath();
 
 		return f;
 	}
 
-	private static Uri getOutputMediaFileUri(int type, Context ct) {
-
-		File mediaFile = new File("Test.jpg");
-
-		FileOutputStream fos;
-		try {
-			fos = ct.openFileOutput("/" + mediaFile.getName(),
-					Context.MODE_WORLD_WRITEABLE);
-
-			fos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		img = mediaFile;
-		return Uri.fromFile(mediaFile);
-	}
-
-	/** Create a File for saving an image or video */
-	private static File getOutputMediaFile(int type, Context ct) {
-		// To be safe, you should check that the SDCard is mounted
-		// using Environment.getExternalStorageState() before doing this.
-
-		// File mediaStorageDir = new
-		// File(Environment.getExternalStoragePublicDirectory(
-		// Environment.DIRECTORY_PICTURES), "MyCameraApp");
-		// This location works best if you want the created images to be shared
-		// between applications and persist after your app has been uninstalled.
-
-		File mediaFile = new File("Test.jpg");
-
-		// Create the storage directory if it does not exist
-		/*
-		 * if (! mediaStorageDir.exists()){ if (! mediaStorageDir.mkdirs()){
-		 * Log.d("MyCameraApp", "failed to create directory"); return null; } }
-		 */
-
-		FileOutputStream fos;
-		try {
-			fos = ct.openFileOutput("/" + mediaFile.getName(),
-					Context.MODE_WORLD_WRITEABLE);
-
-			fos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		/*
-		 * // Create a media file name String timeStamp = new
-		 * SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()); File
-		 * mediaFile; if (type == MEDIA_TYPE_IMAGE){ mediaFile = new
-		 * File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp +
-		 * ".jpg"); } else { return null; }
-		 */
-		if (mediaFile != null)
-			return mediaFile;
-
-		return null;
-	}
-
 	@Override
 	public void connected(AndroidSoda s) {
-		// TODO Auto-generated method stub
-		MaintenanceReports reports = s.get(MaintenanceReports.class,
+				
+		this.as=s;
+		/*MaintenanceReports reports = s.get(MaintenanceReports.class,
 				MaintenanceReports.SVC_NAME);
 
 		reports.addListener(new MaintenanceListener() {
@@ -306,6 +348,6 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 				Log.d("SODA", "Maintenance report added: " + r.getContents());
 
 			}
-		});
+		});*/
 	}
 }

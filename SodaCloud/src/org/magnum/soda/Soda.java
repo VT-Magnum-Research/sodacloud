@@ -60,12 +60,12 @@ public class Soda implements TransportListener {
 	private ObjRegistryUpdater objRegistryUpdater_ = new ObjRegistryUpdater(
 			proxyFactory_, objRegistry_);
 
-	private Map<Runnable, SodaBinding> ctxRunnableObjBinding_ = null;
+	private Map<Object, SodaBinding> ctxPolyObjBinding_ = null;
 
 	public Soda() {
 		namingServiceRef_ = objRegistry_.publish(namingService_);
 		msgBus_.subscribe(this);
-		ctxRunnableObjBinding_ = new HashMap<Runnable, SodaBinding>();
+		ctxPolyObjBinding_ = new HashMap<Object, SodaBinding>();
 	}
 
 	public Soda(boolean becomeserver) {
@@ -136,65 +136,56 @@ public class Soda implements TransportListener {
 	public SodaBinding bind(Object o) {
 
 		SodaBinding b = new SodaBinding();
-		if (o instanceof Runnable) {
-			this.ctxRunnableObjBinding_.put((Runnable) o, b);
-		} else {
-			throw new RuntimeException();
-		}
+
+		this.ctxPolyObjBinding_.put(o, b);
+
 		return b;
 
 	}
 
 	public <T> SodaQuery<T> find(Class<T> type, SodaContext ctx) {
 
-		SodaQuery<Runnable> sq = null;
-		if (type == Runnable.class) {
-			Iterator<Runnable> itrRunnable = this.ctxRunnableObjBinding_
-					.keySet().iterator();
-			while (itrRunnable.hasNext()) {
-				Runnable r = (Runnable) itrRunnable.next();
-				SodaBinding sb = this.ctxRunnableObjBinding_.get(r);
-				Iterator<SodaContext> itrSodaBinding = sb.getContexts_()
-						.iterator();
-				while (itrSodaBinding.hasNext()) {
-					SodaContext stx = itrSodaBinding.next();
-					if (stx.equals(ctx)) {
-						sq = new SodaQuery<Runnable>(r);
-					}
-				}
-
+		SodaQuery<Object> sq = new SodaQuery<Object>();
+		Iterator<Object> itrObject = this.ctxPolyObjBinding_.keySet()
+				.iterator();
+		while (itrObject.hasNext()) {
+			Object contextObject = itrObject.next();
+			Class<? extends Object> cls = contextObject.getClass();
+			if (!type.isAssignableFrom(cls)) {
+				continue;
 			}
+
+			SodaBinding sb = this.ctxPolyObjBinding_.get(contextObject);
+			Iterator<SodaContext> itrSodaBinding = sb.getContexts_().iterator();
+			while (itrSodaBinding.hasNext()) {
+				SodaContext stx = itrSodaBinding.next();
+				if (stx.equals(ctx)) {
+					sq.getList_().add(contextObject);
+				}
+			}
+
 		}
+
 		return (SodaQuery<T>) sq;
 	}
-	
-	//return the nearest N locations of the given geohash
-//	public <T> SodaQuery<T> findNearest(Class<T> type, SodaContext ctx) {
-//		
-//	}
-	
-	/*function getNearest(currentLocation, locations, maxNeighbors) {
-		  var matching = {},
-		      accuracy = 12,
-		      matchCount = 0;
-		  while (matchCount < maxNeighbors &amp;&amp; accuracy > 0) {
-		    var cmpHash = currentLocation.geoHash.substring(0,accuracy);
-		    for (var i = 0; i < locations.length; i++) {
-		      if (locations[i].geoHash in matching) continue; //don't re-check ones that have already matched
-		      if (locations[i].geoHash.substring(0,accuracy) === cmpHash) {
-		        matching[locations[i].geoHash] = locations[i];
-		        matchCount++;
-		        if (matchCount === maxNeighbors) break;
-		      }
-		    }
-		    accuracy--;
-		  }
-		  var tmp = [];
-		  for (var geoHash in matching) {
-		    tmp.push(matching[geoHash]);
-		  }
-		  return tmp;
-		}*/
+
+	// return the nearest N locations of the given geohash
+	// public <T> SodaQuery<T> findNearest(Class<T> type, SodaContext ctx) {
+	//
+	// }
+
+	/*
+	 * function getNearest(currentLocation, locations, maxNeighbors) { var
+	 * matching = {}, accuracy = 12, matchCount = 0; while (matchCount <
+	 * maxNeighbors &amp;&amp; accuracy > 0) { var cmpHash =
+	 * currentLocation.geoHash.substring(0,accuracy); for (var i = 0; i <
+	 * locations.length; i++) { if (locations[i].geoHash in matching) continue;
+	 * //don't re-check ones that have already matched if
+	 * (locations[i].geoHash.substring(0,accuracy) === cmpHash) {
+	 * matching[locations[i].geoHash] = locations[i]; matchCount++; if
+	 * (matchCount === maxNeighbors) break; } } accuracy--; } var tmp = []; for
+	 * (var geoHash in matching) { tmp.push(matching[geoHash]); } return tmp; }
+	 */
 	@Override
 	public void connected() {
 		try {

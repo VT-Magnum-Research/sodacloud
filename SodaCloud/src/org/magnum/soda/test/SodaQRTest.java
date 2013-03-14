@@ -22,15 +22,11 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
-import org.magnum.soda.SodaBinding;
-import org.magnum.soda.SodaContext;
-import org.magnum.soda.SodaQuery;
 import org.magnum.soda.ctx.SodaQR;
 import org.mockito.ArgumentCaptor;
 
@@ -76,31 +72,40 @@ public class SodaQRTest {
 	}
 	
 	public interface TestA {}
+	public class A1 implements TestA{}
+	public class A2 extends A1{}
+	public class TestC extends A2{}
 	
-	public interface TestB {}
 	
-	public interface TestC extends TestA{}
+	public interface TestB {}	
+	public class B1 implements TestB{}
 	
 	@Test
 	public void testQRDrivenLookupPolymorphic() {
 		Soda soda = new Soda();
-		TestC r = mock(TestC.class);
-		TestB r2 = mock(TestB.class);
-		TestA r3 = mock(TestA.class);
+		
+		//Using real objects to get the hierarchy
+		TestC r=new TestC();
+		//TestC r = mock(TestC.class);
+		TestB r2=new B1();
+		//TestB r2 = mock(TestB.class);
+		TestA r3=new A1();
+		//TestA r3 = mock(TestA.class);
 		
 		Callback<List<TestA>> hdlr = mock(Callback.class);
+		Callback<List<TestA>> hdlr1 = mock(Callback.class);
 		
-		SodaQR qr = SodaQR.create();
+		SodaQR qr = SodaQR.create("1");
 		soda.bind(r).to(qr);
-		
-		SodaQR qr2 = SodaQR.create();
+				
+		SodaQR qr2 = SodaQR.create("2");
 		soda.bind(r2).to(qr2);
 		soda.bind(r3).to(qr2);
 
 		byte[] data = qr.getImageData();
 		soda.find(TestA.class, SodaQR.fromImageData(data)).async(hdlr);
 		
-		TestUtil.sleep(10);
+		TestUtil.sleep(100);
 		
 		ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
 		verify(hdlr).handle(captor.capture());
@@ -111,15 +116,16 @@ public class SodaQRTest {
 		
 		
 		data = qr2.getImageData();
-		soda.find(TestA.class, SodaQR.fromImageData(data)).async(hdlr);
+		soda.find(TestA.class, SodaQR.fromImageData(data)).async(hdlr1);
 		
-		TestUtil.sleep(10);
-		
+		TestUtil.sleep(100);
+
+		ArgumentCaptor<List> captor1;
 		captor = ArgumentCaptor.forClass(List.class);
-		verify(hdlr).handle(captor.capture());
+		verify(hdlr1).handle(captor.capture());
 		l = captor.getValue();
 		assertEquals(1,l.size());
-		assertTrue(l.contains(r));
+		assertTrue(l.contains(r3));
 	}
 
 }

@@ -22,4 +22,35 @@
         android:layout_height="wrap_content"
         android:text="Get QR Report" />
 
+    <!-- Header -->
+    <LinearLayout android:id="@+id/header"
+        android:background="#ff347c12"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        >
+        <TextView android:id="@+id/Desc"
+            android:text="Report_Description"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+           android:textIsSelectable="false"
+        />
+
+    </LinearLayout>
+    
+    <View android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="?android:attr/listDivider" />
+    
+    <LinearLayout android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+    
+    	<ListView
+        	android:id="@+id/QR_ListView"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:choiceMode="singleChoice" >
+   		 </ListView>
+    </LinearLayout>
+
 </LinearLayout>

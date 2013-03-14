@@ -22,6 +22,10 @@ public class SodaQuery<T> {
 
 	private List<T> list_;
 
+	public List<T> getList_() {
+		return list_;
+	}
+
 	public SodaQuery() {
 		list_ = new ArrayList<T>();
 	}
@@ -37,7 +41,6 @@ public class SodaQuery<T> {
 	}
 
 	public void async(Callback<List<T>> hdlr) {
-
 		hdlr.handle(list_);
 	}
 
