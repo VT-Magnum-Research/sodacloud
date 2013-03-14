@@ -1,9 +1,9 @@
 /* 
-**
-** Copyright 2013, Jules White
-**
-** 
-*/
+ **
+ ** Copyright 2013, Jules White
+ **
+ ** 
+ */
 package org.magnum.soda.example.maint;
 
 import java.util.Iterator;
@@ -16,9 +16,10 @@ import org.magnum.soda.svc.PingSvc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MaintenanceServer implements ServerSodaListener{
+public class MaintenanceServer implements ServerSodaListener {
 
-	private static final Logger Log = LoggerFactory.getLogger(MaintenanceServer.class);
+	private static final Logger Log = LoggerFactory
+			.getLogger(MaintenanceServer.class);
 
 	/**
 	 * @param args
@@ -26,32 +27,24 @@ public class MaintenanceServer implements ServerSodaListener{
 	public static void main(String[] args) {
 		ServerSodaLauncher launcher = new ServerSodaLauncher();
 		launcher.launch(8081, new MaintenanceServer());
-		ServerSoda ss=launcher.getSs_();
-		
-		
+
 	}
 
 	@Override
 	public void started(Soda soda) {
-		MaintenanceReport r=new MaintenanceReport();
+		MaintenanceReport r = new MaintenanceReport();
 		r.setId(11);
 		r.setContents("first");
 		r.setCreatorId("aks");
-		MaintenanceReport r1=new MaintenanceReport();
-		r.setId(11);
-		r.setContents("Second");
-		r.setCreatorId("aks");
 		MaintenanceReports reports = new MaintenanceReportsImpl();
-		reports.addReport(r1);
+		reports.addReport(r);
 		soda.bind(reports, MaintenanceReports.SVC_NAME);
-		PingSvc p=soda.get(PingSvc.class, "ping");
-		
+		PingSvc p = soda.get(PingSvc.class, "ping");
+
 		Log.error("--------------------------");
-		p.ping();		
-		Log.error("---"+soda.getLocalAddress().toString());
-				
+		p.ping();
+		Log.error("---" + soda.getLocalAddress().toString());
+
 	}
-	
-	
 
 }
