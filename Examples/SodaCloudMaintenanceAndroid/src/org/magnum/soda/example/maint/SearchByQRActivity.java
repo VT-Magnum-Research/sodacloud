@@ -39,7 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchByQRActivity extends Activity implements AndroidSodaListener {
 	//host
-	private String mHost="192.168.137.1";
+	private String mHost="192.168.1.124";
 	// UI references.
 	private Button getQRImage;
 	private Button getReport;
@@ -290,32 +290,6 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 		return bitmap;
 	}
 
-	private File getAlbumDir() {
-		File storageDir = null;
-
-		if (Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState())) {
-			storageDir = new File(
-					Environment
-							.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-					"BattleOfGetUp");
-
-			if (storageDir != null) {
-				if (!storageDir.mkdirs()) {
-					if (!storageDir.exists()) {
-						Log.d("CameraSample", "failed to create directory");
-						return null;
-					}
-				}
-			}
-
-		} else {
-			Log.v(getString(R.string.app_name),
-					"External storage is not mounted READ/WRITE.");
-		}
-
-		return storageDir;
-	}
 
 	private File createImageFile(String name) throws IOException {
 		String imageFileName = JPEG_FILE_PREFIX + name;
