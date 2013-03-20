@@ -20,13 +20,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ReportEditorActivity extends Activity implements AndroidSodaListener {
 
 	private EditText reportContent_;
-	private Button reportButton_;
-	
+	private Button saveButton_;
+	private Button deleteButton_;
+	private Button bindLocationButton_;
+	private Button bindQRButton_;
+	private ImageView photoView_;
 	
 	private MaintenanceReports reports_;
 	
@@ -34,15 +38,25 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+		try{
 		setContentView(R.layout.report_form);
 		
 		reportContent_ = (EditText)findViewById(R.id.reportEditText);
-		reportButton_ = (Button)findViewById(R.id.addReportButton);
+		saveButton_ = (Button)findViewById(R.id.saveReportButton);
+		deleteButton_ = (Button)findViewById(R.id.DeleteButton);
+		bindLocationButton_ = (Button)findViewById(R.id.bindLocationButton);
+		bindQRButton_ = (Button)findViewById(R.id.BindQR);
+		photoView_ = (ImageView)findViewById(R.id.editReportView);
+		Log.d("SODA", "ReportEditorActivity.");
+		
 		Intent callingintent = getIntent();
         String content = callingintent.getStringExtra("description");
 		reportContent_.setText(content);
-		reportButton_.setOnClickListener(new View.OnClickListener() {
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		Log.d("SODA", "ReportEditorActivity.2 ");
+		saveButton_.setOnClickListener(new View.OnClickListener() {
 			
 			final String content = reportContent_.getText().toString();
 			

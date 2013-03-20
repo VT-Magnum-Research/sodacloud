@@ -85,9 +85,10 @@ public class SearchByLocationActivity extends Activity implements
 		AndroidSoda.init(this, "10.0.1.8", 8081, this);
 
 	}
-	private void ReportDetailIntent(String descript){		
+	private void ReportDetailIntent(String descript){	
     	Intent i =new Intent(this, ReportEditorActivity.class);
     	i.putExtra("description", descript);
+    	Log.d("SODA", "ReportDetailIntent");
 		startActivity(i);
     }
 	@Override

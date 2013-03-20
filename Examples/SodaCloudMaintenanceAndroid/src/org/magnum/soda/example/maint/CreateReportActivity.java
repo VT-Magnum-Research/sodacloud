@@ -12,24 +12,20 @@ import org.magnum.soda.android.SodaInvokeInUi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateReportActivity extends Activity implements AndroidSodaListener {
@@ -39,10 +35,13 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 	private EditText reportContent;
 	private Button attachPhotoButton;
 	private Button saveButton;
-	private Button deleteButton;
+	private Button bindLocationButton;
+	private Button bindQRButton;
 
 	private MaintenanceReports reports_;
 	Context ctx_ = this;
+	LocationManager locationManager = null;
+	private double mPosLat,mPosLng;
 	
 	private static final int SELECT_IMAGE = 100;
 	private static final int CAPTURE_IMAGE = 200;
@@ -61,8 +60,14 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 		reportContent = (EditText) findViewById(R.id.reportContentText);
 		attachPhotoButton = (Button) findViewById(R.id.attachphotoButton);
 		saveButton = (Button) findViewById(R.id.saveButton);
-		deleteButton = (Button) findViewById(R.id.deleteReportButton);
-
+		bindLocationButton = (Button) findViewById(R.id.currentLocation);
+		bindQRButton = (Button) findViewById(R.id.generateQRbutton);
+		
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new MyLocationListener();  
+		   locationManager.requestLocationUpdates(  
+		    LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+		   
 		attachPhotoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -87,6 +92,14 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 				});
 			}
 		});
+		
+		bindLocationButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {			
+				Log.d("SODA", "Location: lat:" + mPosLat + "lng:" + mPosLng);
+			}
+		});
+
 		
 		AndroidSoda.init(this, "10.0.1.8", 8081, this);
 
@@ -227,4 +240,34 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 					);		
 			
 		}
+		
+		public class MyLocationListener implements LocationListener {
+
+			@Override
+			public void onLocationChanged(Location location) {
+				// TODO Auto-generated method stub
+				if (location != null) {
+					mPosLat = location.getLatitude();
+					mPosLng = location.getLongitude();    
+				}
+			}
+
+			@Override
+			public void onProviderDisabled(String arg0) {
+				// TODO Auto-generated method stub
+				Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onProviderEnabled(String arg0) {
+				// TODO Auto-generated method stub
+				Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+				// TODO Auto-generated method stub
+			}
+		} 
+
 }
