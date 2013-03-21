@@ -6,7 +6,11 @@
 */
 package org.magnum.soda.example.maint;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
@@ -25,6 +29,9 @@ import android.widget.Toast;
 
 public class ReportEditorActivity extends Activity implements AndroidSodaListener {
 
+
+	//host
+	private String mHost="172.31.55.100";
 	private EditText reportContent_;
 	private Button saveButton_;
 	private Button deleteButton_;
@@ -40,6 +47,22 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 		super.onCreate(savedInstanceState);
 		try{
 		setContentView(R.layout.report_form);
+		
+		Properties prop = new Properties();
+		 
+    	try {
+    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
+    		 prop.load(rawResource);
+    		  System.out.println("The properties are now loaded");
+    		  System.out.println("properties: " + prop);
+    		
+    		mHost=prop.getProperty("host");
+    	}
+    	catch(IOException e)
+    	{
+    		Log.e("Property File not found",e.getLocalizedMessage());
+    	}
+
 		
 		reportContent_ = (EditText)findViewById(R.id.reportEditText);
 		saveButton_ = (Button)findViewById(R.id.saveReportButton);
@@ -74,7 +97,7 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 			}
 		});
 		
-		AndroidSoda.init(this, "10.0.1.8", 8081, this);
+		AndroidSoda.init(this, mHost, 8081, this);
 	}
 
 	@Override

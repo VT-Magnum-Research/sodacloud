@@ -2,12 +2,15 @@ package org.magnum.soda.example.maint;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -39,7 +42,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchByQRActivity extends Activity implements AndroidSodaListener {
 	//host
-	private String mHost="192.168.1.124";
+	private String mHost="172.31.55.100";
 	// UI references.
 	private Button getQRImage;
 	private Button getReport;
@@ -70,15 +73,27 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 		asl_=this;
 
 		setContentView(R.layout.activity_searchbyqr);
+		Properties prop = new Properties();
+		 
+    	try {
+    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
+    		 prop.load(rawResource);
+    		  System.out.println("The properties are now loaded");
+    		  System.out.println("properties: " + prop);
+    		
+    		mHost=prop.getProperty("host");
+    	}
+    	catch(IOException e)
+    	{
+    		Log.e("Property File not found",e.getLocalizedMessage());
+    	}
+
 
 		getQRImage = (Button) findViewById(R.id.getQRCode);
 		getReport = (Button) findViewById(R.id.searchQRReports);
 		qrImage = (ImageView) findViewById(R.id.QRImage);
 		searchResultList = (ListView) findViewById(R.id.QR_ListView);
 
-		/*HashMap<String, String> map1 = new HashMap<String, String>();
-		map1.put("itemDescription","sample");
-		mDisplayList.add(map1);*/
 		mAdapter = new SimpleAdapter(
 				this,
 				mDisplayList,// data source
@@ -135,12 +150,11 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 					public void run() {
 						if (dataBytes != null && as !=null) {
 
-
 						Log.e("conected","------------------------------------");
-						as.connected();
+						/*	as.connected();
 						PingSvc pv;							
 						pv=as.get(PingSvc.class, "ping");						
-						pv.ping();
+						pv.ping();*/
 						
 						MaintenanceReports reportHandle=as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
 						reportHandle.getReports(new Callback<List<MaintenanceReport>>() {
@@ -153,7 +167,6 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 
 						Log.e("obtained","------------------------------------");
 						
-					
 						Log.e("size",":"+mDisplayList.size());
 						
 

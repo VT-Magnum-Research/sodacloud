@@ -19,6 +19,7 @@ public interface MaintenanceReports {
 	public void addReport(MaintenanceReport r);
 	public List<MaintenanceReport> getReports();
 	
+	public void bindQRContext(Soda s, MaintenanceReport r);
 	@SodaAsync
 	public void getReports(Callback<List<MaintenanceReport>> callback);
 	

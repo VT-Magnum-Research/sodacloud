@@ -19,11 +19,16 @@ public interface MaintenanceReports {
 	public void addReport(MaintenanceReport r);
 	public List<MaintenanceReport> getReports();
 	
+	public void bindQRContext(Soda s, MaintenanceReport r);
 	@SodaAsync
 	public void getReports(Callback<List<MaintenanceReport>> callback);
+	
+
+	@SodaAsync
+	public void getReports(Callback<List<MaintenanceReport>> callback,Soda s,byte[] b);
+	
+	
 	public void addListener(MaintenanceListener l);
 	public void removeListener(MaintenanceListener l);
-	@SodaAsync
-	void getReports(Callback<List<MaintenanceReport>> callback,Soda s, byte[] b);
 	
 }

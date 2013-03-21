@@ -1,8 +1,11 @@
 package org.magnum.soda.example.maint;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
@@ -29,6 +32,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class CreateReportActivity extends Activity implements AndroidSodaListener {
+	
+	//host
+	private String mHost="172.31.55.100";
 	// UI references.
 	private ImageView attachedPhotoView;
 	private Bitmap mAttachedPhoto;
@@ -50,11 +56,35 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
 	
+
+	private AndroidSodaListener asl_=null;
+	private AndroidSoda as=null;	
+	private String mContent=null;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		asl_=this;
+		
 		setContentView(R.layout.activity_createreport);
+		Properties prop = new Properties();
+		 
+    	try {
+    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
+    		 prop.load(rawResource);
+    		  System.out.println("The properties are now loaded");
+    		  System.out.println("properties: " + prop);
+    		
+    		mHost=prop.getProperty("host");
+    	}
+    	catch(IOException e)
+    	{
+    		Log.e("Property File not found",e.getLocalizedMessage());
+    	}
+
+
 
 		attachedPhotoView = (ImageView) findViewById(R.id.attachedPhotoView);
 		reportContent = (EditText) findViewById(R.id.reportContentText);
@@ -76,20 +106,57 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 		});
 		saveButton.setOnClickListener(new View.OnClickListener() {
 			
-			final String content = reportContent.getText().toString();
-			
 			@Override
 			public void onClick(View v) {
+				
+				 mContent = reportContent.getText().toString();
+				if(mContent!=null)
+				{
+
+				AndroidSoda.init(ctx_, mHost, 8081, asl_);
 				AndroidSoda.async(new Runnable() {
 					
 					@Override
 					public void run() {
+						
+					
+						MaintenanceReports reportHandle=as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
+						
+						reportHandle.addListener(new MaintenanceListener() {
+
+							@SodaInvokeInUi
+							public void reportAdded(final MaintenanceReport r) {
+								Log.d("SODA", "Maintenance report uploaded: " + r.getContents());
+								Toast.makeText(CreateReportActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
+							}
+						});
+						
+				
 						MaintenanceReport r = new MaintenanceReport();
-						r.setContents(content);
-						reports_.addReport(r);
+						r.setContents(mContent);
+						r.setId(2);
+						r.setCreatorId("aks1");
+
+						
+
+						System.out.println("========Input Content======== :"+mContent);
+						reportHandle.addReport(r);
 						Log.d("SODA", "report content:" + r.getContents());
 					}
 				});
+			}}
+		});
+
+		bindQRButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {			
+				
+				 mContent = reportContent.getText().toString();
+				 if(mContent!=null)
+				 {
+					 
+				 }
+				Log.d("SODA", "QR");
 			}
 		});
 		
@@ -101,13 +168,13 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 		});
 
 		
-		AndroidSoda.init(this, "10.0.1.8", 8081, this);
-
 	}
 
 	@Override
 	public void connected(final AndroidSoda s) {
-		reports_ = s.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
+		
+		this.as=s;
+		/*reports_ = s.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
 		reports_.getReports(new Callback<List<MaintenanceReport>>() {
 			@SodaInvokeInUi
 			public void handle(List<MaintenanceReport> arg0) {
@@ -122,7 +189,7 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 				Log.d("SODA", "Maintenance report uploaded: " + r.getContents());
 				Toast.makeText(CreateReportActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
 			}
-		});
+		});*/
 
 	}
 	

@@ -24,11 +24,20 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 	
 	@Override
 	public void addReport(MaintenanceReport r) {
-		reports_.add(r);
 		
+		System.out.println("content :"+r.getContents()+" :"+r.getCreatorId());
+		reports_.add(r);
+				
 		for(MaintenanceListener l : listeners_){
 			l.reportAdded(r);
 		}
+	}
+	
+
+	public void bindQRContext(Soda s, MaintenanceReport r)
+	{
+		SodaQR qr=SodaQR.create(r.getContents());
+		s.bind(r).to(qr);
 	}
 
 	@Override
@@ -59,9 +68,7 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 	SodaQR _objQR=	SodaQR.fromImageData(b);
 	SodaQuery<MaintenanceReport> _objSQ=s.find(MaintenanceReport.class,_objQR);
 	
-	callback.handle(_objSQ.getList_());
-	
-	
+	callback.handle(_objSQ.getList_());	
 		
 	}
 

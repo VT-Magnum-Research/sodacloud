@@ -1,5 +1,10 @@
 package org.magnum.soda.example.maint;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
@@ -45,6 +50,9 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	 */
 	private UserLoginTask mAuthTask = null;
 
+
+	//host
+	private String mHost="172.31.55.100";
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -61,6 +69,23 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
+		
+		
+		Properties prop = new Properties();
+		 
+    	try {
+    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
+    		 prop.load(rawResource);
+    		  System.out.println("The properties are now loaded");
+    		  System.out.println("properties: " + prop);
+    		
+    		mHost=prop.getProperty("host");
+    	}
+    	catch(IOException e)
+    	{
+    		Log.e("Property File not found",e.getLocalizedMessage());
+    	}
+
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -93,7 +118,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 					}
 				});
 
-		AndroidSoda.init(this, "10.0.1.8", 8081, this);
+		AndroidSoda.init(this, mHost, 8081, this);
 		
 	}
 
@@ -112,11 +137,11 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			}
 		});
 
-		for (int i = 0; i < 10; i++) {
+	/*	for (int i = 0; i < 10; i++) {
 			MaintenanceReport r = new MaintenanceReport();
 			r.setContents("Report Id:" + i);
 			reports.addReport(r);
-		}
+		}*/
 	}
 
 	@Override
