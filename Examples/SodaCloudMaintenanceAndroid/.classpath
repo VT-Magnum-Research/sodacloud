@@ -13,5 +13,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/SodaCloud"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

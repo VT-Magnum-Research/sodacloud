@@ -4,13 +4,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.magnum.soda.Callback;
+import org.magnum.soda.Soda;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
+import org.magnum.soda.ctx.SodaQR;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,7 +39,7 @@ import android.widget.Toast;
 public class CreateReportActivity extends Activity implements AndroidSodaListener {
 	
 	//host
-	private String mHost="172.31.55.100";
+	private String mHost;//="172.31.55.100";
 	// UI references.
 	private ImageView attachedPhotoView;
 	private Bitmap mAttachedPhoto;
@@ -114,37 +119,7 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 				{
 
 				AndroidSoda.init(ctx_, mHost, 8081, asl_);
-				AndroidSoda.async(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-					
-						MaintenanceReports reportHandle=as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
-						
-						reportHandle.addListener(new MaintenanceListener() {
-
-							@SodaInvokeInUi
-							public void reportAdded(final MaintenanceReport r) {
-								Log.d("SODA", "Maintenance report uploaded: " + r.getContents());
-								Toast.makeText(CreateReportActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
-							}
-						});
-						
-				
-						MaintenanceReport r = new MaintenanceReport();
-						r.setContents(mContent);
-						r.setId(2);
-						r.setCreatorId("aks1");
-
-						
-
-						System.out.println("========Input Content======== :"+mContent);
-						reportHandle.addReport(r);
-						Log.d("SODA", "report content:" + r.getContents());
-					}
-				});
-			}}
+							}}
 		});
 
 		bindQRButton.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +129,7 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 				 mContent = reportContent.getText().toString();
 				 if(mContent!=null)
 				 {
-					 
+					SodaQR.create(mContent);
 				 }
 				Log.d("SODA", "QR");
 			}
@@ -169,11 +144,67 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 
 		
 	}
+	
+	private void addReport()
+	{
+		List<Future> list = new ArrayList<Future>();
+
+		Future<?> Result =AndroidSoda.async(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+			
+				MaintenanceReports reportHandle=as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
+				
+				reportHandle.addListener(new MaintenanceListener() {
+
+					@SodaInvokeInUi
+					public void reportAdded(final MaintenanceReport r) {
+						Log.d("SODA", "Maintenance report uploaded: " + r.getContents());
+						Toast.makeText(CreateReportActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
+					}
+				});
+				
+		
+				MaintenanceReport r = new MaintenanceReport();
+				r.setContents(mContent);
+				r.setId(2);
+				r.setCreatorId("aks1");
+
+				
+
+				System.out.println("========Input Content======== :"+mContent);
+				reportHandle.addReport(r);
+				Log.d("SODA", "report content:" + r.getContents());
+			}
+		});
+		
+		list.add(Result);
+
+		for (Future f : list) {
+			try {
+				while (!f.isDone()) {
+
+				}
+				f.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+
+	}
 
 	@Override
 	public void connected(final AndroidSoda s) {
 		
 		this.as=s;
+		addReport();
 		/*reports_ = s.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
 		reports_.getReports(new Callback<List<MaintenanceReport>>() {
 			@SodaInvokeInUi

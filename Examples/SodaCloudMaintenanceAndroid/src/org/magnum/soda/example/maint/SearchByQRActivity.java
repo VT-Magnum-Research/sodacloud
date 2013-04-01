@@ -41,8 +41,8 @@ import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchByQRActivity extends Activity implements AndroidSodaListener {
-	//host
-	private String mHost="172.31.55.100";
+	// host
+	private String mHost;
 	// UI references.
 	private Button getQRImage;
 	private Button getReport;
@@ -50,44 +50,41 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	private Bitmap qrBitmap;
 	private ListView searchResultList;
 	private static SimpleAdapter mAdapter;
-	private List<MaintenanceReport> mReportList=new ArrayList<MaintenanceReport>();
-	private List<HashMap<String,String>> mDisplayList=new ArrayList<HashMap<String,String>>();
-	
-	
+	private List<MaintenanceReport> mReportList = new ArrayList<MaintenanceReport>();
+	private List<HashMap<String, String>> mDisplayList = new ArrayList<HashMap<String, String>>();
+
 	Context ctx_ = this;
 	static boolean imageLoaded = false;
-	static Boolean mDataExecuted =false;
+	static Boolean mDataExecuted = false;
 	private byte dataBytes[];
 	private static final int CAPTURE_IMAGE = 200;
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
-	
-	private AndroidSodaListener asl_=null;
-	
-	private AndroidSoda as=null;
+
+	private AndroidSodaListener asl_ = null;
+
+	private AndroidSoda as = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		asl_=this;
+
+		asl_ = this;
 
 		setContentView(R.layout.activity_searchbyqr);
 		Properties prop = new Properties();
-		 
-    	try {
-    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
-    		 prop.load(rawResource);
-    		  System.out.println("The properties are now loaded");
-    		  System.out.println("properties: " + prop);
-    		
-    		mHost=prop.getProperty("host");
-    	}
-    	catch(IOException e)
-    	{
-    		Log.e("Property File not found",e.getLocalizedMessage());
-    	}
 
+		try {
+			InputStream rawResource = getResources().openRawResource(
+					R.raw.connection);
+			prop.load(rawResource);
+			System.out.println("The properties are now loaded");
+			System.out.println("properties: " + prop);
+
+			mHost = prop.getProperty("host");
+		} catch (IOException e) {
+			Log.e("Property File not found", e.getLocalizedMessage());
+		}
 
 		getQRImage = (Button) findViewById(R.id.getQRCode);
 		getReport = (Button) findViewById(R.id.searchQRReports);
@@ -98,12 +95,11 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 				this,
 				mDisplayList,// data source
 				R.layout.listview_item_nocheckbox,
-				new String[] {"itemDescription" },
+				new String[] { "itemDescription" },
 				new int[] { R.id.item_description });
 		mAdapter.notifyDataSetChanged();
 		searchResultList.setAdapter(mAdapter);
-		
-		
+
 		getQRImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -123,72 +119,30 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 
 						if (qrBitmap != null) {
 							ByteArrayOutputStream blob = new ByteArrayOutputStream();
-							qrBitmap.compress(CompressFormat.PNG,
-									0 /* ignored for PNG */, blob);
+							qrBitmap.compress(CompressFormat.PNG, 0 /*
+																	 * ignored
+																	 * for PNG
+																	 */, blob);
 							dataBytes = blob.toByteArray();
 						}
 					}
 				});
 			}
 		});
-		
 
 		getReport.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
-			
-				if(imageLoaded &&dataBytes!=null)
-				{
-				AndroidSoda.init(ctx_, mHost, 8081, asl_);
-				
-				Log.d("onClick:","before async connected");
-												
-				Future<?> Result=AndroidSoda.async(new Runnable() {
-					@Override
-					@SodaInvokeInUi
-					public void run() {
-						if (dataBytes != null && as !=null) {
+				if (imageLoaded && dataBytes != null) {
+					AndroidSoda.init(ctx_, mHost, 8081, asl_);
 
-						Log.e("conected","------------------------------------");
-						/*	as.connected();
-						PingSvc pv;							
-						pv=as.get(PingSvc.class, "ping");						
-						pv.ping();*/
-						
-						MaintenanceReports reportHandle=as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
-						reportHandle.getReports(new Callback<List<MaintenanceReport>>() {
-							@SodaInvokeInUi
-							public void handle(List<MaintenanceReport> arg0) {
-								mReportList=arg0;
-								populateList();
-							}
-						});
+					Log.d("onClick:", "before async connected");
 
-						Log.e("obtained","------------------------------------");
-						
-						Log.e("size",":"+mDisplayList.size());
-						
-
-						}
-					}
-				});
-				
-						
-				
 				}
 			}
 		});
-		
-		getReport.setOnLongClickListener(new View.OnLongClickListener() {
-			
-			@Override
-			public boolean onLongClick(View v) {
-				Log.e("size2",":"+mDisplayList.size());
-				mAdapter.notifyDataSetChanged();
-				return false;
-			}
-		});
+
 		searchResultList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -199,34 +153,91 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 						.getItemAtPosition(position);
 				String des = map.get("itemDescription");
 				ReportDetailIntent(des);
-			}});
-
-
+			}
+		});
 
 	}
-	
-	private void populateList()
-	{
-		Iterator<MaintenanceReport> itr=mReportList.iterator();
 
-		while(itr.hasNext())
-		{
+	private void getReports() {
+		List<Future> list = new ArrayList<Future>();
+
+		Future<?> Result = AndroidSoda.async(new Runnable() {
+			@Override
+			@SodaInvokeInUi
+			public void run() {
+				if (dataBytes != null && as != null) {
+
+					Log.e("conected", "------------------------------------");
+					
+					MaintenanceReports reportHandle = as.get(
+							MaintenanceReports.class,
+							MaintenanceReports.SVC_NAME);
+					reportHandle
+							.getReports(new Callback<List<MaintenanceReport>>() {
+								//@SodaInvokeInUi
+								public void handle(List<MaintenanceReport> arg0) {
+									mReportList = arg0;
+									populateList();
+								}
+							});
+					Log.e("obtained", "------------------------------------");
+
+
+				}
+			}
+		});
+
+		list.add(Result);
+		for (Future f : list) {
+			try {
+				while (!f.isDone()) {
+
+				}
+				f.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void populateList() {
+		Iterator<MaintenanceReport> itr = mReportList.iterator();
+
+		while (itr.hasNext()) {
 			HashMap<String, String> map = new HashMap<String, String>();
-			MaintenanceReport temp=((MaintenanceReport)itr.next());
-			Log.e("-- items--",temp.getCreatorId());
-	        map.put("itemDescription",temp.getContents());
+			MaintenanceReport temp = ((MaintenanceReport) itr.next());
+			Log.e("-- items--", temp.getCreatorId());
+			map.put("itemDescription", temp.getContents());
 			mDisplayList.add(map);
-			
-		}	
 
+		}
+		Log.e("size", ":" + mDisplayList.size());
 		
-	}
+		runOnUiThread(new Runnable()
+		{
+
+			@Override
+			public void run() {
+				mAdapter.notifyDataSetInvalidated();//
+				mAdapter.notifyDataSetChanged();
+			}
+			
+		});
+		
 	
-	private void ReportDetailIntent(String descript){		
-    	Intent i =new Intent(this, ReportEditorActivity.class);
-    	i.putExtra("description", descript);
+
+	}
+
+	private void ReportDetailIntent(String descript) {
+		Intent i = new Intent(this, ReportEditorActivity.class);
+		i.putExtra("description", descript);
 		startActivity(i);
-    }
+	}
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 
@@ -261,7 +272,7 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 					qrImage.setImageBitmap(qrBitmap);
 					qrImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 					qrImage.setAdjustViewBounds(true);
-					imageLoaded=true;
+					imageLoaded = true;
 				} else
 					Log.i("getup", "failure of loading image.");
 			}
@@ -303,7 +314,6 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 		return bitmap;
 	}
 
-
 	private File createImageFile(String name) throws IOException {
 		String imageFileName = JPEG_FILE_PREFIX + name;
 		File imageF = new File("/sdcard/" + imageFileName + JPEG_FILE_SUFFIX);
@@ -323,18 +333,19 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 
 	@Override
 	public void connected(AndroidSoda s) {
-				
-		this.as=s;
-		/*MaintenanceReports reports = s.get(MaintenanceReports.class,
-				MaintenanceReports.SVC_NAME);
 
-		reports.addListener(new MaintenanceListener() {
-
-			@SodaInvokeInUi
-			public void reportAdded(MaintenanceReport r) {
-				Log.d("SODA", "Maintenance report added: " + r.getContents());
-
-			}
-		});*/
+		this.as = s;
+		getReports();
+		/*
+		 * MaintenanceReports reports = s.get(MaintenanceReports.class,
+		 * MaintenanceReports.SVC_NAME);
+		 * 
+		 * reports.addListener(new MaintenanceListener() {
+		 * 
+		 * @SodaInvokeInUi public void reportAdded(MaintenanceReport r) {
+		 * Log.d("SODA", "Maintenance report added: " + r.getContents());
+		 * 
+		 * } });
+		 */
 	}
 }
