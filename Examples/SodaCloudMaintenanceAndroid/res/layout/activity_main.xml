@@ -16,4 +16,10 @@
         android:layout_height="wrap_content"
         android:text="Create Report" />
 
+    <Button
+        android:id="@+id/createWatchZone_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Watch Zone" />
+
 </LinearLayout>

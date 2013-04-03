@@ -2,8 +2,12 @@ package org.magnum.soda.example.maint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
@@ -28,10 +32,14 @@ public class SearchByLocationActivity extends Activity implements
 	private Button searchButton;
 	private EditText rangeText;
 	private ListView searchResultList;
-	private ArrayList<HashMap<String, String>> list;
+	private List<MaintenanceReport> mReportList = new ArrayList<MaintenanceReport>();
+	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	private Context ctx_ = this;
 	private SimpleAdapter mAdapter;
+	
+	private AndroidSodaListener asl_ = null;
 
+	private AndroidSoda as = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,21 +100,87 @@ public class SearchByLocationActivity extends Activity implements
 		startActivity(i);
     }
 	@Override
-	public void connected(final AndroidSoda s) {
-		MaintenanceReports reports = s.get(MaintenanceReports.class,
-				MaintenanceReports.SVC_NAME);
+	public void connected(AndroidSoda s) {
 
-		reports.addListener(new MaintenanceListener() {
+		this.as = s;
+		getReports();
+		
+	}
+	private void getReports() {
+		List<Future> list = new ArrayList<Future>();
 
+		Future<?> Result = AndroidSoda.async(new Runnable() {
+			@Override
 			@SodaInvokeInUi
-			public void reportAdded(MaintenanceReport r) {
-				Log.d("SODA", "Maintenance report added: " + r.getContents());
+			public void run() {
+				if ( as != null) {
 
+					Log.e("conected", "------------------------------------");
+					
+					MaintenanceReports reportHandle = as.get(
+							MaintenanceReports.class,
+							MaintenanceReports.SVC_NAME);
+					reportHandle
+							.getReports(new Callback<List<MaintenanceReport>>() {
+								//@SodaInvokeInUi
+								public void handle(List<MaintenanceReport> arg0) {
+									mReportList = arg0;
+									populateList();
+								}
+							});
+					Log.e("obtained", "------------------------------------");
+
+
+				}
 			}
 		});
 
-	}
+		list.add(Result);
+		for (Future f : list) {
+			try {
+				while (!f.isDone()) {
 
+				}
+				f.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	private void populateList() {
+		Iterator<MaintenanceReport> itr = mReportList.iterator();
+
+		while (itr.hasNext()) {
+			HashMap<String, String> map = new HashMap<String, String>();
+			MaintenanceReport temp = ((MaintenanceReport) itr.next());
+			Log.e("-- items--", temp.getCreatorId());
+			map.put("itemDescription", temp.getContents());
+			list.add(map);
+
+		}
+		Log.e("size", ":" + list.size());
+		
+		runOnUiThread(new Runnable()
+		{
+
+			@Override
+			public void run() {
+				mAdapter.notifyDataSetInvalidated();//
+				mAdapter.notifyDataSetChanged();
+			}
+			
+		});
+		
+	
+
+	}
+	
 	/**
 	 * Represents an asynchronous task used to get report list from server
 	 */

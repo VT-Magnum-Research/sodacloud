@@ -33,6 +33,7 @@
         <activity android:name="org.magnum.soda.example.maint.ReportEditorActivity"/>
         <activity android:name="org.magnum.soda.example.maint.SearchByLocationActivity"/>
         <activity android:name="org.magnum.soda.example.maint.SearchByQRActivity"/>
+        <activity android:name="org.magnum.soda.example.maint.WatchZoneActivity"/>
     </application>
 
 </manifest>

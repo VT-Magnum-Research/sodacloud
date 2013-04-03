@@ -14,6 +14,7 @@ public class MainActivity extends Activity{
 	// UI references.
 	private Button viewReportButton;
 	private Button createReportButton;
+	private Button createWatchZoneButton;
     private String[] viewReportMenuItem= new String[]{"by location","by QR code"};
     
 	@Override
@@ -24,6 +25,7 @@ public class MainActivity extends Activity{
 
 		viewReportButton = (Button)findViewById(R.id.viewReportButton);
 		createReportButton = (Button)findViewById(R.id.createReportButton);
+		createWatchZoneButton = (Button)findViewById(R.id.createWatchZone_button);
 		
 		viewReportButton.setOnClickListener(new AlertClickListener()); 
 		
@@ -33,10 +35,22 @@ public class MainActivity extends Activity{
 				CreateReportIntent();
 			}
 		});
+		
+		createWatchZoneButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CreateWatchZoneIntent();
+			}
+		});
 	}
 	
     private void CreateReportIntent(){
     	Intent i =new Intent(this, CreateReportActivity.class);
+		startActivity(i);
+    }
+    
+    private void CreateWatchZoneIntent(){
+    	Intent i =new Intent(this, WatchZoneActivity.class);
 		startActivity(i);
     }
     

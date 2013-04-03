@@ -1,6 +1,5 @@
 package org.magnum.soda.example.maint;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -9,14 +8,10 @@ import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-//import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,9 +19,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.annotation.TargetApi;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -56,8 +53,9 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
-
+	Context ctx_ = this;
 	// UI references.
+	private Button bypassButton;
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
@@ -88,6 +86,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 
 
 		// Set up the login form.
+    	bypassButton = (Button)findViewById(R.id.button_Bypass);
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
@@ -118,6 +117,15 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 					}
 				});
 
+		bypassButton.setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent i =new Intent(ctx_, MainActivity.class);
+						startActivity(i);
+					}
+				});
+		
 		AndroidSoda.init(this, mHost, 8081, this);
 		
 	}
