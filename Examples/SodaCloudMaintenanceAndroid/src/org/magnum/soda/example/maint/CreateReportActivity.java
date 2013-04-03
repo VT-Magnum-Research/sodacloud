@@ -3,8 +3,6 @@ package org.magnum.soda.example.maint;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -16,7 +14,6 @@ import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 import org.magnum.soda.ctx.ImageContainer;
 import org.magnum.soda.ctx.SodaQR;
-import org.magnum.soda.ctx.SodaQR_android;
 
 import android.app.Activity;
 import android.content.Context;
