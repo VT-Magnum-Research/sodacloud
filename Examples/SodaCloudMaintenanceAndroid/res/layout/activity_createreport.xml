@@ -40,6 +40,12 @@
         android:layout_height="wrap_content"
         android:text="Bind Current Location" />
 
+    <ImageView
+        android:id="@+id/textQRimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+
     <Button
         android:id="@+id/generateQRbutton"
         android:layout_width="wrap_content"

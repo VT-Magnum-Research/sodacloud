@@ -1,21 +1,22 @@
 package org.magnum.soda.example.maint;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.magnum.soda.Callback;
-import org.magnum.soda.Soda;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
+import org.magnum.soda.ctx.ImageContainer;
 import org.magnum.soda.ctx.SodaQR;
+import org.magnum.soda.ctx.SodaQR_android;
 
 import android.app.Activity;
 import android.content.Context;
@@ -42,6 +43,7 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 	private String mHost;//="172.31.55.100";
 	// UI references.
 	private ImageView attachedPhotoView;
+	private ImageView QRView;
 	private Bitmap mAttachedPhoto;
 	private EditText reportContent;
 	private Button attachPhotoButton;
@@ -92,6 +94,7 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 
 
 		attachedPhotoView = (ImageView) findViewById(R.id.attachedPhotoView);
+		QRView = (ImageView) findViewById(R.id.textQRimage);
 		reportContent = (EditText) findViewById(R.id.reportContentText);
 		attachPhotoButton = (Button) findViewById(R.id.attachphotoButton);
 		saveButton = (Button) findViewById(R.id.saveButton);
@@ -129,7 +132,13 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 				 mContent = reportContent.getText().toString();
 				 if(mContent!=null)
 				 {
-					SodaQR.create(mContent);
+					 
+					 SodaQR qr_=SodaQR.create(mContent);
+					 ImageContainer bitmap=qr_.getImg_();
+					QRView.setImageBitmap(bitmap.getQrBitCodeImage_());
+					 QRView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					 QRView.setAdjustViewBounds(true);
+
 				 }
 				Log.d("SODA", "QR");
 			}
