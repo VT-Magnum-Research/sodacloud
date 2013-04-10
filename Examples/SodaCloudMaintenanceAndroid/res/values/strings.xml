@@ -1,6 +1,12 @@
 <resources>
 
-    <string name="app_name">SodaCloudAndroidMaintenance</string>
+    <string name="app_name">MaintenanceAssistant</string>
     <string name="Photo">Photo</string>
+    <string name="login_label_username">Username</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_label_signin">Sign in</string>
+    <string name="login_status_logging_in">login...</string>
+    <string name="login_username_hint">Email</string>
+    <string name="login_register_link">Do not have an account? <a href="#">Register</a></string>
 
 </resources>
