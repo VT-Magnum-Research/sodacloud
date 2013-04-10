@@ -15,6 +15,14 @@
 			<version>4.0.1.2</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.google.android.maps</groupId>
+            <artifactId>maps</artifactId>
+            <version>14_r2</version>
+			<type>jar</type>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/maps-14_r2.jar</systemPath>
+        </dependency>
 		<dependency>
 			<groupId>org.magnum.soda</groupId>
 			<artifactId>SodaCloudAndroid</artifactId>

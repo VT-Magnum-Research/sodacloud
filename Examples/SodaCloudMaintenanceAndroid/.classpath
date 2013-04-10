@@ -14,5 +14,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/SodaCloud"/>
+	<classpathentry kind="lib" path="libs/core.jar"/>
+	<classpathentry kind="lib" path="libs/javase.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
