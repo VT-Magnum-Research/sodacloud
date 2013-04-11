@@ -13,9 +13,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.magnum.soda.Callback;
+import org.magnum.soda.ThirdPartyIntent.IntentIntegrator;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
+import org.magnum.soda.ctx.ImageContainer;
+import org.magnum.soda.ctx.SodaQR;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -240,6 +244,9 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	static File img = null;
 
 	private void captureQRImageIntent(Context c) {
+		IntentIntegrator integrator = new IntentIntegrator(this);
+		integrator.initiateScan();
+		/*
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		File f = null;
 		try {
@@ -252,16 +259,19 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 			f = null;
 		}
 
-		startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+		startActivityForResult(takePictureIntent, CAPTURE_IMAGE);*/
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
 
-		case CAPTURE_IMAGE: {
-			if (resultCode == RESULT_OK) {
 
-				qrBitmap = scaleBitmap("/sdcard/IMG_target.jpg");
+			org.magnum.soda.ThirdPartyIntent.IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+				  if (scanResult != null) {
+				   SodaQR qr= SodaQR.create(scanResult.getContents());
+				   ImageContainer img= qr.getImg_();
+				   qrBitmap= img.getQrBitCodeImage_();
+				 
+			//	qrBitmap = scaleBitmap("/sdcard/IMG_target.jpg");
 
 				if (qrBitmap != null) {
 					qrImage.setImageBitmap(qrBitmap);
@@ -271,10 +281,6 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 				} else
 					Log.i("getup", "failure of loading image.");
 			}
-
-		}
-			break;
-		}
 
 	}
 
