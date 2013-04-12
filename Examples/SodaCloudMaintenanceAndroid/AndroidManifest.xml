@@ -35,6 +35,24 @@
         <activity android:name="org.magnum.soda.example.maint.SearchByLocationActivity"/>
         <activity android:name="org.magnum.soda.example.maint.SearchByQRActivity"/>
         <activity android:name="org.magnum.soda.example.maint.WatchZoneActivity"/>
+        
+        
+       <!-- <activity android:name="org.magnum.soda.example.maint.leadtools.annotationsdemo.AnnotationsDemoActivity"/>
+        <activity android:name="org.magnum.soda.example.maint.leadtools.annotationsdemo.AnnPropertiesDialog"/>
+        <activity android:name="org.magnum.soda.example.maint.leadtools.annotationsdemo.AnnVideoActivity"/>
+   -->
+    <activity android:name="leadtools.annotationsdemo.AnnotationsDemoActivity" >
+            <!--intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter-->
+        </activity>
+        
+        <!-- activity android:name="leadtools.annotationsdemo.AnnVideoActivity" android:label="@string/play_video" android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden|screenSize" android:exported="false" /-->
+        
+        <activity android:name="leadtools.demos.SplashScreen" android:configChanges="orientation|keyboardHidden|screenSize" android:exported="false" />"
+        
+   
     </application>
 
 </manifest>

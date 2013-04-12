@@ -6,15 +6,27 @@
  */
 package org.magnum.soda.example.maint;
 
+import java.io.Serializable;
+
 import org.magnum.soda.proxy.SodaByValue;
 
 @SodaByValue
-public class MaintenanceReport {
+public class MaintenanceReport implements Serializable {
 
 	private int id_;
 	private String contents_;
 	private String creatorId_;
 	private byte[] qrData;
+	
+	private byte[] imageData;
+
+	public byte[] getImageData() {
+		return imageData;
+	}
+
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
 
 	public byte[] getQrData() {
 		return qrData;

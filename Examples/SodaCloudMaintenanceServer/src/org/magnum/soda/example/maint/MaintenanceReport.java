@@ -15,6 +15,16 @@ public class MaintenanceReport {
 	private String contents_;
 	private String creatorId_;
 	private byte[] qrData;
+	
+	private byte[] imageData;
+
+	public byte[] getImageData() {
+		return imageData;
+	}
+
+	public void setImageData(byte[] imageData) {
+		this.imageData = imageData;
+	}
 
 	public byte[] getQrData() {
 		return qrData;

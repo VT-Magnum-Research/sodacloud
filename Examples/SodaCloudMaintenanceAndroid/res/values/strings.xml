@@ -8,5 +8,129 @@
     <string name="login_status_logging_in">login...</string>
     <string name="login_username_hint">Email</string>
     <string name="login_register_link">Do not have an account? <a href="#">Register</a></string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     <!-- string name="app_name">Annotations Demo</string-->
+    <string name="play_video">Play Video</string>
+    
+    <string name="video_error_msg">Sorry, this video cannot be played</string>
+    <string name="video_close">Close</string>
+
+    <string name="pan_zoom">Pan Zoom InteractiveMode</string>
+    <string name="ann_select">Select</string>
+    <string name="ann_line">Line</string>
+    <string name="ann_rectangle">Rectangle</string>
+    <string name="ann_ellipse">Ellipse</string>
+    <string name="ann_polyline">Polyline</string>
+    <string name="ann_polygon">Polygon</string>
+    <string name="ann_curve">Curve</string>
+    <string name="ann_closed_curve">ClosedCurve</string>
+    <string name="ann_pointer">Pointer</string>
+    <string name="ann_freehand">Freehand</string>
+    <string name="ann_hilite">Hilite</string>
+    <string name="ann_text">Text</string>
+    <string name="ann_text_rollup">TextRollup</string>
+    <string name="ann_text_pointer">TextPointer</string>
+    <string name="ann_note">Note</string>
+    <string name="ann_stamp">Stamp</string>
+    <string name="ann_rubber_stamp">Rubber Stamp</string>
+    <string name="ann_hotspot">HotSpot</string>
+    <string name="ann_freehand_hotspot">FreeHandHotSpot</string>
+    <string name="ann_point">Point</string>
+    <string name="ann_ruler">Ruler</string>
+    <string name="ann_poly_ruler">PolyRuler</string>
+    <string name="ann_protractor">Protractor</string>
+    <string name="ann_cross_product">CrossProduct</string>
+    <string name="ann_redact">Redact</string>
+    <string name="ann_encrypt">Encrypt</string>
+    <string name="ann_audio">Audio</string>
+    <string name="ann_video">Video</string>
+    <string name="ann_triangle">Triangle</string>
+
+    <string name="actions">Actions</string>
+
+    <string name="action_select_image">Select Image</string>
+    <string name="action_save_image">Save Image</string>
+    <string name="action_load_ann">Load Annotations</string>
+    <string name="action_save_ann">Save Annotations</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_redo">Redo</string>
+    <string name="action_lock">Lock</string>
+    <string name="action_unlock">Unlock</string>
+    <string name="action_realize">Realize</string>
+    <string name="action_restore">Restore</string>
+    <string name="action_design_mode">Design Mode</string>
+    <string name="action_run_mode">Run Mode</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_burn">Burn</string>
+    <string name="action_ann_copy">Copy Annotations</string>
+    <string name="action_ann_paste">Paste Annotations</string>
+    <string name="action_apply_encrypt">Apply Encrypt</string>
+    <string name="action_apply_decrypt">Apply Decrypt</string>
+    <string name="action_properties">Properties</string>
+
+    <string name="done">Done</string>
+    
+    <string name="hint_file_name">File Name</string>
+    
+    
+    
+    <!--string name="app_name">Leadtools.Demos</string-->
+
+    <string name="image_gallery">Gallery</string>
+    <string name="image_capture">Capture</string>
+    <string name="image_browse">Browse Image</string>
+    <string name="save">Save</string>
+    
+    <string name="no_data">No Data</string>
+
+    <string name="home">Home</string>
+    <string name="up">Up</string>
+    
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="browse_file">Browse File</string>
+    
+    <string name="hint_file_name">File Name</string>
+    
+    <string name="sd_card_path">/sdcard/</string>
+    
+    <string name="saveformat_format">Format</string>
+    <string name="saveformat_bits_per_pixel">Bits Per Pixel</string>
+    <string name="saveformat_subformat">Sub Format</string>
+    <string name="saveformat_quality_factor">Quality Factor</string>
+    <string name="saveformat_save">Save</string>
+    <string name="saveformat_cancel">Cancel</string>
+    
 
 </resources>

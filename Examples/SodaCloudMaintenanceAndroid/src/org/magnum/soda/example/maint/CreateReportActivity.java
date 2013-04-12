@@ -1,5 +1,6 @@
 package org.magnum.soda.example.maint;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,26 +21,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class CreateReportActivity extends Activity implements AndroidSodaListener {
-	
-	//host
-	private String mHost;//="172.31.55.100";
+public class CreateReportActivity extends Activity implements
+		AndroidSodaListener {
+
+	// host
+	private String mHost;// ="172.31.55.100";
 	// UI references.
-	private ImageView attachedPhotoView;
+	private ImageButton attachedPhotoView;
 	private ImageView QRView;
 	private Bitmap mAttachedPhoto;
 	private EditText reportContent;
@@ -51,106 +59,139 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 	private MaintenanceReports reports_;
 	Context ctx_ = this;
 	LocationManager locationManager = null;
-	private double mPosLat,mPosLng;
-	
+	private double mPosLat, mPosLng;
+
 	private static final int SELECT_IMAGE = 100;
 	private static final int CAPTURE_IMAGE = 200;
 	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
-	
+	private static final int STATIC_INTEGER_VALUE = 90;
 
-	private AndroidSodaListener asl_=null;
-	private AndroidSoda as=null;	
-	private String mContent=null;
-	
-	
+	private AndroidSodaListener asl_ = null;
+	private AndroidSoda as = null;
+	private String mContent = null;
+	private byte[] mImageData=null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		asl_=this;
-		
+
+		asl_ = this;
+
 		setContentView(R.layout.activity_createreport);
 		Properties prop = new Properties();
-		 
-    	try {
-    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
-    		 prop.load(rawResource);
-    		  System.out.println("The properties are now loaded");
-    		  System.out.println("properties: " + prop);
-    		
-    		mHost=prop.getProperty("host");
-    	}
-    	catch(IOException e)
-    	{
-    		Log.e("Property File not found",e.getLocalizedMessage());
-    	}
 
+		try {
+			InputStream rawResource = getResources().openRawResource(
+					R.raw.connection);
+			prop.load(rawResource);
+			System.out.println("The properties are now loaded");
+			System.out.println("properties: " + prop);
 
+			mHost = prop.getProperty("host");
+		} catch (IOException e) {
+			Log.e("Property File not found", e.getLocalizedMessage());
+		}
 
-		attachedPhotoView = (ImageView) findViewById(R.id.attachedPhotoView);
+		attachedPhotoView = (ImageButton) findViewById(R.id.attachedPhotoView);
 		QRView = (ImageView) findViewById(R.id.textQRimage);
 		reportContent = (EditText) findViewById(R.id.reportContentText);
 		attachPhotoButton = (Button) findViewById(R.id.attachphotoButton);
 		saveButton = (Button) findViewById(R.id.saveButton);
 		bindLocationButton = (Button) findViewById(R.id.currentLocation);
 		bindQRButton = (Button) findViewById(R.id.generateQRbutton);
-		
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		LocationListener locationListener = new MyLocationListener();  
-		   locationManager.requestLocationUpdates(  
-		    LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-		   
+
+		locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new MyLocationListener();
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				5000, 10, locationListener);
+
 		attachPhotoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				captureImageIntent(ctx_);
 			}
 		});
+
+		attachedPhotoView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+					callIntent(getBmp(attachedPhotoView.getDrawable()));
+
+			}
+
+		});
 		saveButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				
-				 mContent = reportContent.getText().toString();
-				if(mContent!=null)
-				{
 
-				AndroidSoda.init(ctx_, mHost, 8081, asl_);
-							}}
+				mContent = reportContent.getText().toString();
+				mImageData = getBytes(getBmp(attachedPhotoView.getDrawable()));
+				
+				if (mContent != null && mImageData !=null) {
+
+					AndroidSoda.init(ctx_, mHost, 8081, asl_);
+				}
+			}
 		});
 
 		bindQRButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {			
-				
-				 mContent = reportContent.getText().toString();
-				 if(mContent!=null)
-				 {
-					 
-					 SodaQR qr_=SodaQR.create(mContent);
-					 ImageContainer bitmap=qr_.getImg_();
-					QRView.setImageBitmap(bitmap.getQrBitCodeImage_());
-					 QRView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-					 QRView.setAdjustViewBounds(true);
+			public void onClick(View v) {
 
-				 }
+				mContent = reportContent.getText().toString();
+				if (mContent != null) {
+
+					SodaQR qr_ = SodaQR.create(mContent);
+					ImageContainer bitmap = qr_.getImg_();
+					QRView.setImageBitmap(bitmap.getQrBitCodeImage_());
+					QRView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					QRView.setAdjustViewBounds(true);
+
+				}
 				Log.d("SODA", "QR");
 			}
 		});
-		
+
 		bindLocationButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {			
+			public void onClick(View v) {
 				Log.d("SODA", "Location: lat:" + mPosLat + "lng:" + mPosLng);
 			}
 		});
 
-		
+	}
+	private Bitmap getBmp(Drawable drawable)
+	{
+		if (drawable instanceof BitmapDrawable) {
+			BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+			Bitmap bitmap = bitmapDrawable.getBitmap();
+			return bitmap;
+		}
+		return null;
+	}
+
+	private void callIntent(Bitmap img) {
+		Intent i = new Intent(this,
+				leadtools.annotationsdemo.AnnotationsDemoActivity.class);
+		i.putExtra("byteArray", getBytes(img));
+		startActivityForResult(i, STATIC_INTEGER_VALUE);
 	}
 	
+	private byte[] getBytes(Bitmap bmp)
+	{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
+        bmp.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos); 
+        byte[] bitmapdata = bos.toByteArray();
+        return bitmapdata;
+	}
+
 	private void addReport()
 	{
 		List<Future> list = new ArrayList<Future>();
@@ -175,6 +216,7 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 		
 				MaintenanceReport r = new MaintenanceReport();
 				r.setContents(mContent);
+				//r.setImageData(mImageData);
 				r.setId(2);
 				r.setCreatorId("aks1");
 
@@ -208,33 +250,17 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 
 	@Override
 	public void connected(final AndroidSoda s) {
-		
-		this.as=s;
+
+		this.as = s;
 		addReport();
-		/*reports_ = s.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
-		reports_.getReports(new Callback<List<MaintenanceReport>>() {
-			@SodaInvokeInUi
-			public void handle(List<MaintenanceReport> arg0) {
-				updateReports(arg0);
-			}
-		});
-
-		reports_.addListener(new MaintenanceListener() {
-
-			@SodaInvokeInUi
-			public void reportAdded(final MaintenanceReport r) {
-				Log.d("SODA", "Maintenance report uploaded: " + r.getContents());
-				Toast.makeText(CreateReportActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
-			}
-		});*/
 
 	}
-	
-    public void updateReports(List<MaintenanceReport> reports){
-		
+
+	public void updateReports(List<MaintenanceReport> reports) {
+
 	}
-    
-    private void captureImageIntent(Context c) {
+
+	private void captureImageIntent(Context c) {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		File f = null;
 		try {
@@ -253,6 +279,19 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 
+		case STATIC_INTEGER_VALUE: {
+			if (resultCode == Activity.RESULT_OK) {
+				byte[] b = data.getByteArrayExtra("result");
+				Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+				attachedPhotoView.setImageBitmap(bitmap);
+				attachedPhotoView
+						.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				attachedPhotoView.setAdjustViewBounds(true);
+
+			}
+			break;
+		}
+
 		case CAPTURE_IMAGE: {
 			if (resultCode == RESULT_OK) {
 
@@ -260,7 +299,8 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 
 				if (mAttachedPhoto != null) {
 					attachedPhotoView.setImageBitmap(mAttachedPhoto);
-					attachedPhotoView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					attachedPhotoView
+							.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 					attachedPhotoView.setAdjustViewBounds(true);
 
 				} else
@@ -272,9 +312,6 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 		}
 
 	}
-
-	
-
 
 	private File createImageFile(String name) throws IOException {
 		String imageFileName = JPEG_FILE_PREFIX + name;
@@ -323,55 +360,58 @@ public class CreateReportActivity extends Activity implements AndroidSodaListene
 		Bitmap bitmap = BitmapFactory.decodeFile(filepath, bmOptions);
 		return bitmap;
 	}
-	
+
 	// Some lifecycle callbacks so that the image can survive orientation change
-		@Override
-		protected void onSaveInstanceState(Bundle outState) {
-			outState.putParcelable(BITMAP_STORAGE_KEY, mAttachedPhoto);
-			outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY, (mAttachedPhoto != null) );
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putParcelable(BITMAP_STORAGE_KEY, mAttachedPhoto);
+		outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY,
+				(mAttachedPhoto != null));
 
-			super.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		mAttachedPhoto = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
+		attachedPhotoView.setImageBitmap(mAttachedPhoto);
+		attachedPhotoView
+				.setVisibility(savedInstanceState
+						.getBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY) ? ImageView.VISIBLE
+						: ImageView.INVISIBLE);
+
+	}
+
+	public class MyLocationListener implements LocationListener {
+
+		@Override
+		public void onLocationChanged(Location location) {
+			// TODO Auto-generated method stub
+			if (location != null) {
+				mPosLat = location.getLatitude();
+				mPosLng = location.getLongitude();
+			}
 		}
 
 		@Override
-		protected void onRestoreInstanceState(Bundle savedInstanceState) {
-			super.onRestoreInstanceState(savedInstanceState);
-			mAttachedPhoto = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
-			attachedPhotoView.setImageBitmap(mAttachedPhoto);
-			attachedPhotoView.setVisibility(
-					savedInstanceState.getBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY) ? 
-							ImageView.VISIBLE : ImageView.INVISIBLE
-					);		
-			
+		public void onProviderDisabled(String arg0) {
+			// TODO Auto-generated method stub
+			Toast.makeText(getApplicationContext(), "Gps Disabled",
+					Toast.LENGTH_SHORT).show();
 		}
-		
-		public class MyLocationListener implements LocationListener {
 
-			@Override
-			public void onLocationChanged(Location location) {
-				// TODO Auto-generated method stub
-				if (location != null) {
-					mPosLat = location.getLatitude();
-					mPosLng = location.getLongitude();    
-				}
-			}
+		@Override
+		public void onProviderEnabled(String arg0) {
+			// TODO Auto-generated method stub
+			Toast.makeText(getApplicationContext(), "Gps Enabled",
+					Toast.LENGTH_SHORT).show();
+		}
 
-			@Override
-			public void onProviderDisabled(String arg0) {
-				// TODO Auto-generated method stub
-				Toast.makeText( getApplicationContext(),"Gps Disabled",Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onProviderEnabled(String arg0) {
-				// TODO Auto-generated method stub
-				Toast.makeText( getApplicationContext(),"Gps Enabled",Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-				// TODO Auto-generated method stub
-			}
-		} 
+		@Override
+		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+			// TODO Auto-generated method stub
+		}
+	}
 
 }

@@ -6,7 +6,6 @@
 */
 package org.magnum.soda.example.maint;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -19,11 +18,14 @@ import org.magnum.soda.android.SodaInvokeInUi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,9 +39,10 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 	private Button deleteButton_;
 	private Button bindLocationButton_;
 	private Button bindQRButton_;
-	private ImageView photoView_;
+	private ImageButton photoView_;
 	
 	private MaintenanceReports reports_;
+	private ReportParcelable current;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +72,26 @@ public class ReportEditorActivity extends Activity implements AndroidSodaListene
 		deleteButton_ = (Button)findViewById(R.id.DeleteButton);
 		bindLocationButton_ = (Button)findViewById(R.id.bindLocationButton);
 		bindQRButton_ = (Button)findViewById(R.id.BindQR);
-		photoView_ = (ImageView)findViewById(R.id.editReportView);
+		photoView_ = (ImageButton)findViewById(R.id.editReportView);
 		Log.d("SODA", "ReportEditorActivity.");
 		
 		Intent callingintent = getIntent();
         String content = callingintent.getStringExtra("description");
 		reportContent_.setText(content);
+
+	      if(getIntent().hasExtra("mReport"))
+	      {
+	    	  current= getIntent().getExtras().getParcelable("mReport");
+	    	  byte[] b=current.getReport().getImageData();
+	    	 if(b!=null)
+	    		 {
+	    		 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+					photoView_.setImageBitmap(bitmap);
+					photoView_.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					photoView_.setAdjustViewBounds(true);
+
+	    		 }
+	      }
 		}catch(Exception e){
 			e.printStackTrace();
 		}

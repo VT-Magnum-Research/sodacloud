@@ -52,6 +52,8 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	private List<MaintenanceReport> mReportList = new ArrayList<MaintenanceReport>();
 	private List<HashMap<String, String>> mDisplayList = new ArrayList<HashMap<String, String>>();
 
+	private List<HashMap<String, MaintenanceReport>> mMapList = new ArrayList<HashMap<String, MaintenanceReport>>();
+	
 	Context ctx_ = this;
 	static boolean imageLoaded = false;
 	static Boolean mDataExecuted = false;
@@ -109,7 +111,7 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 					public void run() {
 						while (!imageLoaded) {
 							try {
-								Thread.sleep(4000);
+								Thread.sleep(2000);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -117,12 +119,7 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 						}
 
 						if (qrBitmap != null) {
-							ByteArrayOutputStream blob = new ByteArrayOutputStream();
-							qrBitmap.compress(CompressFormat.PNG, 0 /*
-																	 * ignored
-																	 * for PNG
-																	 */, blob);
-							dataBytes = blob.toByteArray();
+							dataBytes = getBytes(qrBitmap);
 						}
 					}
 				});
@@ -155,6 +152,14 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 			}
 		});
 
+	}
+	
+	private byte[] getBytes(Bitmap bmp)
+	{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
+        bmp.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos); 
+        byte[] bitmapdata = bos.toByteArray();
+        return bitmapdata;
 	}
 
 	private void getReports() {
@@ -205,13 +210,19 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	}
 
 	private void populateList() {
+		
+		mDisplayList.clear();
+		mMapList.clear();
 		Iterator<MaintenanceReport> itr = mReportList.iterator();
 
 		while (itr.hasNext()) {
 			HashMap<String, String> map = new HashMap<String, String>();
+			HashMap<String,MaintenanceReport> sm=new HashMap<String,MaintenanceReport>();
 			MaintenanceReport temp = ((MaintenanceReport) itr.next());
 			Log.e("-- items--", temp.getCreatorId());
 			map.put("itemDescription", temp.getContents());
+			sm.put(temp.getContents(),temp);
+			mMapList.add(sm);
 			mDisplayList.add(map);
 
 		}
@@ -235,6 +246,16 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	private void ReportDetailIntent(String descript) {
 		Intent i = new Intent(this, ReportEditorActivity.class);
 		i.putExtra("description", descript);
+		Iterator<HashMap<String, MaintenanceReport>> itr=mMapList.iterator();
+		while(itr.hasNext())
+		{
+			HashMap<String,MaintenanceReport> m=itr.next();
+			if(m.containsKey(descript))
+			{
+				i.putExtra("mReport", new ReportParcelable(m.get(descript)));
+				break;
+			}
+		}
 		startActivity(i);
 	}
 
@@ -337,16 +358,6 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 
 		this.as = s;
 		getReports();
-		/*
-		 * MaintenanceReports reports = s.get(MaintenanceReports.class,
-		 * MaintenanceReports.SVC_NAME);
-		 * 
-		 * reports.addListener(new MaintenanceListener() {
-		 * 
-		 * @SodaInvokeInUi public void reportAdded(MaintenanceReport r) {
-		 * Log.d("SODA", "Maintenance report added: " + r.getContents());
-		 * 
-		 * } });
-		 */
+		
 	}
 }
