@@ -121,7 +121,7 @@
     <string name="camera">Camera</string>
     <string name="browse_file">Browse File</string>
     
-    <string name="hint_file_name">File Name</string>
+    <!-- string name="hint_file_name">File Name</string-->
     
     <string name="sd_card_path">/sdcard/</string>
     
