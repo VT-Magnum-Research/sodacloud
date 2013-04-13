@@ -157,7 +157,7 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	private byte[] getBytes(Bitmap bmp)
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-        bmp.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos); 
+        bmp.compress(CompressFormat.JPEG, 70 /*ignored for PNG*/, bos); 
         byte[] bitmapdata = bos.toByteArray();
         return bitmapdata;
 	}

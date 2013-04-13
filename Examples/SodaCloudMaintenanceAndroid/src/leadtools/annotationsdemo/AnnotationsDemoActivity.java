@@ -221,7 +221,7 @@ public class AnnotationsDemoActivity extends Activity {
 
          // Load image async
          ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-         mViewer.getImageBitmap().compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos); 
+         mViewer.getImageBitmap().compress(CompressFormat.JPEG, 70 /*ignored for PNG*/, bos); 
          byte[] bitmapdata = bos.toByteArray();
          ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
          codecs.loadAsync(LeadStreamFactory.create(bs, true), null);

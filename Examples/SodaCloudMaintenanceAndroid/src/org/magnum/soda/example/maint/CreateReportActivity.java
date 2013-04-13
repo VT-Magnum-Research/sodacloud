@@ -187,7 +187,7 @@ public class CreateReportActivity extends Activity implements
 	private byte[] getBytes(Bitmap bmp)
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-        bmp.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos); 
+        bmp.compress(CompressFormat.JPEG, 70 /*ignored for PNG*/, bos); 
         byte[] bitmapdata = bos.toByteArray();
         return bitmapdata;
 	}
@@ -216,7 +216,8 @@ public class CreateReportActivity extends Activity implements
 		
 				MaintenanceReport r = new MaintenanceReport();
 				r.setContents(mContent);
-				//r.setImageData(mImageData);
+				Log.e("CreateRepostActibity","length "+mImageData.length);
+				r.setImageData(mImageData);
 				r.setId(2);
 				r.setCreatorId("aks1");
 
