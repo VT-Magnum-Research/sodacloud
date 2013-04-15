@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/background_login">
 
     <EditText
         android:id="@+id/reportEditText"
@@ -10,40 +11,63 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.69"
         android:text="Large Text"
+        android:layout_margin="10dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageButton
         android:id="@+id/editReportView"
-        android:layout_width="114dp"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.69"
-        android:src="@drawable/ic_launcher" />
+        android:layout_weight="0.66"
+         android:layout_margin="6dp"
+        android:src="@drawable/object_stamp" />
 
-   
-    <Button
-        android:id="@+id/DeleteButton"
-        android:layout_width="116dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Report" />
+        android:layout_weight="0.69" >
 
-    <Button
-        android:id="@+id/bindLocationButton"
-        android:layout_width="116dp"
-        android:layout_height="wrap_content"
-        android:text="Bind Location" />
+        <Button
+            android:id="@+id/saveReportButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/bindLocationButton"
+            android:background="@drawable/blue_button"
+            android:text="Save Report" />
 
-    <Button
-        android:id="@+id/BindQR"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="114dp"
-        android:layout_height="wrap_content"
-        android:text="Bind QR" />
-    
-     <Button
-        android:id="@+id/saveReportButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Report" />
+        <Button
+            android:id="@+id/BindQR"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bindLocationButton"
+            android:layout_alignBottom="@+id/bindLocationButton"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/bindLocationButton"
+            android:background="@drawable/blue_button"
+            android:text="Bind QR" />
+
+        <Button
+            android:id="@+id/bindLocationButton"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/blue_button"
+            android:text="Bind Location" />
+
+        <Button
+            android:id="@+id/DeleteButton"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/BindQR"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/blue_button"
+            android:text="Delete Report" />
+
+    </RelativeLayout>
     
 
 </LinearLayout>

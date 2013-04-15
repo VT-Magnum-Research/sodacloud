@@ -154,7 +154,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			public void run() {
 				if (as != null) {
 
-					Log.e("conected", "------------------------------------");
+					Log.e("SODA", "conected");
 					
 					Users userHandle = as.get(
 							Users.class,
@@ -178,7 +178,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 									}
 								}
 							});
-					Log.e("obtained", "------------------------------------");
+					Log.e("SODA", "end of authenticUser");
 
 
 				}

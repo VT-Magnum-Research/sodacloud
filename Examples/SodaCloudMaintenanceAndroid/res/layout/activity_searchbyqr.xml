@@ -8,7 +8,7 @@
         android:id="@+id/QRImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/object_stamp" />
 
     <Button
         android:id="@+id/getQRCode"
