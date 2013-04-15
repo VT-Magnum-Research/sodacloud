@@ -96,7 +96,7 @@ public class CreateReportActivity extends Activity implements
 		}
 
 		attachedPhotoView = (ImageButton) findViewById(R.id.attachedPhotoView);
-		QRView = (ImageView) findViewById(R.id.textQRimage);
+		QRView = (ImageView) findViewById(R.id.QRimage_createreport);
 		reportContent = (EditText) findViewById(R.id.reportContentText);
 		attachPhotoButton = (Button) findViewById(R.id.attachphotoButton);
 		saveButton = (Button) findViewById(R.id.saveButton);
