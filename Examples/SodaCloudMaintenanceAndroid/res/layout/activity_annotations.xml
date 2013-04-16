@@ -27,19 +27,19 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
-            <ImageButton
+            <!-- <ImageButton
                  android:id="@+id/btn_select_image"
                  android:src="@drawable/open"
                  android:contentDescription="@string/action_select_image"
                  android:onClick="onAction"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/> -->
             <ImageButton
                  android:id="@+id/btn_save_image"
                  android:src="@drawable/save"
                  android:contentDescription="@string/action_save_image"
                  android:onClick="onAction"
                  style="@style/ToolbarButton"/>
-        <!-- -->    <ImageButton
+        <!--    <ImageButton
                  android:id="@+id/btn_load_ann"
                  android:src="@drawable/open_annotations"
                  android:contentDescription="@string/action_load_ann"
@@ -50,7 +50,7 @@
                  android:src="@drawable/save_annotations"
                  android:contentDescription="@string/action_save_ann"
                  android:onClick="onAction"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/>--> 
             <ImageButton
                  android:id="@+id/btn_undo"
                  android:src="@drawable/action_undo"
@@ -63,7 +63,7 @@
                  android:contentDescription="@string/action_redo"
                  android:onClick="onAction"
                  style="@style/ToolbarButton"/>
-            <ImageButton
+          <!--  <ImageButton
                  android:id="@+id/btn_ann_copy"
                  android:src="@drawable/action_copy"
                  android:contentDescription="@string/action_ann_copy"
@@ -98,14 +98,14 @@
                  android:src="@drawable/action_object_properties"
                  android:contentDescription="@string/action_properties"
                  android:onClick="onAction"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/>-->
             <ImageButton
                  android:id="@+id/btn_burn"
                  android:src="@drawable/action_burn"
                  android:contentDescription="@string/action_burn"
                  android:onClick="onAction"
                  style="@style/ToolbarButton"/>
-            <ImageButton
+          <!--   <ImageButton
                  android:id="@+id/btn_apply_encrypt"
                  android:src="@drawable/action_apply_encrypt"
                  android:contentDescription="@string/action_apply_encrypt"
@@ -140,7 +140,7 @@
                  android:src="@drawable/action_design_mode"
                  android:contentDescription="@string/action_design_mode"
                  android:onClick="onAction"
-                 style="@style/ToolbarButton"/><!-- -->
+                 style="@style/ToolbarButton"/> -->
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -190,7 +190,7 @@
                  android:tag="-4"
                  android:onClick="onObjectChanged"
                  style="@style/ToolbarButton"/>
-            <ImageButton
+          <!--  <ImageButton
                  android:src="@drawable/object_polyline"
                  android:contentDescription="@string/ann_polyline"
                  android:tag="-5"
@@ -213,19 +213,19 @@
                  android:contentDescription="@string/ann_closed_curve"
                  android:tag="-8"
                  android:onClick="onObjectChanged"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/>-->
             <ImageButton
                  android:src="@drawable/object_pointer"
                  android:contentDescription="@string/ann_pointer"
                  android:tag="-9"
                  android:onClick="onObjectChanged"
                  style="@style/ToolbarButton"/>
-            <ImageButton
+           <!--  <ImageButton
                  android:src="@drawable/object_freehand"
                  android:contentDescription="@string/ann_freehand"
                  android:tag="-10"
                  android:onClick="onObjectChanged"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/>-->
             <ImageButton
                  android:src="@drawable/object_hilite"
                  android:contentDescription="@string/ann_hilite"
@@ -238,12 +238,12 @@
                  android:tag="-12"
                  android:onClick="onObjectChanged"
                  style="@style/ToolbarButton"/>
-            <ImageButton
+        <!--     <ImageButton
                  android:src="@drawable/object_text_rollup"
                  android:contentDescription="@string/ann_text_rollup"
                  android:tag="-13"
                  android:onClick="onObjectChanged"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/>-->
             <ImageButton
                  android:src="@drawable/object_text_pointer"
                  android:contentDescription="@string/ann_text_pointer"
@@ -256,7 +256,7 @@
                  android:tag="-15"
                  android:onClick="onObjectChanged"
                  style="@style/ToolbarButton"/>
-            <ImageButton
+       <!--     <ImageButton
                  android:src="@drawable/object_stamp"
                  android:contentDescription="@string/ann_stamp"
                  android:tag="-16"
@@ -339,7 +339,7 @@
                  android:contentDescription="@string/ann_triangle"
                  android:tag="-99"
                  android:onClick="onObjectChanged"
-                 style="@style/ToolbarButton"/>
+                 style="@style/ToolbarButton"/>-->
         </LinearLayout>
         </HorizontalScrollView>
 </LinearLayout>

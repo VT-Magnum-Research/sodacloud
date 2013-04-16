@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
@@ -70,6 +71,33 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 	
 	callback.handle(_objSQ.getList_());	
 		
+	}
+
+
+	@Override
+	public void modifyReport(MaintenanceReport r) {
+		// TODO Auto-generated method stub
+		boolean success=false;
+		System.out.println("content :"+r.getContents()+" :"+r.getCreatorId());
+		
+		Iterator<MaintenanceReport> it=reports_.iterator();
+		while(it.hasNext())
+		{
+			MaintenanceReport temp =it.next();
+			if(temp.getContents().equals(r.getContents()))
+			{
+			temp.setImageData(r.getImageData());
+			success=true;
+			break;
+			}
+		}
+		if(success)
+		{
+		for(MaintenanceListener l : listeners_){
+			l.reportchanged(r);
+		
+		}
+		}
 	}
 
 }

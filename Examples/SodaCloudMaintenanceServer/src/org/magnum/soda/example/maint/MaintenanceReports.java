@@ -17,6 +17,8 @@ public interface MaintenanceReports {
 	public static final String SVC_NAME = "maintenance";
 	
 	public void addReport(MaintenanceReport r);
+	public void modifyReport(MaintenanceReport r);
+	
 	public List<MaintenanceReport> getReports();
 	
 	public void bindQRContext(Soda s, MaintenanceReport r);

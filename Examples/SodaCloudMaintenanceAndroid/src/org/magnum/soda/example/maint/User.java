@@ -9,11 +9,7 @@ public class User {
 	private String name_;
 	private String phone_;
 	
-	public User(String username, String pwd){
-		this.username_ = username;
-		this.pwd_ = pwd;
-	}
-
+	
 	public String getUsername_() {
 		return username_;
 	}

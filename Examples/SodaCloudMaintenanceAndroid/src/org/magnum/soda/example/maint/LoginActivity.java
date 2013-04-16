@@ -3,6 +3,7 @@ package org.magnum.soda.example.maint;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -66,6 +67,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	
 	
 	private List<User> mUserList = new ArrayList<User>();
 	private AndroidSodaListener asl_ = null;
@@ -142,6 +144,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	@Override
 	public void connected(final AndroidSoda s) {
 		Log.d("SODA", "connected() in LoginActivity being called.");
+		this.as=s;
 		authenticUser();
 
 	}
@@ -163,19 +166,15 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 								//@SodaInvokeInUi
 								public void handle(List<User> arg0) {
 									mUserList = arg0;
-									boolean success = false;
-									for(User u:mUserList){
+								boolean success=false;
+									Iterator itr=arg0.iterator();
+									while(itr.hasNext()){
+										User u=(User)itr.next();
 										if(u.getUsername_().equals(mEmail)&&u.getPwd_().equals(mPassword))
 											success = true;
+										 executeIntent(success);
 									}
-									if (success) {
-										Intent i =new Intent(ctx_, MainActivity.class);
-										startActivity(i);
-									} else {
-										mPasswordView
-												.setError(getString(R.string.error_incorrect_password));
-										mPasswordView.requestFocus();
-									}
+									
 								}
 							});
 					Log.e("SODA", "end of authenticUser");
@@ -200,7 +199,29 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 				e.printStackTrace();
 			}
 		}
+		
+		
 
+	}
+	
+	public void executeIntent(final boolean success)
+	{
+		runOnUiThread(new Runnable()
+		{
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if (success) {
+				Intent i =new Intent(ctx_, MainActivity.class);
+				startActivity(i);
+			} else {
+				mPasswordView
+						.setError(getString(R.string.error_incorrect_password));
+				mPasswordView.requestFocus();
+			}
+		}
+		});
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

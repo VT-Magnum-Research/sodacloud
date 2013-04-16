@@ -221,7 +221,7 @@ public class AnnotationsDemoActivity extends Activity {
 
          // Load image async
          ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-         mViewer.getImageBitmap().compress(CompressFormat.JPEG, 70 /*ignored for PNG*/, bos); 
+         mViewer.getImageBitmap().compress(CompressFormat.JPEG, 10 /*ignored for PNG*/, bos); 
          byte[] bitmapdata = bos.toByteArray();
          ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
          codecs.loadAsync(LeadStreamFactory.create(bs, true), null);
@@ -313,7 +313,7 @@ public class AnnotationsDemoActivity extends Activity {
          rubberStampsResources.put(AnnRubberStampType.STAMP_SHIPPED, new AnnPicture(res, R.drawable.stamp_shipped));
          rubberStampsResources.put(AnnRubberStampType.STAMP_TOP_SECRET, new AnnPicture(res, R.drawable.stamp_top_secret));
          rubberStampsResources.put(AnnRubberStampType.STAMP_URGENT, new AnnPicture(res, R.drawable.stamp_urgent));
-         rubberStampsResources.put(AnnRubberStampType.STAMP_VOID, new AnnPicture(res, R.drawable.stamp_void));*/
+         rubberStampsResources.put(AnnRubberStampType.STAMP_VOID, new AnnPicture(res, R.drawable.stamp_void));
 
          imagesResources.add(new AnnPicture(res, R.drawable.objects_point));
          imagesResources.add(new AnnPicture(res, R.drawable.objects_lock));
@@ -321,7 +321,7 @@ public class AnnotationsDemoActivity extends Activity {
          imagesResources.add(new AnnPicture(res, R.drawable.objects_audio));
          imagesResources.add(new AnnPicture(res, R.drawable.objects_video));
          imagesResources.add(new AnnPicture(res, R.drawable.objects_encrypt_primary));
-         imagesResources.add(new AnnPicture(res, R.drawable.objects_encrypt_secondary));
+         imagesResources.add(new AnnPicture(res, R.drawable.objects_encrypt_secondary));*/
       }
 
       return automation;
@@ -379,21 +379,21 @@ public class AnnotationsDemoActivity extends Activity {
       v.startAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
       int id = v.getId();
       try {
-         if (id == R.id.btn_select_image) {
+         /*if (id == R.id.btn_select_image) {
             onSelectImageDialog();
-         } else if (id == R.id.btn_save_image) {
+         } else*/ if (id == R.id.btn_save_image) {
             saveImage();
-         } else if (id == R.id.btn_load_ann) {
+         } /*else if (id == R.id.btn_load_ann) {
             loadAnnotations();
          } else if (id == R.id.btn_save_ann) {
             saveAnnotations();
-         } else if (id == R.id.btn_undo) {
+         } */else if (id == R.id.btn_undo) {
             if(mActiveAutomation.canUndo())
                mActiveAutomation.undo();
          } else if (id == R.id.btn_redo) {
             if(mActiveAutomation.canRedo())
                mActiveAutomation.redo();
-         } else if (id == R.id.btn_ann_copy) {
+         } /*else if (id == R.id.btn_ann_copy) {
             if(mActiveAutomation.canCopy())
                mActiveAutomation.copy(this);
          } else if (id == R.id.btn_ann_paste) {
@@ -410,15 +410,16 @@ public class AnnotationsDemoActivity extends Activity {
                onPasswordDialog();
          } else if (id == R.id.btn_properties) {
             showAnnPropertiesDialog();
-         } else if (id == R.id.btn_burn) {
+         } */else if (id == R.id.btn_burn) {
             burnAnnotations();
-         } else if (id == R.id.btn_apply_encrypt) {
+         } /*else if (id == R.id.btn_apply_encrypt) {
             if(mActiveAutomation.canApplyEncryptor())
                mActiveAutomation.applyEncryptor();
-         } else if (id == R.id.btn_apply_decrypt) {
-            if(mActiveAutomation.canApplyDecryptor())
-               mActiveAutomation.applyDecryptor();
-         } else if (id == R.id.btn_realize) {
+         } //else if (id == R.id.btn_apply_decrypt) {
+           // if(mActiveAutomation.canApplyDecryptor())
+           //    mActiveAutomation.applyDecryptor();
+        // } 
+      else if (id == R.id.btn_realize) {
             if(mActiveAutomation.canRealizeRedaction())
                mActiveAutomation.realizeRedaction();
          } else if (id == R.id.btn_restore) {
@@ -432,7 +433,7 @@ public class AnnotationsDemoActivity extends Activity {
          } else if (id == R.id.btn_design_mode) {
             if(mAutomationManager.getUserMode() != AnnUserMode.DESIGN)
                mAutomationManager.setUserMode(AnnUserMode.DESIGN);
-         }
+         }*/
 
          if(mAudioPlayer.isPlaying())
             mAudioPlayer.stop();
@@ -471,7 +472,7 @@ public class AnnotationsDemoActivity extends Activity {
       
       
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
-      viewerBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+      viewerBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bs);
       
      Intent resultIntent = new Intent();
      resultIntent.putExtra("result", bs.toByteArray());
@@ -692,24 +693,24 @@ public class AnnotationsDemoActivity extends Activity {
       }
 
       if(mActiveAutomation != null && userMode == AnnUserMode.RUN) {
-         enableToolbarButton(R.id.btn_run_mode, false);
-         enableToolbarButton(R.id.btn_design_mode, true);
+       //  enableToolbarButton(R.id.btn_run_mode, false);
+         //enableToolbarButton(R.id.btn_design_mode, true);
       } else {
-         enableToolbarButton(R.id.btn_run_mode, true);
-         enableToolbarButton(R.id.btn_design_mode, false);
+        // enableToolbarButton(R.id.btn_run_mode, true);
+       //  enableToolbarButton(R.id.btn_design_mode, false);
       }
 
       if(mActiveAutomation != null && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_save_image, true);
+      /*   enableToolbarButton(R.id.btn_save_image, true);
          enableToolbarButton(R.id.btn_select_image, true);
          enableToolbarButton(R.id.btn_save_ann, true);
-         enableToolbarButton(R.id.btn_load_ann, true);
+         enableToolbarButton(R.id.btn_load_ann, true);*/
          enableToolbarButton(R.id.btn_burn, true);
       } else {
-         enableToolbarButton(R.id.btn_save_image, false);
+        /* enableToolbarButton(R.id.btn_save_image, false);
          enableToolbarButton(R.id.btn_select_image, false);
          enableToolbarButton(R.id.btn_save_ann, false);
-         enableToolbarButton(R.id.btn_load_ann, false);
+         enableToolbarButton(R.id.btn_load_ann, false);*/
          enableToolbarButton(R.id.btn_burn, false);
       }
 
@@ -728,73 +729,73 @@ public class AnnotationsDemoActivity extends Activity {
       }
 
       if(mActiveAutomation != null && mActiveAutomation.canLock() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_lock, true);
+        // enableToolbarButton(R.id.btn_lock, true);
       }
       else {
-         enableToolbarButton(R.id.btn_lock, false);
+        // enableToolbarButton(R.id.btn_lock, false);
       }
 
       if(mActiveAutomation != null && mActiveAutomation.canUnlock() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_unlock, true);
+        // enableToolbarButton(R.id.btn_unlock, true);
       }
       else {
-         enableToolbarButton(R.id.btn_unlock, false);
+        // enableToolbarButton(R.id.btn_unlock, false);
       }
 
       if(mActiveAutomation != null && mActiveAutomation.canDeleteObjects() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_delete, true);
+       //  enableToolbarButton(R.id.btn_delete, true);
       }
       else {
-         enableToolbarButton(R.id.btn_delete, false);
+       //  enableToolbarButton(R.id.btn_delete, false);
       }
       
       if(mActiveAutomation != null && mActiveAutomation.canShowProperties() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_properties, true);
+       //  enableToolbarButton(R.id.btn_properties, true);
       }
       else {
-         enableToolbarButton(R.id.btn_properties, false);
+        // enableToolbarButton(R.id.btn_properties, false);
       }
 
       // Copy\Paste
       if(mActiveAutomation != null && mActiveAutomation.canCopy() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_ann_copy, true);
+       //  enableToolbarButton(R.id.btn_ann_copy, true);
       }
       else {
-         enableToolbarButton(R.id.btn_ann_copy, false);
+      //   enableToolbarButton(R.id.btn_ann_copy, false);
       }
       if(mActiveAutomation != null && mActiveAutomation.canPaste(this) && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_ann_paste, true);
+       //  enableToolbarButton(R.id.btn_ann_paste, true);
       }
       else {
-         enableToolbarButton(R.id.btn_ann_paste, false);
+       //  enableToolbarButton(R.id.btn_ann_paste, false);
       }
 
       // Encypt\Decrypt
       if(mActiveAutomation != null && mActiveAutomation.canApplyEncryptor() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_apply_encrypt, true);
+       //  enableToolbarButton(R.id.btn_apply_encrypt, true);
       }
       else {
-         enableToolbarButton(R.id.btn_apply_encrypt, false);
+       //  enableToolbarButton(R.id.btn_apply_encrypt, false);
       }
       if(mActiveAutomation != null && mActiveAutomation.canApplyDecryptor() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_apply_decrypt, true);
+    	  //  enableToolbarButton(R.id.btn_apply_decrypt, true);
       }
       else {
-         enableToolbarButton(R.id.btn_apply_decrypt, false);
+    	  //  enableToolbarButton(R.id.btn_apply_decrypt, false);
       }
 
       // Redaction - Realize\Restore      
       if(mActiveAutomation != null && mActiveAutomation.canRealizeRedaction() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_realize, true);
+    	  //  enableToolbarButton(R.id.btn_realize, true);
       }
       else {
-         enableToolbarButton(R.id.btn_realize, false);
+    	  //  enableToolbarButton(R.id.btn_realize, false);
       }
       if(mActiveAutomation != null && mActiveAutomation.canRestoreRedaction() && userMode == AnnUserMode.DESIGN) {
-         enableToolbarButton(R.id.btn_restore, true);
+    	  //  enableToolbarButton(R.id.btn_restore, true);
       }
       else {
-         enableToolbarButton(R.id.btn_restore, false);
+    	  //  enableToolbarButton(R.id.btn_restore, false);
       }
    }
 }

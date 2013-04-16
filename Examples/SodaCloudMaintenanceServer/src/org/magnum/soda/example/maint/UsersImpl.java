@@ -1,10 +1,14 @@
 package org.magnum.soda.example.maint;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class UsersImpl {
-	
+import org.magnum.soda.Callback;
+
+public class UsersImpl implements Users {
+
+	private List<UserListener> listeners_ = new LinkedList<UserListener>();
 	private List<User> users_ = new ArrayList<User>();
 	
 	public void addUser(User r) {
@@ -32,5 +36,24 @@ public class UsersImpl {
 	
 	public List<User>getUsers(){
 		return users_;
+	}
+	@Override
+	public void getUsers(Callback<List<User>> callback) {
+		// TODO Auto-generated method stub
+		callback.handle(users_);
+		
+	}
+	@Override
+	public void addListener(UserListener l) {
+		// TODO Auto-generated method stub
+		listeners_.add(l);
+		
+		
+	}
+	@Override
+	public void removeListener(UserListener l) {
+		// TODO Auto-generated method stub
+		listeners_.remove(l);
+		
 	}
 }

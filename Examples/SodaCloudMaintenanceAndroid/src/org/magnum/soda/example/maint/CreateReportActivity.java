@@ -187,7 +187,7 @@ public class CreateReportActivity extends Activity implements
 	private byte[] getBytes(Bitmap bmp)
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-        bmp.compress(CompressFormat.JPEG, 70 /*ignored for PNG*/, bos); 
+        bmp.compress(CompressFormat.JPEG, 10 /*ignored for PNG*/, bos); 
         byte[] bitmapdata = bos.toByteArray();
         return bitmapdata;
 	}
@@ -210,6 +210,12 @@ public class CreateReportActivity extends Activity implements
 					public void reportAdded(final MaintenanceReport r) {
 						Log.d("SODA", "Maintenance report uploaded: " + r.getContents());
 						Toast.makeText(CreateReportActivity.this, "New report:"+r.getContents(), Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void reportchanged(final MaintenanceReport r) {
+						// TODO Auto-generated method stub
+						
 					}
 				});
 				
