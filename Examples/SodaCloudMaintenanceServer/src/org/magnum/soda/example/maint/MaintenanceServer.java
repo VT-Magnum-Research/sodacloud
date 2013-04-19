@@ -46,11 +46,13 @@ public class MaintenanceServer implements ServerSodaListener {
 		u1.setName_("Alice");
 		u1.setPhone_("540-200-1234");
 		User u2 = new User();
+		u2.setUsername_("bob@gmail.com");
+		u2.setPwd_("bbbbb");
 		u2.setName_("Bob");
 		u2.setPhone_("540-200-5678");
 		Users userManager = new UsersImpl();
 		userManager.addUser(u1);
-		//userManager.addUser(u2);
+		userManager.addUser(u2);
 		soda.bind(userManager, Users.SVC_NAME);
 
 		PingSvc p = soda.get(PingSvc.class, "ping");
