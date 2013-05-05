@@ -15,6 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda;
 
+import java.lang.reflect.InvocationHandler;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,9 +24,13 @@ import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.Mode;
 
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
+import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.proxy.ProxyFactory;
+import org.magnum.soda.proxy.RecordingProxy;
 import org.magnum.soda.svc.DefaultNamingService;
+import org.magnum.soda.svc.InvocationDispatcher;
 import org.magnum.soda.svc.NamingService;
 import org.magnum.soda.svc.ObjInvoker;
 import org.magnum.soda.svc.ObjRegistryUpdater;
@@ -53,16 +58,21 @@ public class Soda implements TransportListener {
 	private MBassyMsgBus msgBus_ = new MBassyMsgBus();
 	private DefaultObjRegistry objRegistry_ = new DefaultObjRegistry(
 			localAddress_);
-	private ProxyFactory proxyFactory_ = new ProxyFactory(objRegistry_,
-			localAddress_, msgBus_);
-	private ObjInvoker objInvoker_ = new ObjInvoker(localAddress_, msgBus_,
-			objRegistry_, proxyFactory_);
-	private ObjRegistryUpdater objRegistryUpdater_ = new ObjRegistryUpdater(
-			proxyFactory_, objRegistry_);
+	private ProxyFactory proxyFactory_;
+	private ObjInvoker objInvoker_;
+	private ObjRegistryUpdater objRegistryUpdater_;
+	private ProxyCreator proxyCreator_;
 
 	private Map<Runnable, SodaBinding> ctxRunnableObjBinding_ = null;
 
 	public Soda() {
+		proxyCreator_ = getProxyCreator();
+		proxyFactory_ = new ProxyFactory(objRegistry_, proxyCreator_,
+				localAddress_, msgBus_);
+		objInvoker_ = new ObjInvoker(localAddress_, msgBus_, objRegistry_,
+				proxyFactory_);
+		objRegistryUpdater_ = new ObjRegistryUpdater(proxyFactory_,
+				objRegistry_);
 		namingServiceRef_ = objRegistry_.publish(namingService_);
 		msgBus_.subscribe(this);
 		ctxRunnableObjBinding_ = new HashMap<Runnable, SodaBinding>();
@@ -82,6 +92,39 @@ public class Soda implements TransportListener {
 		transport_.setListener(this);
 	}
 
+	protected synchronized ProxyCreator getProxyCreator() {
+		return new JavaReflectionProxyCreator();
+	}
+
+	public <T> T invoke(T obj) {
+		return invoke(obj, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T invoke(T obj, InvocationDispatcher dispatcher) {
+		RecordingProxy recorder = new RecordingProxy(obj, proxyCreator_,
+				dispatcher);
+
+		Class<?>[] types = { obj.getClass() };
+		if (!proxyCreator_.supportsNonInterfaceProxies()) {
+			types = obj.getClass().getInterfaces();
+		}
+
+		T proxy = (T) proxyCreator_.createProxy(getClass().getClassLoader(),
+				types, recorder);
+		return proxy;
+	}
+
+	public Runnable asRunnable(Object o) {
+		InvocationHandler hdlr = proxyCreator_.getInvocationHandler(o);
+		if (hdlr == null || !(hdlr instanceof RecordingProxy)) {
+			throw new RuntimeException(
+					"asRunnable can only be called on an object that is"
+							+ " returned from invoke(...)");
+		}
+		return (Runnable) hdlr;
+	}
+
 	@Subscribe
 	@Listener(delivery = Mode.Concurrent)
 	public void handleNamingServiceRequest(ObtainNamingServiceMsg msg) {
@@ -89,6 +132,10 @@ public class Soda implements TransportListener {
 				.createReply();
 		resp.setNamingService(namingServiceRef_);
 		msgBus_.publish(resp);
+	}
+
+	public void passByValue(Class<?> type) {
+		proxyFactory_.passByValue(type);
 	}
 
 	public LocalAddress getLocalAddress() {
@@ -167,34 +214,24 @@ public class Soda implements TransportListener {
 		}
 		return (SodaQuery<T>) sq;
 	}
-	
-	//return the nearest N locations of the given geohash
-//	public <T> SodaQuery<T> findNearest(Class<T> type, SodaContext ctx) {
-//		
-//	}
-	
-	/*function getNearest(currentLocation, locations, maxNeighbors) {
-		  var matching = {},
-		      accuracy = 12,
-		      matchCount = 0;
-		  while (matchCount < maxNeighbors &amp;&amp; accuracy > 0) {
-		    var cmpHash = currentLocation.geoHash.substring(0,accuracy);
-		    for (var i = 0; i < locations.length; i++) {
-		      if (locations[i].geoHash in matching) continue; //don't re-check ones that have already matched
-		      if (locations[i].geoHash.substring(0,accuracy) === cmpHash) {
-		        matching[locations[i].geoHash] = locations[i];
-		        matchCount++;
-		        if (matchCount === maxNeighbors) break;
-		      }
-		    }
-		    accuracy--;
-		  }
-		  var tmp = [];
-		  for (var geoHash in matching) {
-		    tmp.push(matching[geoHash]);
-		  }
-		  return tmp;
-		}*/
+
+	// return the nearest N locations of the given geohash
+	// public <T> SodaQuery<T> findNearest(Class<T> type, SodaContext ctx) {
+	//
+	// }
+
+	/*
+	 * function getNearest(currentLocation, locations, maxNeighbors) { var
+	 * matching = {}, accuracy = 12, matchCount = 0; while (matchCount <
+	 * maxNeighbors &amp;&amp; accuracy > 0) { var cmpHash =
+	 * currentLocation.geoHash.substring(0,accuracy); for (var i = 0; i <
+	 * locations.length; i++) { if (locations[i].geoHash in matching) continue;
+	 * //don't re-check ones that have already matched if
+	 * (locations[i].geoHash.substring(0,accuracy) === cmpHash) {
+	 * matching[locations[i].geoHash] = locations[i]; matchCount++; if
+	 * (matchCount === maxNeighbors) break; } } accuracy--; } var tmp = []; for
+	 * (var geoHash in matching) { tmp.push(matching[geoHash]); } return tmp; }
+	 */
 	@Override
 	public void connected() {
 		try {
