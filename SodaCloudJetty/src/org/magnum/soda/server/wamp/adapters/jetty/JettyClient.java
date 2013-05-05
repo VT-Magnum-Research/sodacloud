@@ -15,7 +15,11 @@
  ****************************************************************************/
 package org.magnum.soda.server.wamp.adapters.jetty;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URI;
+import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.WebSocket;
@@ -25,6 +29,8 @@ import org.magnum.soda.server.wamp.client.WampClient;
 
 
 public class JettyClient {
+	
+	public String Host="192.168.137.1";//"172.31.211.12";
 
 	public void connect(URI uri, String protocol, int port) throws Exception {
 
@@ -39,7 +45,7 @@ public class JettyClient {
 		client.setProtocol(protocol);
 
 		jettyClientAdapter = new JettyClientAdapter();
-		connection = client.open(new URI("ws://127.0.0.1:"+port+"/"), jettyClientAdapter).get(5, TimeUnit.SECONDS);
+		connection = client.open(new URI("ws://"+getHost()+":"+port+"/"), jettyClientAdapter).get(5, TimeUnit.SECONDS);
 	}
 
 	public WampClient getWampClient() {
@@ -48,4 +54,35 @@ public class JettyClient {
 
 	private JettyClientAdapter jettyClientAdapter;
 	private WebSocket.Connection connection;
+	
+	/**
+	 * @return
+	 * 
+	 * Use this function if you want to run the server with local ip addess(not the 
+	 */
+	private String getHost()
+	{
+		String result=null;
+		try {
+			Enumeration<NetworkInterface> interfaces;
+			
+				interfaces = NetworkInterface.getNetworkInterfaces();
+			while (interfaces.hasMoreElements()){
+			    NetworkInterface current = interfaces.nextElement();
+			    if (!current.isUp() || current.isLoopback() || current.isVirtual()) continue;
+			    Enumeration<InetAddress> addresses = current.getInetAddresses();
+			    while (addresses.hasMoreElements()){
+			        InetAddress current_addr = addresses.nextElement();
+			        if (current_addr.isLoopbackAddress()|| current_addr.getHostAddress().contains(":")) continue;
+			        result=current_addr.getHostAddress();
+			    }
+			}
+		
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		
+	}
 }

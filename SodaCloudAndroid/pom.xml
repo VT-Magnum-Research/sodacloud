@@ -10,10 +10,10 @@
 	<artifactId>SodaCloudAndroid</artifactId>
 	<dependencies>
 		<dependency>
-				<groupId>com.google.android</groupId>
-				<artifactId>android</artifactId>
-				<version>4.0.1.2</version>
-				<scope>provided</scope>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.0.1.2</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.magnum.soda</groupId>

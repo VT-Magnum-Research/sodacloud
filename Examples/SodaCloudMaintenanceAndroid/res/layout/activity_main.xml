@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/background_login">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.51" >
+
+        <Button
+            android:id="@+id/viewReportButton"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/view_report" />
+
+        <Button
+            android:id="@+id/createWatchZone_button"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/viewReportButton"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/monitoring_icon" />
+
+        <Button
+            android:id="@+id/createReportButton"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
+            android:layout_above="@+id/createWatchZone_button"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/create_report" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/viewReportButton"
+            android:text="ViewReport" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/createWatchZone_button"
+            android:text="Create Monitoring Zone" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView2"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:text="CreateReport" />
+
+    </RelativeLayout>
+
+</LinearLayout>

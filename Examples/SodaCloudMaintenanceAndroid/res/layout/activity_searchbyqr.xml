@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/QRImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/object_stamp" />
+
+    <Button
+        android:id="@+id/getQRCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Read QRCode" />
+
+    <Button
+        android:id="@+id/searchQRReports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get QR Report" />
+
+    <!-- Header -->
+    <LinearLayout android:id="@+id/header"
+        android:background="#ff347c12"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        >
+        <TextView android:id="@+id/Desc"
+            android:text="Report_Description"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+           android:textIsSelectable="false"
+        />
+
+    </LinearLayout>
+    
+    <View android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="?android:attr/listDivider" />
+    
+    <LinearLayout android:id="@+id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+    
+    	<ListView
+        	android:id="@+id/QR_ListView"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:choiceMode="singleChoice" >
+   		 </ListView>
+    </LinearLayout>
+
+</LinearLayout>

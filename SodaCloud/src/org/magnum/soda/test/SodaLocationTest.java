@@ -31,7 +31,10 @@ import org.magnum.soda.ctx.SodaLocation;
 import org.magnum.soda.ctx.SodaQR;
 import org.magnum.soda.ctx.SodaLocation.Accuracy;
 import org.magnum.soda.ctx.SodaLocation.Proximity;
+import org.magnum.soda.test.SodaQRTest.A1;
+import org.magnum.soda.test.SodaQRTest.A2;
 import org.magnum.soda.test.SodaQRTest.TestA;
+import org.magnum.soda.test.SodaQRTest.TestB;
 import org.mockito.ArgumentCaptor;
 
 public class SodaLocationTest {
@@ -43,7 +46,7 @@ public class SodaLocationTest {
 
 		Runnable r = mock(Runnable.class);
 
-		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
+		soda.bind(r ).to(SodaLocation.within(Proximity.TWENTY_METERS)
 				.of(45.0, -100.0).atAccuracy(Accuracy.FINE));
 
 		List<Runnable> l = soda.find(Runnable.class, SodaLocation.at(45.0, -100.0)).now();
@@ -59,7 +62,7 @@ public class SodaLocationTest {
 
 		Runnable r = mock(Runnable.class);
 
-		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
+		soda.bind(r ).to(SodaLocation.within(Proximity.TWENTY_METERS)
 				.of("cb0b").atAccuracy(Accuracy.FINE));
 
 		List<Runnable> l = soda.find(Runnable.class, SodaLocation.at("cb0b")).now();
@@ -75,7 +78,7 @@ public class SodaLocationTest {
 
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = mock(Callback.class);
-		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
+		soda.bind(r ).to(SodaLocation.within(Proximity.TWENTY_METERS)
 				.of(45.0, -100.0).atAccuracy(Accuracy.FINE));
 
 		soda.find(Runnable.class, SodaLocation.at(45.0, -100.0)).async(hdlr);
@@ -96,7 +99,7 @@ public class SodaLocationTest {
 
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = (Callback<List<Runnable>>)mock(Callback.class);
-		soda.bind(r).to(SodaLocation.within(Proximity.TWENTY_METERS)
+		soda.bind(r ).to(SodaLocation.within(Proximity.TWENTY_METERS)
 				.of(45.0, -100.0).atAccuracy(Accuracy.FINE));
 
 		soda.find(Runnable.class, SodaLocation.at(45.0, -100.0)).async(hdlr);
@@ -114,7 +117,7 @@ public class SodaLocationTest {
 	public void testReaderDrivenGeoLookup() {
 		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
-		soda.bind(r).to(SodaLocation.at(45.0, -100));
+		soda.bind(r ).to(SodaLocation.at(45.0, -100));
 
 		List<Runnable> r2 = soda.find(Runnable.class, SodaLocation
 				.within(Proximity.TWENTY_METERS).of(45.0, -100.0)
@@ -129,7 +132,7 @@ public class SodaLocationTest {
 		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
 		Callback<List<Runnable>> hdlr = mock(Callback.class);
-		soda.bind(r).to(SodaLocation.at(45.0, -100));
+		soda.bind(r ).to(SodaLocation.at(45.0, -100));
 
 		soda.find(Runnable.class, SodaLocation
 				.within(Proximity.TWENTY_METERS).of(45.0, -100.0)
@@ -146,28 +149,34 @@ public class SodaLocationTest {
 	
 	
 	public interface TestA {}
+	public class A1 implements TestA{}
+	public class A2 extends A1{}
+	public class TestC extends A2{}
 	
-	public interface TestB {}
 	
-	public interface TestC extends TestA{}
+	public interface TestB {}	
+	public class B1 implements TestB{}
 	
 	@Test
 	public void testPolymorphicLookup() {
 		Soda soda = new Soda();
-		TestC r = mock(TestC.class);
-		TestB r2 = mock(TestB.class);
-		TestA r3 = mock(TestA.class);
+		TestC r=new TestC();//Subclass of A1( implements interface TestA)
+		//TestC r = mock(TestC.class);
+		TestB r2=new B1();//class implementation of TestB
+		//TestB r2 = mock(TestB.class);
+		TestA r3=new A1();//class implementation of TestA
+		//TestA r3 = mock(TestA.class);
 		
 		Callback<List<TestA>> hdlr = mock(Callback.class);
 		
-		soda.bind(r).to(SodaLocation.at(45.0, -100));
+		soda.bind(r ).to(SodaLocation.at(45.0, -100));
 		soda.bind(r2).to(SodaLocation.at(45.0, -100));
 		soda.bind(r3).to(SodaLocation.at(45.0, -100));
 		
-		SodaQR qr2 = SodaQR.create();
+	/*	SodaQR qr2 = SodaQR.create();
 		soda.bind(r2).to(qr2);
 		soda.bind(r3).to(qr2);
-
+*/
 		soda.find(TestA.class, SodaLocation
 				.within(Proximity.TWENTY_METERS).of(45.0, -100.0)
 				.atAccuracy(Accuracy.FINE)).async(hdlr);

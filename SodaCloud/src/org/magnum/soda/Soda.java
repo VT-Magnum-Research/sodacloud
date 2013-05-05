@@ -63,7 +63,7 @@ public class Soda implements TransportListener {
 	private ObjRegistryUpdater objRegistryUpdater_;
 	private ProxyCreator proxyCreator_;
 
-	private Map<Runnable, SodaBinding> ctxRunnableObjBinding_ = null;
+	private Map<Object, SodaBinding> ctxPolyObjBinding_ = null;
 
 	public Soda() {
 		proxyCreator_ = getProxyCreator();
@@ -75,7 +75,7 @@ public class Soda implements TransportListener {
 				objRegistry_);
 		namingServiceRef_ = objRegistry_.publish(namingService_);
 		msgBus_.subscribe(this);
-		ctxRunnableObjBinding_ = new HashMap<Runnable, SodaBinding>();
+		ctxPolyObjBinding_ = new HashMap<Object, SodaBinding>();
 	}
 
 	public Soda(boolean becomeserver) {
@@ -183,35 +183,36 @@ public class Soda implements TransportListener {
 	public SodaBinding bind(Object o) {
 
 		SodaBinding b = new SodaBinding();
-		if (o instanceof Runnable) {
-			this.ctxRunnableObjBinding_.put((Runnable) o, b);
-		} else {
-			throw new RuntimeException();
-		}
+
+		this.ctxPolyObjBinding_.put(o, b);
+
 		return b;
 
 	}
 
 	public <T> SodaQuery<T> find(Class<T> type, SodaContext ctx) {
 
-		SodaQuery<Runnable> sq = null;
-		if (type == Runnable.class) {
-			Iterator<Runnable> itrRunnable = this.ctxRunnableObjBinding_
-					.keySet().iterator();
-			while (itrRunnable.hasNext()) {
-				Runnable r = (Runnable) itrRunnable.next();
-				SodaBinding sb = this.ctxRunnableObjBinding_.get(r);
-				Iterator<SodaContext> itrSodaBinding = sb.getContexts_()
-						.iterator();
-				while (itrSodaBinding.hasNext()) {
-					SodaContext stx = itrSodaBinding.next();
-					if (stx.equals(ctx)) {
-						sq = new SodaQuery<Runnable>(r);
-					}
-				}
-
+		SodaQuery<Object> sq = new SodaQuery<Object>();
+		Iterator<Object> itrObject = this.ctxPolyObjBinding_.keySet()
+				.iterator();
+		while (itrObject.hasNext()) {
+			Object contextObject = itrObject.next();
+			Class<? extends Object> cls = contextObject.getClass();
+			if (!type.isAssignableFrom(cls)) {
+				continue;
 			}
+
+			SodaBinding sb = this.ctxPolyObjBinding_.get(contextObject);
+			Iterator<SodaContext> itrSodaBinding = sb.getContexts_().iterator();
+			while (itrSodaBinding.hasNext()) {
+				SodaContext stx = itrSodaBinding.next();
+				if (stx.equals(ctx)) {
+					sq.getList_().add(contextObject);
+				}
+			}
+
 		}
+
 		return (SodaQuery<T>) sq;
 	}
 

@@ -13,5 +13,15 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/SodaCloud"/>
+	<classpathentry kind="lib" path="libs/core.jar"/>
+	<classpathentry kind="lib" path="libs/javase.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.annotations.automation.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.annotations.core.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.annotations.designers.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.annotations.rendering.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.codecs.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.controls.jar"/>
+	<classpathentry kind="lib" path="libs/leadtools.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

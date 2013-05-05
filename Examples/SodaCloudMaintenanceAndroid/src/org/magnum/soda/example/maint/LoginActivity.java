@@ -1,15 +1,23 @@
 package org.magnum.soda.example.maint;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-//import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,9 +25,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.annotation.TargetApi;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -31,7 +41,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	 * TODO: remove after connecting to a real authentication system.
 	 */
 	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
+			"alice@gmail.com:aaaaa", "bob@gmail.com:bbbbb" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -43,29 +53,56 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	 */
 	private UserLoginTask mAuthTask = null;
 
+
+	//host
+	private String mHost="172.31.55.100";
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
-
+	Context ctx_ = this;
 	// UI references.
+	private Button bypassButton;
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-
+	
+	
+	private List<User> mUserList = new ArrayList<User>();
+	private AndroidSodaListener asl_ = null;
+	private AndroidSoda as = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
+		
+		
+		Properties prop = new Properties();
+		 
+    	try {
+    		 InputStream rawResource = getResources().openRawResource(R.raw.connection);
+    		 prop.load(rawResource);
+    		  System.out.println("The properties are now loaded");
+    		  System.out.println("properties: " + prop);
+    		
+    		mHost=prop.getProperty("host");
+    	}
+    	catch(IOException e)
+    	{
+    		Log.e("Property File not found",e.getLocalizedMessage());
+    	}
+
 
 		// Set up the login form.
+    	bypassButton = (Button)findViewById(R.id.button_Bypass);
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView = (EditText) findViewById(R.id.username_edit);
 		mEmailView.setText(mEmail);
 
-		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView = (EditText) findViewById(R.id.password_edit);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
@@ -79,11 +116,11 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 					}
 				});
 
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+	//	mLoginFormView = findViewById(R.id.login_form);
+	//	mLoginStatusView = findViewById(R.id.login_status);
+		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
-		findViewById(R.id.sign_in_button).setOnClickListener(
+		findViewById(R.id.signin_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -91,30 +128,101 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 					}
 				});
 
-		AndroidSoda.init(this, "10.0.1.8", 8081, this);
+		bypassButton.setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent i =new Intent(ctx_, MainActivity.class);
+						startActivity(i);
+					}
+				});
+		
+		
+		
 	}
 
 	@Override
 	public void connected(final AndroidSoda s) {
-		MaintenanceReports reports = s.get(MaintenanceReports.class,
-				MaintenanceReports.SVC_NAME);
+		Log.d("SODA", "connected() in LoginActivity being called.");
+		this.as=s;
+		authenticUser();
 
-		reports.addListener(new MaintenanceListener() {
+	}
+	private void authenticUser() {
+		List<Future> list = new ArrayList<Future>();
 
+		Future<?> Result = AndroidSoda.async(new Runnable() {
+			@Override
 			@SodaInvokeInUi
-			public void reportAdded(MaintenanceReport r) {
-				Log.d("SODA", "Maintenance report added: " + r.getContents());
-				Toast.makeText(LoginActivity.this, "Report: "+r.getContents(), Toast.LENGTH_SHORT).show();
+			public void run() {
+				if (as != null) {
+
+					Log.e("SODA", "conected");
+					
+					Users userHandle = as.get(
+							Users.class,
+							Users.SVC_NAME);
+					userHandle.getUsers(new Callback<List<User>>() {
+								//@SodaInvokeInUi
+								public void handle(List<User> arg0) {
+									mUserList = arg0;
+								boolean success=false;
+									Iterator itr=arg0.iterator();
+									while(itr.hasNext()){
+										User u=(User)itr.next();
+										if(u.getUsername_().equals(mEmail)&&u.getPwd_().equals(mPassword))
+											success = true;
+										 executeIntent(success);
+									}
+									
+								}
+							});
+					Log.e("SODA", "end of authenticUser");
+
+
+				}
 			}
 		});
 
-		for (int i = 0; i < 10; i++) {
-			MaintenanceReport r = new MaintenanceReport();
-			r.setContents("Report Id:" + i);
-			reports.addReport(r);
-		}
-	}
+		list.add(Result);
+		for (Future f : list) {
+			try {
+				while (!f.isDone()) {
 
+				}
+				f.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+
+	}
+	
+	public void executeIntent(final boolean success)
+	{
+		runOnUiThread(new Runnable()
+		{
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if (success) {
+				Intent i =new Intent(ctx_, MainActivity.class);
+				startActivity(i);
+			} else {
+				mPasswordView
+						.setError(getString(R.string.error_incorrect_password));
+				mPasswordView.requestFocus();
+			}
+		}
+		});
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -172,10 +280,10 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			//showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			AndroidSoda.init(this, mHost, 8081, this);
+			
 		}
 	}
 
@@ -225,6 +333,11 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		private Context mcontext;
+		
+		public UserLoginTask(Context context) {
+			mcontext = context;
+		}
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// TODO: attempt authentication against a network service.
@@ -254,7 +367,8 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			//showProgress(false);
 
 			if (success) {
-				finish();
+				Intent i =new Intent(mcontext, MainActivity.class);
+				startActivity(i);
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));

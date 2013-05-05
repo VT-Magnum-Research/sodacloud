@@ -12,5 +12,7 @@ public interface MaintenanceListener {
 
 	@SodaAsync
 	public void reportAdded(MaintenanceReport r);
+	@SodaAsync
+	public void reportchanged(MaintenanceReport r);
 	
 }
