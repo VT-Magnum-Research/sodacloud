@@ -15,7 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.proxy;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.InvocationHandler;
 import java.util.Map;
 
 import org.magnum.soda.MsgBus;
@@ -25,22 +25,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 public class ProxyFactory {
 
 	private static final Logger Log = LoggerFactory
 			.getLogger(ProxyFactory.class);
-	
-	private static Map<String, Boolean> byValueClasses_ = new ImmutableMap.Builder<String, Boolean>()
-			.put(String.class.getName(), true)
-			.put(Boolean.class.getName(), true)
-			.put(Integer.class.getName(), true)
-			.put(Double.class.getName(), true).put(Float.class.getName(), true)
-			.put(Byte.class.getName(), true)
-			.put(ObjRef.class.getName(), true)
-			.put(Class.class.getName(), true)
-			.put(byte[].class.getName(), true)
-			.build();
+
+	private static Map<String, Boolean> byValueClasses_ = Maps
+			.newHashMap(new ImmutableMap.Builder<String, Boolean>()
+					.put(String.class.getName(), true)
+					.put(Boolean.class.getName(), true)
+					.put(Integer.class.getName(), true)
+					.put(Double.class.getName(), true)
+					.put(Float.class.getName(), true)
+					.put(Byte.class.getName(), true)
+					.put(ObjRef.class.getName(), true)
+					.put(Class.class.getName(), true)
+					.put(byte[].class.getName(), true).build());
 
 	private MsgBus msgBus_;
 
@@ -48,13 +50,16 @@ public class ProxyFactory {
 
 	private ObjRegistry objRegistry_;
 	
-	public ProxyFactory(ObjRegistry reg, LocalAddress myaddr, MsgBus msgBus) {
+	private ProxyCreator creator_;
+	
+	
+	public ProxyFactory(ObjRegistry reg, ProxyCreator creator, LocalAddress myaddr, MsgBus msgBus) {
 		super();
+		creator_ = creator;
 		msgBus_ = msgBus;
 		myAddress_ = myaddr;
 		objRegistry_ = reg;
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	public <T> T createProxy(Class<T> type, ObjRef objid) {
@@ -63,9 +68,9 @@ public class ProxyFactory {
 
 	public Object createProxy(Class<?>[] types, ObjRef objid) {
 
-		Log.debug("Creating a proxy for ref [{}]",objid);
-		
-		Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(),
+		Log.debug("Creating a proxy for ref [{}]", objid);
+
+		Object proxy = creator_.createProxy(getClass().getClassLoader(),
 				types, new ObjProxy(this, msgBus_, objid));
 
 		return proxy;
@@ -83,7 +88,7 @@ public class ProxyFactory {
 		ObjRef ref = myAddress_.createObjRef(types);
 		return ref;
 	}
-	
+
 	public Object[] convertToObjectRefsIfNeeded(Object[] v) {
 		int len = (v != null) ? v.length : 0;
 		Object[] args = new Object[len];
@@ -103,7 +108,6 @@ public class ProxyFactory {
 		}
 		return v;
 	}
-	
 
 	public Object createProxiesFromRefsIfNeeded(Object o) throws Exception {
 		if (o instanceof Object[]) {
@@ -114,34 +118,30 @@ public class ProxyFactory {
 		} else if (o instanceof ObjRef) {
 			ObjRef ref = (ObjRef) o;
 			Object ex = objRegistry_.get(ref);
-			if(ex == null){
+			if (ex == null) {
 				o = createProxy(ref);
 				objRegistry_.insert(ref, o);
-			}
-			else {
+			} else {
 				o = ex;
 			}
 		}
 
 		return o;
 	}
-	
 
 	private Object createObjRef(Object v) {
-		if (Proxy.isProxyClass(v.getClass())) {
-			Object o = Proxy.getInvocationHandler(v);
-			
-			if(o instanceof ObjProxy){
-				v = ((ObjProxy)o).getObjectRef();
+		InvocationHandler hdlr = creator_.getInvocationHandler(v);
+		if (hdlr != null) {
+			if (hdlr instanceof ObjProxy) {
+				v = ((ObjProxy) hdlr).getObjectRef();
 			}
 		}
-		
+
 		String cls = v.getClass().getName();
 		boolean byval = false;
-		if(v.getClass().getAnnotation(SodaByValue.class) != null){
+		if (v.getClass().getAnnotation(SodaByValue.class) != null) {
 			byval = true;
-		}
-		else {
+		} else {
 			Boolean bv = byValueClasses_.get(cls);
 			byval = (bv != null) ? bv : false;
 		}
@@ -151,5 +151,9 @@ public class ProxyFactory {
 		}
 
 		return v;
+	}
+
+	public void passByValue(Class<?> type) {
+		byValueClasses_.put(type.getName(), true);
 	}
 }

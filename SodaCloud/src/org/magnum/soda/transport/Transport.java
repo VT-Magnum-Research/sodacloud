@@ -22,9 +22,9 @@ import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.Mode;
 
 import org.magnum.soda.MsgBus;
-import org.magnum.soda.marshalling.Marshaller;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.Msg;
+import org.magnum.soda.msg.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,18 +37,20 @@ public abstract class Transport {
 	private static final Logger Log = LoggerFactory.getLogger(Transport.class);
 
 	private TransportListener listener_;
-	private Marshaller marshaller_ = new Marshaller();
+	private Protocol protocol_;
 	private MsgBus msgBus_;
 	private LocalAddress myAddress_;
 	private ExecutorService executor_ = Executors
 			.newFixedThreadPool(DEFAULT_THREADS);
 
-	public Transport(MsgBus msgBus, LocalAddress addr) {
+	public Transport(Protocol protocol, MsgBus msgBus, LocalAddress addr) {
 		super();
 		msgBus_ = msgBus;
 		myAddress_ = addr;
+		protocol_ = protocol;
+		
 		msgBus_.subscribe(this);
-
+		
 		init(myAddress_);
 	}
 
@@ -68,9 +70,7 @@ public abstract class Transport {
 		try {
 			if (!m.isMarked()) {
 				m.setSource(myAddress_.toString());
-				String json = marshaller_.toTransportFormat(m);
-				final MsgContainer cont = new MsgContainer(
-						json);
+				final MsgContainer cont = protocol_.outbound(m);
 				cont.setDestination(m.getDestination());
 
 				Runnable r = new Runnable() {
@@ -97,7 +97,7 @@ public abstract class Transport {
 	public void receive(MsgContainer msgc) {
 		try {
 			String json = msgc.getMsg();
-			Msg msg = marshaller_.fromTransportFormat(Msg.class, json);
+			Msg msg = protocol_.inbound(json);
 			msg.mark();
 			msgBus_.publish(msg);
 		} catch (Exception e) {

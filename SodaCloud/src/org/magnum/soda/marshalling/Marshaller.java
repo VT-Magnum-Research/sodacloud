@@ -34,7 +34,13 @@ public class Marshaller {
 	private ObjectMapper mapper_ = new ObjectMapper();
 
 	public Marshaller() {
-		mapper_.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		this(true);
+	}
+	
+	public Marshaller(boolean addtypeinfo) {
+		if(addtypeinfo){
+			mapper_.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		}
 		mapper_.addHandler(new DeserializationProblemHandler() {
 
 			@Override
@@ -51,6 +57,10 @@ public class Marshaller {
 			}
 
 		});
+	}
+	
+	protected ObjectMapper getMapper(){
+		return mapper_;
 	}
 
 	public String toTransportFormat(Object o) throws Exception {

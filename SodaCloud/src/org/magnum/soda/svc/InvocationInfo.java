@@ -35,6 +35,8 @@ public class InvocationInfo {
 	public void setMethod(String method) {
 		method_ = method;
 	}
+	
+	public void bind(Object target){}
 
 	public Object[] getParameters() {
 		return parameters_;
@@ -53,6 +55,7 @@ public class InvocationInfo {
 	}
 
 	public Object invoke(Object target) throws Exception {
+		bind(target);
 		Method m = resolve(target.getClass());
 		if(!m.isAccessible() && Modifier.isPublic(m.getModifiers())){ m.setAccessible(true); }
 		Object rslt = m.invoke(target, getParameters());

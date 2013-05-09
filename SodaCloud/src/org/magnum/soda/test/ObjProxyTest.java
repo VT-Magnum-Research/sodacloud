@@ -26,10 +26,11 @@ import org.junit.Test;
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.proxy.JavaReflectionProxyCreator;
+import org.magnum.soda.proxy.ObjProxy.ResponseCatcher;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.proxy.SodaAsync;
-import org.magnum.soda.proxy.ObjProxy.ResponseCatcher;
 import org.magnum.soda.svc.InvocationInfo;
 import org.magnum.soda.svc.ObjInvocationMsg;
 import org.magnum.soda.svc.ObjInvocationRespMsg;
@@ -40,10 +41,10 @@ public class ObjProxyTest {
 	public interface ObjectSync {
 		@SodaAsync
 		public void async();
-		
+
 		public void sync();
 	}
-	
+
 	public interface TestObj {
 		public boolean equals(Object o);
 
@@ -52,7 +53,7 @@ public class ObjProxyTest {
 		public void setFoo(String a, Boolean b);
 
 		public String[] calcPrefixes(String[] base, String mod, Object[] foo);
-		
+
 		public TestObj link(TestObj obj);
 	}
 
@@ -61,16 +62,17 @@ public class ObjProxyTest {
 	private String replyString_ = null;
 
 	private String[] replyStrings_;
-	
+
 	private TestObj replyObj_;
-	
+
 	private LocalAddress myAddress_ = new LocalAddress();
 
 	@Test
 	public void testNonProxyParamsAndReturnValue() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -84,7 +86,8 @@ public class ObjProxyTest {
 		});
 		t.start();
 
-		extractAndVerifyInvocationMsg(bus, ref, "equals", new Object[] {false}, true);
+		extractAndVerifyInvocationMsg(bus, ref, "equals",
+				new Object[] { false }, true);
 
 		assertEquals(true, reply_);
 
@@ -94,7 +97,8 @@ public class ObjProxyTest {
 	public void testNonProxyNoParamsAndReturnValue() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -108,7 +112,8 @@ public class ObjProxyTest {
 		});
 		t.start();
 
-		extractAndVerifyInvocationMsg(bus, ref, "getName", new Object[] {}, "asdf");
+		extractAndVerifyInvocationMsg(bus, ref, "getName", new Object[] {},
+				"asdf");
 
 		assertEquals("asdf", replyString_);
 	}
@@ -117,7 +122,8 @@ public class ObjProxyTest {
 	public void testTwoNonProxyParamsVoidReturn() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -140,7 +146,8 @@ public class ObjProxyTest {
 	public void testNonProxyMultipleParamsArraysAndArrayReturn() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -155,8 +162,9 @@ public class ObjProxyTest {
 		});
 		t.start();
 
-		extractAndVerifyInvocationMsg(bus, ref, "calcPrefixes", new Object[] {new String[] { "a", "b" }, "c",
-				null}, new String[] { "e", "f" });
+		extractAndVerifyInvocationMsg(bus, ref, "calcPrefixes", new Object[] {
+				new String[] { "a", "b" }, "c", null },
+				new String[] { "e", "f" });
 
 		assertArrayEquals(new String[] { "e", "f" }, replyStrings_);
 	}
@@ -165,11 +173,11 @@ public class ObjProxyTest {
 	public void testNonProxyChainedInvocations() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
-		
 
 		Thread t = new Thread(new Runnable() {
 
@@ -178,26 +186,27 @@ public class ObjProxyTest {
 				String a = b.getName();
 				boolean v = b.equals(a);
 				replyStrings_ = b.calcPrefixes(new String[] { "a", "b" }, a,
-						new Object[]{v});
+						new Object[] { v });
 			}
 		});
 		t.start();
 
 		extractAndVerifyInvocationMsg(bus, ref, "getName", new Object[] {}, "a");
-		extractAndVerifyInvocationMsg(bus, ref, "equals", new Object[] {"a"}, true);
-		extractAndVerifyInvocationMsg(bus, ref, "calcPrefixes", new Object[] {new String[] { "a", "b" }, "a",
-				new Object[]{true}}, new String[]{"22"});
+		extractAndVerifyInvocationMsg(bus, ref, "equals", new Object[] { "a" },
+				true);
+		extractAndVerifyInvocationMsg(bus, ref, "calcPrefixes", new Object[] {
+				new String[] { "a", "b" }, "a", new Object[] { true } },
+				new String[] { "22" });
 
-		assertArrayEquals(new String[] { "22"}, replyStrings_);
+		assertArrayEquals(new String[] { "22" }, replyStrings_);
 	}
-	
-	
+
 	@Test
 	public void testProxyAsParam() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
-
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -212,48 +221,49 @@ public class ObjProxyTest {
 		});
 		t.start();
 
-		extractAndVerifyInvocationMsg(bus, ref, "link", new Object[] {ref}, ref);
+		extractAndVerifyInvocationMsg(bus, ref, "link", new Object[] { ref },
+				ref);
 		verify(reg).insert(ref, b2);
-		
+
 		assertEquals(b2, replyObj_);
 	}
-	
+
 	@Test
 	public void testAutoPublishObjectParam() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
-
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		ObjRef ref2 = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
 		final TestObj b2 = new TestObj() {
-			
+
 			@Override
 			public void setFoo(String a, Boolean b) {
-				
+
 			}
-			
+
 			@Override
 			public TestObj link(TestObj obj) {
 				// TODO Auto-generated method stub
 				return null;
 			}
-			
+
 			@Override
 			public String getName() {
 				// TODO Auto-generated method stub
 				return null;
 			}
-			
+
 			@Override
 			public String[] calcPrefixes(String[] base, String mod, Object[] foo) {
 				// TODO Auto-generated method stub
 				return null;
 			}
 		};
-		
+
 		when(reg.publish(b2)).thenReturn(ref2);
 		when(reg.get(ref2)).thenReturn(b2);
 
@@ -266,17 +276,19 @@ public class ObjProxyTest {
 		});
 		t.start();
 
-		extractAndVerifyInvocationMsg(bus, ref, "link", new Object[] {ref2}, ref2);
+		extractAndVerifyInvocationMsg(bus, ref, "link", new Object[] { ref2 },
+				ref2);
 		verify(reg).publish(b2);
-		
+
 		assertEquals(b2, replyObj_);
 	}
-	
+
 	@Test
 	public void testSyncAndAsyncBehavior() {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(ObjectSync.class);
 		final ObjectSync b = factory.createProxy(ObjectSync.class, ref);
@@ -291,10 +303,10 @@ public class ObjProxyTest {
 			}
 		});
 		t.start();
-		
+
 		sleep(50);
-		assertEquals(true,reply_);
-		
+		assertEquals(true, reply_);
+
 		t = new Thread(new Runnable() {
 
 			@Override
@@ -305,43 +317,44 @@ public class ObjProxyTest {
 			}
 		});
 		t.start();
-		
+
 		sleep(50);
-		assertEquals(false,reply_);
+		assertEquals(false, reply_);
 
 	}
-	
+
 	@Test
-	public void testEqualsToStringHashcode(){
-		
+	public void testEqualsToStringHashcode() {
+
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
-		ProxyFactory factory = new ProxyFactory(reg,myAddress_,bus);
+		ProxyFactory factory = new ProxyFactory(reg,
+				new JavaReflectionProxyCreator(), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
 		final TestObj b2 = factory.createProxy(TestObj.class, ref);
-		
-		assertEquals(b,b2);
-		assertEquals(b.hashCode(),b2.hashCode());
-		assertEquals(b.toString(),b2.toString());
+
+		assertEquals(b, b2);
+		assertEquals(b.hashCode(), b2.hashCode());
+		assertEquals(b.toString(), b2.toString());
 	}
 
 	private void sleep(int time) {
 		TestUtil.sleep(time);
 	}
-	
+
 	private ObjInvocationMsg extractAndVerifyInvocationMsg(MsgBus bus,
 			ObjRef objid, String method, Object[] args, Object returnval) {
 
 		sleep(10);
-		
+
 		ArgumentCaptor<ResponseCatcher> scaptor = ArgumentCaptor
 				.forClass(ResponseCatcher.class);
 		ArgumentCaptor<ObjInvocationMsg> icaptor = ArgumentCaptor
 				.forClass(ObjInvocationMsg.class);
-		verify(bus,atLeast(1)).subscribe(scaptor.capture());
-		verify(bus,atLeast(1)).publish(icaptor.capture());
+		verify(bus, atLeast(1)).subscribe(scaptor.capture());
+		verify(bus, atLeast(1)).publish(icaptor.capture());
 
 		ObjInvocationMsg inv = icaptor.getValue();
 		assertEquals(objid, inv.getTargetObjectId());
@@ -352,10 +365,10 @@ public class ObjProxyTest {
 
 		if (args != null) {
 			for (int i = 0; i < args.length; i++) {
-				if(args[i] instanceof Object[]){
-					assertArrayEquals((Object[])args[i], (Object[])iinfo.getParameters()[i]);
-				}
-				else {
+				if (args[i] instanceof Object[]) {
+					assertArrayEquals((Object[]) args[i],
+							(Object[]) iinfo.getParameters()[i]);
+				} else {
 					assertEquals(args[i], iinfo.getParameters()[i]);
 				}
 			}
@@ -369,6 +382,5 @@ public class ObjProxyTest {
 
 		return inv;
 	}
-
 
 }

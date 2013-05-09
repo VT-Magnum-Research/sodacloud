@@ -55,4 +55,11 @@ public class ObjInvocationMsg extends Msg {
 		return new ObjInvocationRespMsg(this);
 	}
 
+	@Override
+	public String toString() {
+		return "ObjInvocationMsg [responseMsgId_=" + responseMsgId_
+				+ ", targetObjectId_=" + targetObjectId_ + ", invocation_="
+				+ invocation_ + "]";
+	}
+
 }

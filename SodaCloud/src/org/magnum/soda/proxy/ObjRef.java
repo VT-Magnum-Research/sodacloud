@@ -16,10 +16,17 @@
 package org.magnum.soda.proxy;
 
 import java.util.Arrays;
-import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=As.PROPERTY, property="type")
+@JsonTypeName("ObjRef")
 public class ObjRef {
 
+	private static final boolean objRefFlag_ = true;
+	
 	private String uri_;
 	private String[] types_;
 
@@ -34,6 +41,11 @@ public class ObjRef {
 
 	public ObjRef(String uri, String type) {
 		this(uri, new String[] { type });
+	}
+	
+	public ObjRef(String uri){
+		uri_ = uri;
+		types_ = new String[0];
 	}
 
 	public String getUri() {
@@ -80,5 +92,10 @@ public class ObjRef {
 	public static String createObjUri(String uribase, String oid){
 		return uribase +"#"+oid;
 	}
+	
+	public static ObjRef fromObjUri(String uri){
+		return new ObjRef(uri);
+	}
+	
 	
 }

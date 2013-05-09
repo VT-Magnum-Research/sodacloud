@@ -31,6 +31,7 @@ import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.marshalling.Marshaller;
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.InvocationInfo;
@@ -66,7 +67,7 @@ public class MarshallerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
 
 		TestMe testme = mock(TestMe.class);
 

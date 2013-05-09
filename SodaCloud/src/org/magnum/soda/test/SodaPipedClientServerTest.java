@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 
 import org.junit.Test;
 import org.magnum.soda.Soda;
+import org.magnum.soda.protocol.generic.DefaultProtocol;
 import org.magnum.soda.transport.LocalPipeTransport;
 
 public class SodaPipedClientServerTest {
@@ -64,7 +65,7 @@ public class SodaPipedClientServerTest {
 	}
 	
 	@Test
-	public void test() throws Exception {
+	public void testNativeJavaProtocol() throws Exception {
 		
 		// This test emulates both a client and server on the same machine
 		// but does full messaging and marshalling as if a real network
@@ -117,5 +118,6 @@ public class SodaPipedClientServerTest {
 		// Prove that this crazy interaction just worked
 		verify(r).run();
 	}
+	
 
 }

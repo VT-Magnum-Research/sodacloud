@@ -48,16 +48,23 @@ public class AndroidInvocationDispatcher implements InvocationDispatcher {
 
 	private Handler handler_;
 
+	private boolean alwaysInUi_;
+	
 	public AndroidInvocationDispatcher(Handler handler) {
 		super();
 		handler_ = handler;
+	}
+	
+	public AndroidInvocationDispatcher(Handler handler, boolean inui) {
+		this(handler);
+		alwaysInUi_ = inui;
 	}
 
 	@Override
 	public Object dispatch(final InvocationInfo inv, final Object target)
 			throws Exception {
 		Method m = inv.resolve(target.getClass());
-		if (m.getAnnotation(SodaInvokeInUi.class) != null) {
+		if (alwaysInUi_ || m.getAnnotation(SodaInvokeInUi.class) != null) {
 			final AsyncResultCatcher c = new AsyncResultCatcher();
 			Runnable r = new Runnable() {
 

@@ -19,6 +19,8 @@ import org.magnum.soda.MsgBus;
 import org.magnum.soda.Soda;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.MetaAddress;
+import org.magnum.soda.msg.Protocol;
+import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +33,8 @@ public class LocalPipeTransport {
 
 		private BusHandler counterpart_;
 
-		public BusHandler(MsgBus msgBus, LocalAddress addr) {
-			super(msgBus, addr);
+		public BusHandler(Protocol proto, MsgBus msgBus, LocalAddress addr) {
+			super(proto, msgBus, addr);
 		}
 
 		@Override
@@ -68,8 +70,16 @@ public class LocalPipeTransport {
 	private BusHandler client_;
 
 	public LocalPipeTransport(Soda server, Soda client) {
-		server_ = new BusHandler(server.getMsgBus(), server.getLocalAddress());
-		client_ = new BusHandler(client.getMsgBus(), client.getLocalAddress());
+		server_ = new BusHandler(new NativeJavaProtocol(), server.getMsgBus(), server.getLocalAddress());
+		client_ = new BusHandler(new NativeJavaProtocol(), client.getMsgBus(), client.getLocalAddress());
+
+		server_.setCounterpart(client_);
+		client_.setCounterpart(server_);
+	}
+	
+	public LocalPipeTransport(Soda server, Soda client, Protocol proto) {
+		server_ = new BusHandler(proto, server.getMsgBus(), server.getLocalAddress());
+		client_ = new BusHandler(proto, client.getMsgBus(), client.getLocalAddress());
 
 		server_.setCounterpart(client_);
 		client_.setCounterpart(server_);

@@ -62,13 +62,16 @@ public class ObjInvoker {
 
 		Object o = registry_.get(targetid);
 		if (o != null && !Proxy.isProxyClass(o.getClass())) {
-			Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
+			
 
 			ObjInvocationRespMsg resp = (ObjInvocationRespMsg) msg
 					.createReply();
 
 			try {
+				inv.bind(o);
 				Object[] ex = inv.getParameters();
+				
+				Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
 				// this method will directly update the
 				// ex array in place
 				factory_.createProxiesFromRefsIfNeeded(ex);
@@ -78,6 +81,8 @@ public class ObjInvoker {
 
 				resp.setResult(rslt);
 			} catch (Exception t) {
+				Log.error("Exception executing invocation msg [{}]",msg);
+				Log.error("Error:",t);
 				resp.setException(t);
 			}
 

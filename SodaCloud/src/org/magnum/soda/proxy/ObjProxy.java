@@ -15,6 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.proxy;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -128,7 +129,12 @@ public class ObjProxy implements InvocationHandler {
 			invokeAsync(msg);
 		}
 		else {
-			rslt = invokeSync(msg, msg.getId());
+			Class<?> type = arg1.getReturnType();
+			SodaInferReturnTypeFromArgument anno = arg1.getAnnotation(SodaInferReturnTypeFromArgument.class);
+			if(anno != null){
+				type = (Class<?>)arg2[anno.index()];
+			}
+			rslt = invokeSync(msg, msg.getId(), type);
 		}
 
 		return rslt;
@@ -138,7 +144,7 @@ public class ObjProxy implements InvocationHandler {
 		msgBus_.publish(msg);
 	}
 
-	private Object invokeSync(ObjInvocationMsg msg, String respid)
+	private Object invokeSync(ObjInvocationMsg msg, String respid, Class<?> returntype)
 			throws Throwable {
 		ResponseCatcher catcher = new ResponseCatcher(msgBus_, msg.getId());
 
@@ -150,6 +156,7 @@ public class ObjProxy implements InvocationHandler {
 			throw resp.getException();
 		}
 
+		resp.bindResultType(returntype);
 		Object returnval = resp.getResult();
 		returnval = factory_.createProxiesFromRefsIfNeeded(returnval);
 

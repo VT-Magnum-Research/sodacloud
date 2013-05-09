@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.magnum.soda.Soda;
+import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.transport.UriAddress;
 
 import android.content.Context;
@@ -61,8 +62,11 @@ public class AndroidSoda extends Soda {
 	private CountDownLatch connectGate_ = new CountDownLatch(1);
 
 	private Context context_;
-	
+
 	private Handler handler_;
+
+	private AndroidInvocationDispatcher dispatcher_;
+	private AndroidInvocationDispatcher inUiDispatcher_;
 
 	private AndroidSoda() {
 		super();
@@ -86,14 +90,24 @@ public class AndroidSoda extends Soda {
 		return context_;
 	}
 
+	@Override
+	protected synchronized ProxyCreator getProxyCreator() {
+		return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
+	}
+
 	public void setContext(Context context) {
 		context_ = context;
 		handler_ = new Handler(context_.getMainLooper());
-		getInvoker().setDispatcher(new AndroidInvocationDispatcher(handler_));
-		
+		dispatcher_ = new AndroidInvocationDispatcher(handler_);
+		inUiDispatcher_ = new AndroidInvocationDispatcher(handler_, true);
+		getInvoker().setDispatcher(dispatcher_);
 	}
 
-	public void inUi(Runnable r){
+	public <T> T invokeInUi(T obj) {
+		return invoke(obj, inUiDispatcher_);
+	}
+
+	public void inUi(Runnable r) {
 		handler_.post(r);
 	}
 }

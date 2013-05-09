@@ -17,6 +17,8 @@ package org.magnum.soda.svc;
 
 import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.proxy.ObjRef;
+import org.magnum.soda.proxy.ProxyFactory;
+import org.magnum.soda.proxy.SodaInferReturnTypeFromArgument;
 
 public interface NamingService {
 
@@ -26,12 +28,15 @@ public interface NamingService {
 			ObjRef.createObjUri(MetaAddress.META_ADDRESS.toString(), SVC_NAME),
 			NamingService.class.getName());
 
+	@SodaInferReturnTypeFromArgument(index=0)
 	public <T> T get(Class<T> type, String name);
+	
+	public Object get(String name);
 
 	public void bind(Object o, String name);
 
 	public NamingService getParent();
 
-	public void setParent(NamingService parent);
+	public void setParent(NamingService parent, ProxyFactory fact);
 
 }

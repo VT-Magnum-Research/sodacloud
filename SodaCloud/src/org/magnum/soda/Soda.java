@@ -238,7 +238,7 @@ public class Soda implements TransportListener {
 		try {
 			ObjRef ref = NamingService.ROOT_NAMING_SVC;
 			NamingService svc = (NamingService) proxyFactory_.createProxy(ref);
-			namingService_.setParent(svc);
+			namingService_.setParent(svc,proxyFactory_);
 		} catch (Exception e) {
 			Log.error("Error looking up root naming service", e);
 		}

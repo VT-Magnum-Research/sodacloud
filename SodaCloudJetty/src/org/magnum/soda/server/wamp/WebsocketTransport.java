@@ -22,9 +22,10 @@
 package org.magnum.soda.server.wamp;
 
 import org.magnum.soda.MsgBus;
-import org.magnum.soda.marshalling.Marshaller;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.MetaAddress;
+import org.magnum.soda.protocol.generic.DefaultProtocol;
+import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.magnum.soda.server.wamp.client.EventReceiver;
 import org.magnum.soda.server.wamp.messages.EventMessage;
 import org.magnum.soda.transport.Address;
@@ -46,7 +47,7 @@ public class WebsocketTransport extends Transport {
 	private ObjectMapper marshaller_ = new ObjectMapper();
 
 	public WebsocketTransport(MsgBus msgBus, LocalAddress addr, int port) {
-		super(msgBus, addr);
+		super(new DefaultProtocol(), msgBus, addr);
 		handler_ = new ServerPubSubHandler(port);
 	}
 

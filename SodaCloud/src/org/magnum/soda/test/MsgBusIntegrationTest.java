@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.magnum.soda.DefaultObjRegistry;
 import org.magnum.soda.MBassyMsgBus;
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.ObjInvoker;
@@ -36,7 +37,7 @@ public class MsgBusIntegrationTest {
 	private LocalAddress addr = new LocalAddress();
 	private MBassyMsgBus bus = new MBassyMsgBus();
 	private DefaultObjRegistry reg = new DefaultObjRegistry(addr);
-	private ProxyFactory factory = new ProxyFactory(reg, addr, bus);
+	private ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
 	private ObjInvoker inovker = new ObjInvoker(addr, bus, reg, factory);
 	private ObjRegistryUpdater updater = new ObjRegistryUpdater(factory, reg);
 	

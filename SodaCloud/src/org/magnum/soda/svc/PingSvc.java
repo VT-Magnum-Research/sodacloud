@@ -27,4 +27,5 @@ public interface PingSvc {
 	 */
 	public void ping();
 	
+	public void pingMe(PingSvc me);
 }

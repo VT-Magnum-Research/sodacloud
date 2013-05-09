@@ -19,6 +19,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.magnum.soda.transport.Address;
 import org.magnum.soda.transport.MsgContainer;
 import org.magnum.soda.transport.Transport;
@@ -46,7 +47,7 @@ public class SodaAndroidTransport extends Transport implements
 
 	public SodaAndroidTransport(MsgBus msgBus,
 			LocalAddress addr) {
-		super(msgBus, addr);
+		super(new NativeJavaProtocol(), msgBus, addr);
 		myAddress_ = addr;
 	}
 

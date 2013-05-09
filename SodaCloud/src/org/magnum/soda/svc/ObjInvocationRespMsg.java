@@ -23,9 +23,11 @@ public class ObjInvocationRespMsg extends Msg {
 
 	private Exception exception_;
 
-	public ObjInvocationRespMsg(){}
-	
+	public ObjInvocationRespMsg() {
+	}
+
 	public ObjInvocationRespMsg(ObjInvocationMsg respto) {
+		assert (respto.getId() != null);
 		setResponseTo(respto.getId());
 	}
 
@@ -37,6 +39,9 @@ public class ObjInvocationRespMsg extends Msg {
 	public ObjInvocationRespMsg(ObjInvocationMsg respto, Exception e) {
 		this(respto);
 		exception_ = e;
+	}
+
+	public void bindResultType(Class<?> t) {
 	}
 
 	public Object getResult() {
@@ -58,6 +63,12 @@ public class ObjInvocationRespMsg extends Msg {
 	@Override
 	public Msg createReplyMsg() {
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return "ObjInvocationRespMsg [result_=" + result_ + ", exception_="
+				+ exception_ + "]";
 	}
 
 }

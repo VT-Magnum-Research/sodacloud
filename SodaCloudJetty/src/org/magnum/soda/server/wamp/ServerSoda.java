@@ -16,7 +16,6 @@
 package org.magnum.soda.server.wamp;
 
 import org.magnum.soda.Soda;
-import org.magnum.soda.svc.NamingService;
 import org.magnum.soda.svc.PingSvc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +35,12 @@ public class ServerSoda extends Soda {
 			public void ping() {
 				Log.debug("The server recv'd a ping");
 			}
+
+			@Override
+			public void pingMe(PingSvc me) {
+				if(me != null){me.ping();}
+			}
+			
 		}, PingSvc.SVC_NAME);
 	}
 

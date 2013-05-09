@@ -15,7 +15,8 @@
  ****************************************************************************/
 package org.magnum.soda.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,6 +25,7 @@ import org.junit.Test;
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.InvocationInfo;
@@ -48,7 +50,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
@@ -86,7 +88,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
@@ -127,7 +129,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
@@ -172,7 +174,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
