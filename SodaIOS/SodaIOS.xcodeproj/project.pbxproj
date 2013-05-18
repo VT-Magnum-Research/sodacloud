@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C6FFA39D90047F08132DF65 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA422DAA42AC4877977E6300 /* libPods.a */; };
+		84500F2F17446A6B0055697A /* NSString+JsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 84500F2E17446A6B0055697A /* NSString+JsonObject.m */; };
+		84500F35174506F70055697A /* NSObject+ToJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 84500F34174506F70055697A /* NSObject+ToJson.m */; };
+		84500F38174529DE0055697A /* InvocationMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = 84500F37174529DE0055697A /* InvocationMsg.m */; };
+		84500F4117452B610055697A /* MsgTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84500F4017452B610055697A /* MsgTest.m */; };
+		84500FF5174539A50055697A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AA7EDF1722F69D00219060 /* UIKit.framework */; };
+		84500FF6174539A50055697A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AA7EE11722F69D00219060 /* Foundation.framework */; };
+		84500FF7174539A50055697A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AA7EE31722F69D00219060 /* CoreGraphics.framework */; };
+		84500FFD174539A50055697A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84500FFB174539A50055697A /* InfoPlist.strings */; };
+		84500FFF174539A50055697A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84500FFE174539A50055697A /* main.m */; };
+		84501003174539A50055697A /* SodaAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84501002174539A50055697A /* SodaAppDelegate.m */; };
+		84501005174539A50055697A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84501004174539A50055697A /* Default.png */; };
+		84501007174539A50055697A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84501006174539A50055697A /* Default@2x.png */; };
+		84501009174539A50055697A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84501008174539A50055697A /* Default-568h@2x.png */; };
 		84792F851737033A00F7ECBF /* MDCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 84792F701737033A00F7ECBF /* MDCrypto.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84792F861737033A00F7ECBF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84792F711737033A00F7ECBF /* InfoPlist.strings */; };
 		84792F871737033A00F7ECBF /* MDJSONBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 84792F751737033A00F7ECBF /* MDJSONBridge.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -19,6 +33,10 @@
 		84792F8F1737083300F7ECBF /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 84792F8E1737083300F7ECBF /* libicucore.dylib */; };
 		84792F911737085E00F7ECBF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84792F901737085E00F7ECBF /* CFNetwork.framework */; };
 		84792F931737086C00F7ECBF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84792F921737086C00F7ECBF /* Security.framework */; };
+		84792F97174411CD00F7ECBF /* ObjProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84792F96174411CD00F7ECBF /* ObjProxy.m */; };
+		84792F9A1744122300F7ECBF /* ObjRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 84792F991744122300F7ECBF /* ObjRef.m */; };
+		84792F9D174426C300F7ECBF /* ResponseCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 84792F9C174426C300F7ECBF /* ResponseCatcher.m */; };
+		84792FA017442AEC00F7ECBF /* Msg.m in Sources */ = {isa = PBXBuildFile; fileRef = 84792F9F17442AEC00F7ECBF /* Msg.m */; };
 		84AA7EE01722F69D00219060 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AA7EDF1722F69D00219060 /* UIKit.framework */; };
 		84AA7EE21722F69D00219060 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AA7EE11722F69D00219060 /* Foundation.framework */; };
 		84AA7EE41722F69D00219060 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AA7EE31722F69D00219060 /* CoreGraphics.framework */; };
@@ -49,6 +67,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84500F2D17446A6B0055697A /* NSString+JsonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JsonObject.h"; sourceTree = "<group>"; };
+		84500F2E17446A6B0055697A /* NSString+JsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JsonObject.m"; sourceTree = "<group>"; };
+		84500F33174506F70055697A /* NSObject+ToJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ToJson.h"; sourceTree = "<group>"; };
+		84500F34174506F70055697A /* NSObject+ToJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ToJson.m"; sourceTree = "<group>"; };
+		84500F36174529DE0055697A /* InvocationMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvocationMsg.h; sourceTree = "<group>"; };
+		84500F37174529DE0055697A /* InvocationMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvocationMsg.m; sourceTree = "<group>"; };
+		84500F3F17452B610055697A /* MsgTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgTest.h; sourceTree = "<group>"; };
+		84500F4017452B610055697A /* MsgTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgTest.m; sourceTree = "<group>"; };
+		84500F44174536180055697A /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		84500F46174536330055697A /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		84500FF4174539A40055697A /* SodaTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SodaTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		84500FFA174539A50055697A /* SodaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SodaTests-Info.plist"; sourceTree = "<group>"; };
+		84500FFC174539A50055697A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		84500FFE174539A50055697A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		84501000174539A50055697A /* SodaTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SodaTests-Prefix.pch"; sourceTree = "<group>"; };
+		84501001174539A50055697A /* SodaAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SodaAppDelegate.h; sourceTree = "<group>"; };
+		84501002174539A50055697A /* SodaAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SodaAppDelegate.m; sourceTree = "<group>"; };
+		84501004174539A50055697A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		84501006174539A50055697A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		84501008174539A50055697A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		84792F6F1737033A00F7ECBF /* MDCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDCrypto.h; sourceTree = "<group>"; };
 		84792F701737033A00F7ECBF /* MDCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDCrypto.m; sourceTree = "<group>"; };
 		84792F721737033A00F7ECBF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -72,6 +110,15 @@
 		84792F8E1737083300F7ECBF /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		84792F901737085E00F7ECBF /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		84792F921737086C00F7ECBF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		84792F941742A49400F7ECBF /* PingSvc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PingSvc.h; sourceTree = "<group>"; };
+		84792F95174411CD00F7ECBF /* ObjProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjProxy.h; sourceTree = "<group>"; };
+		84792F96174411CD00F7ECBF /* ObjProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjProxy.m; sourceTree = "<group>"; };
+		84792F981744122300F7ECBF /* ObjRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjRef.h; sourceTree = "<group>"; };
+		84792F991744122300F7ECBF /* ObjRef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjRef.m; sourceTree = "<group>"; };
+		84792F9B174426C300F7ECBF /* ResponseCatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseCatcher.h; sourceTree = "<group>"; };
+		84792F9C174426C300F7ECBF /* ResponseCatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseCatcher.m; sourceTree = "<group>"; };
+		84792F9E17442AEC00F7ECBF /* Msg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Msg.h; sourceTree = "<group>"; };
+		84792F9F17442AEC00F7ECBF /* Msg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Msg.m; sourceTree = "<group>"; };
 		84AA7EDC1722F69D00219060 /* SodaIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SodaIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84AA7EDF1722F69D00219060 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84AA7EE11722F69D00219060 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -95,9 +142,21 @@
 		84AA7F101722F69D00219060 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		84AA7F121722F69D00219060 /* SodaTestTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SodaTestTests.h; sourceTree = "<group>"; };
 		84AA7F131722F69D00219060 /* SodaTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SodaTestTests.m; sourceTree = "<group>"; };
+		AA422DAA42AC4877977E6300 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0FAC254624F4276B1D4D55D /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		84500FF1174539A40055697A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84500FF5174539A50055697A /* UIKit.framework in Frameworks */,
+				84500FF6174539A50055697A /* Foundation.framework in Frameworks */,
+				84500FF7174539A50055697A /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84AA7ED91722F69D00219060 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -108,6 +167,7 @@
 				84792F8F1737083300F7ECBF /* libicucore.dylib in Frameworks */,
 				84AA7EE01722F69D00219060 /* UIKit.framework in Frameworks */,
 				84AA7EE41722F69D00219060 /* CoreGraphics.framework in Frameworks */,
+				7C6FFA39D90047F08132DF65 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +184,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84500FF8174539A50055697A /* SodaTests */ = {
+			isa = PBXGroup;
+			children = (
+				84501001174539A50055697A /* SodaAppDelegate.h */,
+				84501002174539A50055697A /* SodaAppDelegate.m */,
+				84500FF9174539A50055697A /* Supporting Files */,
+			);
+			path = SodaTests;
+			sourceTree = "<group>";
+		};
+		84500FF9174539A50055697A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84500FFA174539A50055697A /* SodaTests-Info.plist */,
+				84500FFB174539A50055697A /* InfoPlist.strings */,
+				84500FFE174539A50055697A /* main.m */,
+				84501000174539A50055697A /* SodaTests-Prefix.pch */,
+				84501004174539A50055697A /* Default.png */,
+				84501006174539A50055697A /* Default@2x.png */,
+				84501008174539A50055697A /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		84792F6D1737033A00F7ECBF /* MDWamp */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,14 +254,18 @@
 		84AA7ED31722F69D00219060 = {
 			isa = PBXGroup;
 			children = (
+				84500F46174536330055697A /* libPods.a */,
+				84500F44174536180055697A /* libPods.a */,
 				84792F921737086C00F7ECBF /* Security.framework */,
 				84792F901737085E00F7ECBF /* CFNetwork.framework */,
 				84792F8E1737083300F7ECBF /* libicucore.dylib */,
 				84792F6D1737033A00F7ECBF /* MDWamp */,
 				84AA7EE51722F69D00219060 /* SodaTest */,
 				84AA7F0C1722F69D00219060 /* SodaTestTests */,
+				84500FF8174539A50055697A /* SodaTests */,
 				84AA7EDE1722F69D00219060 /* Frameworks */,
 				84AA7EDD1722F69D00219060 /* Products */,
+				E0FAC254624F4276B1D4D55D /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,6 +274,7 @@
 			children = (
 				84AA7EDC1722F69D00219060 /* SodaIOS.app */,
 				84AA7F051722F69D00219060 /* SodaIOSTests.octest */,
+				84500FF4174539A40055697A /* SodaTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,6 +286,7 @@
 				84AA7EE11722F69D00219060 /* Foundation.framework */,
 				84AA7EE31722F69D00219060 /* CoreGraphics.framework */,
 				84AA7F061722F69D00219060 /* SenTestingKit.framework */,
+				AA422DAA42AC4877977E6300 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -211,6 +301,21 @@
 				84AA7EFD1722F69D00219060 /* MagViewController.h */,
 				84AA7EFE1722F69D00219060 /* MagViewController.m */,
 				84AA7EE61722F69D00219060 /* Supporting Files */,
+				84792F941742A49400F7ECBF /* PingSvc.h */,
+				84792F95174411CD00F7ECBF /* ObjProxy.h */,
+				84792F96174411CD00F7ECBF /* ObjProxy.m */,
+				84792F981744122300F7ECBF /* ObjRef.h */,
+				84792F991744122300F7ECBF /* ObjRef.m */,
+				84792F9B174426C300F7ECBF /* ResponseCatcher.h */,
+				84792F9C174426C300F7ECBF /* ResponseCatcher.m */,
+				84792F9E17442AEC00F7ECBF /* Msg.h */,
+				84792F9F17442AEC00F7ECBF /* Msg.m */,
+				84500F2D17446A6B0055697A /* NSString+JsonObject.h */,
+				84500F2E17446A6B0055697A /* NSString+JsonObject.m */,
+				84500F33174506F70055697A /* NSObject+ToJson.h */,
+				84500F34174506F70055697A /* NSObject+ToJson.m */,
+				84500F36174529DE0055697A /* InvocationMsg.h */,
+				84500F37174529DE0055697A /* InvocationMsg.m */,
 			);
 			path = SodaTest;
 			sourceTree = "<group>";
@@ -235,6 +340,8 @@
 				84AA7F121722F69D00219060 /* SodaTestTests.h */,
 				84AA7F131722F69D00219060 /* SodaTestTests.m */,
 				84AA7F0D1722F69D00219060 /* Supporting Files */,
+				84500F3F17452B610055697A /* MsgTest.h */,
+				84500F4017452B610055697A /* MsgTest.m */,
 			);
 			path = SodaTestTests;
 			sourceTree = "<group>";
@@ -251,13 +358,32 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		84500FF3174539A40055697A /* SodaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8450100C174539A50055697A /* Build configuration list for PBXNativeTarget "SodaTests" */;
+			buildPhases = (
+				84500FF0174539A40055697A /* Sources */,
+				84500FF1174539A40055697A /* Frameworks */,
+				84500FF2174539A40055697A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SodaTests;
+			productName = SodaTests;
+			productReference = 84500FF4174539A40055697A /* SodaTests.app */;
+			productType = "com.apple.product-type.application";
+		};
 		84AA7EDB1722F69D00219060 /* SodaIOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84AA7F171722F69D00219060 /* Build configuration list for PBXNativeTarget "SodaIOS" */;
 			buildPhases = (
+				FA5DD0D4917A4E1DAE3BC82E /* Check Pods Manifest.lock */,
 				84AA7ED81722F69D00219060 /* Sources */,
 				84AA7ED91722F69D00219060 /* Frameworks */,
 				84AA7EDA1722F69D00219060 /* Resources */,
+				C448CC54F2CD4342AF2024E4 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -311,11 +437,23 @@
 			targets = (
 				84AA7EDB1722F69D00219060 /* SodaIOS */,
 				84AA7F041722F69D00219060 /* SodaIOSTests */,
+				84500FF3174539A40055697A /* SodaTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		84500FF2174539A40055697A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84500FFD174539A50055697A /* InfoPlist.strings in Resources */,
+				84501005174539A50055697A /* Default.png in Resources */,
+				84501007174539A50055697A /* Default@2x.png in Resources */,
+				84501009174539A50055697A /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84AA7EDA1722F69D00219060 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -355,9 +493,46 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		C448CC54F2CD4342AF2024E4 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+		FA5DD0D4917A4E1DAE3BC82E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		84500FF0174539A40055697A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84500FFF174539A50055697A /* main.m in Sources */,
+				84501003174539A50055697A /* SodaAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84AA7ED81722F69D00219060 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -372,6 +547,13 @@
 				84792F8B1737033A00F7ECBF /* base64.c in Sources */,
 				84792F8C1737033A00F7ECBF /* NSData+SRB64Additions.m in Sources */,
 				84792F8D1737033A00F7ECBF /* SRWebSocket.m in Sources */,
+				84792F97174411CD00F7ECBF /* ObjProxy.m in Sources */,
+				84792F9A1744122300F7ECBF /* ObjRef.m in Sources */,
+				84792F9D174426C300F7ECBF /* ResponseCatcher.m in Sources */,
+				84792FA017442AEC00F7ECBF /* Msg.m in Sources */,
+				84500F2F17446A6B0055697A /* NSString+JsonObject.m in Sources */,
+				84500F35174506F70055697A /* NSObject+ToJson.m in Sources */,
+				84500F38174529DE0055697A /* InvocationMsg.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +562,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84AA7F141722F69D00219060 /* SodaTestTests.m in Sources */,
+				84500F4117452B610055697A /* MsgTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +577,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		84500FFB174539A50055697A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84500FFC174539A50055697A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		84792F711737033A00F7ECBF /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -437,6 +628,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8450100A174539A50055697A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SodaTests/SodaTests-Prefix.pch";
+				INFOPLIST_FILE = "SodaTests/SodaTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		8450100B174539A50055697A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SodaTests/SodaTests-Prefix.pch";
+				INFOPLIST_FILE = "SodaTests/SodaTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		84AA7F151722F69D00219060 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -498,6 +713,7 @@
 		};
 		84AA7F181722F69D00219060 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0FAC254624F4276B1D4D55D /* Pods.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -515,6 +731,7 @@
 		};
 		84AA7F191722F69D00219060 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0FAC254624F4276B1D4D55D /* Pods.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -532,14 +749,15 @@
 		};
 		84AA7F1B1722F69D00219060 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0FAC254624F4276B1D4D55D /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SodaTest.app/SodaTest";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SodaTest/SodaTest-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "SodaTest/SodaIOS-Prefix.pch";
 				INFOPLIST_FILE = "SodaTestTests/SodaIOSTests-Info.plist";
 				PRODUCT_NAME = SodaIOSTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -549,14 +767,15 @@
 		};
 		84AA7F1C1722F69D00219060 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0FAC254624F4276B1D4D55D /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SodaTest.app/SodaTest";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SodaTest/SodaTest-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "SodaTest/SodaIOS-Prefix.pch";
 				INFOPLIST_FILE = "SodaTestTests/SodaIOSTests-Info.plist";
 				PRODUCT_NAME = SodaIOSTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -567,6 +786,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8450100C174539A50055697A /* Build configuration list for PBXNativeTarget "SodaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8450100A174539A50055697A /* Debug */,
+				8450100B174539A50055697A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		84AA7ED71722F69D00219060 /* Build configuration list for PBXProject "SodaIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

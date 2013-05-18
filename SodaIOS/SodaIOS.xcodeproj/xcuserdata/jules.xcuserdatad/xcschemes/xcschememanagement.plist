@@ -7,11 +7,21 @@
 		<key>SodaTest.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
+		</dict>
+		<key>SodaTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>84500FF3174539A40055697A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>84AA7EDB1722F69D00219060</key>
 		<dict>
 			<key>primary</key>

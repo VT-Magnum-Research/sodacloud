@@ -6,8 +6,12 @@
 //  Copyright (c) 2013 Jules White. All rights reserved.
 //
 
+#import <DCKeyValueObjectMapping/DCKeyValueObjectMapping.h>
+#import <SBJson/SBJson.h>
+#import "NSString+JsonObject.h"
 #import "MagViewController.h"
 #import "MDWamp.h"
+#import "Msg.h"
 
 @interface MagViewController ()
 
@@ -42,6 +46,16 @@
     [wamp setAutoreconnectDelay:5];
     
     [wamp connect];
+
+    
+    NSString* json = @"{\"id\":\"1\"}";
+     
+    //NSDictionary *jsonParsed = [json JSONValue];
+    
+    //DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass: [Msg class]];
+    Msg* msg = [json toJsonObject:[Msg class]];//[parser parseDictionary:jsonParsed];
+    NSLog(@"MSG ID ### %@", msg.id);
+    NSLog(@"MSG Json %@",[msg toJson]);
 }
 
 - (void)didReceiveMemoryWarning
