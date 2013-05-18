@@ -1,7 +1,7 @@
 package org.magnum.soda.ctx;
 
 import java.awt.image.BufferedImage;
-
+import android.graphics.Bitmap;
 
 
 public class ImageContainer {

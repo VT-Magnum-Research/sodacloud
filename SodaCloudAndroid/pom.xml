@@ -10,10 +10,15 @@
 	<artifactId>SodaCloudAndroid</artifactId>
 	<dependencies>
 		<dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <version>4.0.1.2</version>
-            <scope>provided</scope>
+			<groupId>com.google.dexmaker</groupId>
+			<artifactId>dexmaker</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+            		<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+            		<version>4.0.1.2</version>
+            		<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.magnum.soda</groupId>
@@ -23,6 +28,10 @@
 				<exclusion>
 					<artifactId>junit</artifactId>
 					<groupId>junit</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.clerezza.ext</groupId>
+					<artifactId>org.json.simple</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
