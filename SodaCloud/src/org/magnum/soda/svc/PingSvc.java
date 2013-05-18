@@ -17,6 +17,32 @@ package org.magnum.soda.svc;
 
 public interface PingSvc {
 
+	public static class PingMsg {
+		private String from_;
+		private String msg_;
+		private int times_;
+		public String getFrom() {
+			return from_;
+		}
+		public void setFrom(String from) {
+			from_ = from;
+		}
+		public String getMsg() {
+			return msg_;
+		}
+		public void setMsg(String msg) {
+			msg_ = msg;
+		}
+		public int getTimes() {
+			return times_;
+		}
+		public void setTimes(int times) {
+			times_ = times;
+		}
+		
+		
+	}
+	
 	public static final String SVC_NAME = "ping";
 	
 	/**
@@ -26,6 +52,8 @@ public interface PingSvc {
 	 * 
 	 */
 	public void ping();
+	
+	public void ping(PingMsg msg);
 	
 	public void pingMe(PingSvc me);
 }

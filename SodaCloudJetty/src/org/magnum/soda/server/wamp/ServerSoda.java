@@ -35,6 +35,12 @@ public class ServerSoda extends Soda {
 			public void ping() {
 				Log.debug("The server recv'd a ping");
 			}
+			
+			public void ping(PingMsg msg){
+				for(int i = 0; i < msg.getTimes(); i++){
+					Log.debug("Ping: [{}] from [{}]",msg.getMsg(),msg.getFrom());
+				}
+			}
 
 			@Override
 			public void pingMe(PingSvc me) {
