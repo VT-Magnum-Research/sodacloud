@@ -11,8 +11,10 @@
 @interface ObjRef : NSObject
 {
     
-    
 }
+
+-(void)setHost:(NSString*)host andObjId:(NSString*)oid;
+-(NSString*)getHost;
 
 @property (nonatomic, assign) NSString* uri;
 

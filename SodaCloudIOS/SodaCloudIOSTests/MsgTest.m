@@ -12,7 +12,7 @@
 
 
 
-#import "SodaCloudIOSTests.h"
+#import "MsgTest.h"
 
 @implementation SodaCloudIOSTests
 
