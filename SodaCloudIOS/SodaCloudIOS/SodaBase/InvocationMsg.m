@@ -12,6 +12,15 @@
 
 @implementation InvocationMsg
 
+-(id)init
+{
+    self = [super init];
+    if(!self){
+        return nil;
+    }
+    
+    return self;
+}
 //-(NSArray*)getMethodParamTypes:(id)targetObject
 //{
 //    Method mthd = [self findTargetMethod:targetObject];

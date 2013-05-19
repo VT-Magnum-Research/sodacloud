@@ -15,6 +15,7 @@
 
 -(void)setHost:(NSString*)host andObjId:(NSString*)oid;
 -(NSString*)getHost;
+-(id)toProxy:(Class)type;
 
 @property (nonatomic, assign) NSString* uri;
 

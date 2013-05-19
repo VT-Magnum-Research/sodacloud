@@ -8,14 +8,21 @@
 
 #import <Foundation/Foundation.h>
 #import "ObjRef.h"
+#import "SodaObject.h"
+#import "ResponseCatcherFactory.h"
+
+#define PROXY(ref,type) [[ObjProxy alloc]initWithObjRef:ref andSodaObject:[[type alloc]init]];
 
 @interface ObjProxy : NSProxy
 {
+    ObjRef* target;
     NSCondition* waitLock;
+    id interface;
 }
 
 @property (nonatomic, assign) ObjRef* remoteObj;
+@property (nonatomic, assign) id<ResponseCatcherFactory> catcherFactory;
 
-- (id)initWithObjRef:(ObjRef*)ref;
+- (id)initWithObjRef:(ObjRef*)ref andSodaObject:(id)spec;
 
 @end

@@ -19,6 +19,8 @@
 		840014BC1747CDF900E75A60 /* SodaMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014BB1747CDF800E75A60 /* SodaMethod.m */; };
 		840014BF1747CEB800E75A60 /* SodaMethodTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014BE1747CEB800E75A60 /* SodaMethodTest.m */; };
 		840014C21747E01C00E75A60 /* SodaObjectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014C11747E01C00E75A60 /* SodaObjectTest.m */; };
+		840014C81748585F00E75A60 /* ObjProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014C71748585F00E75A60 /* ObjProxyTest.m */; };
+		840014CE174865D500E75A60 /* NSInvocation+OCMAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014CD174865CF00E75A60 /* NSInvocation+OCMAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		84500F55174538040055697A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84500F54174538040055697A /* UIKit.framework */; };
 		84500F57174538040055697A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84500F56174538040055697A /* Foundation.framework */; };
 		84500F59174538040055697A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84500F58174538040055697A /* CoreGraphics.framework */; };
@@ -91,6 +93,11 @@
 		840014BE1747CEB800E75A60 /* SodaMethodTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SodaMethodTest.m; sourceTree = "<group>"; };
 		840014C01747E01C00E75A60 /* SodaObjectTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SodaObjectTest.h; sourceTree = "<group>"; };
 		840014C11747E01C00E75A60 /* SodaObjectTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SodaObjectTest.m; sourceTree = "<group>"; };
+		840014C61748585F00E75A60 /* ObjProxyTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjProxyTest.h; sourceTree = "<group>"; };
+		840014C71748585F00E75A60 /* ObjProxyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjProxyTest.m; sourceTree = "<group>"; };
+		840014CC174865CD00E75A60 /* NSInvocation+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+OCMAdditions.h"; sourceTree = "<group>"; };
+		840014CD174865CF00E75A60 /* NSInvocation+OCMAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+OCMAdditions.m"; sourceTree = "<group>"; };
+		840014CF174943E200E75A60 /* ResponseCatcherFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResponseCatcherFactory.h; sourceTree = "<group>"; };
 		84500F51174538040055697A /* SodaCloudIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SodaCloudIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84500F54174538040055697A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84500F56174538040055697A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -257,6 +264,8 @@
 				840014BE1747CEB800E75A60 /* SodaMethodTest.m */,
 				840014C01747E01C00E75A60 /* SodaObjectTest.h */,
 				840014C11747E01C00E75A60 /* SodaObjectTest.m */,
+				840014C61748585F00E75A60 /* ObjProxyTest.h */,
+				840014C71748585F00E75A60 /* ObjProxyTest.m */,
 			);
 			path = SodaCloudIOSTests;
 			sourceTree = "<group>";
@@ -299,6 +308,9 @@
 				840014B81746DF3700E75A60 /* PingSvcImpl.m */,
 				840014BA1747CDF800E75A60 /* SodaMethod.h */,
 				840014BB1747CDF800E75A60 /* SodaMethod.m */,
+				840014CC174865CD00E75A60 /* NSInvocation+OCMAdditions.h */,
+				840014CD174865CF00E75A60 /* NSInvocation+OCMAdditions.m */,
+				840014CF174943E200E75A60 /* ResponseCatcherFactory.h */,
 			);
 			path = SodaBase;
 			sourceTree = "<group>";
@@ -512,6 +524,7 @@
 				840014B61746DDAB00E75A60 /* SodaObjectBase.m in Sources */,
 				840014B91746DF3800E75A60 /* PingSvcImpl.m in Sources */,
 				840014BC1747CDF900E75A60 /* SodaMethod.m in Sources */,
+				840014CE174865D500E75A60 /* NSInvocation+OCMAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +537,7 @@
 				840014AB1746B04E00E75A60 /* InvocationMsgTest.m in Sources */,
 				840014BF1747CEB800E75A60 /* SodaMethodTest.m in Sources */,
 				840014C21747E01C00E75A60 /* SodaObjectTest.m in Sources */,
+				840014C81748585F00E75A60 /* ObjProxyTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

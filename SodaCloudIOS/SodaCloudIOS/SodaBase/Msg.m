@@ -8,7 +8,19 @@
 
 #import "Msg.h"
 
-@implementation Msg    
+@implementation Msg
+
+-(id)init
+{
+    self = [super init];
+    if(!self){
+        return nil;
+    }
+    
+    self.id = [[NSUUID UUID] UUIDString];
+    return self;
+}
+
 //    - (NSDictionary *)dictionaryOfPropertiesForObject:(id)object
 //    {
 //        // somewhere to store the results

@@ -7,9 +7,14 @@
 //
 
 #import "ObjRef.h"
+#import "ObjProxy.h"
 
 @implementation ObjRef
 
+-(id)toProxy:(Class)type
+{
+    return [[ObjProxy alloc]initWithObjRef:self andSodaObject:[[type alloc]init]];
+}
 
 -(void)setHost:(NSString*)host andObjId:(NSString*)oid
 {

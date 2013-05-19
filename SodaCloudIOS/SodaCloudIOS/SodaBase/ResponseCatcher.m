@@ -15,7 +15,7 @@
     return self;
 }
 
--(void)setResult:(void*)rslt{
+-(void)setResult:(id)rslt{
     [waitLock lock];
     
     result = rslt;
@@ -25,7 +25,7 @@
     [waitLock unlock];
 }
 
--(void*)getResult{
+-(id)getResult{
     [waitLock lock];
     
     if(result == nil){

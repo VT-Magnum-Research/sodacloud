@@ -21,6 +21,8 @@
 
 -(id)initWithName:(NSString*)name andReturnType:(Class)rtype, ...;
 -(id)initWithName:(NSString*)name, ...;
+-(NSString*)cTypes;
+-(BOOL)isAsyncIfVoid;
 
 @property(nonatomic,retain)NSString* name;
 @property(nonatomic)Class returnType;

@@ -11,9 +11,10 @@
 @interface ResponseCatcher : NSObject
 {
     NSCondition* waitLock;
-    void* result;
+    id result;
 }
 
--(void*)getResult;
+-(void)setResult:(id)rslt;
+-(id)getResult;
 -(id)initWithId:(NSString*)id;
 @end
