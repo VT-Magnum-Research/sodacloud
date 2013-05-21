@@ -21,7 +21,7 @@
     NSString* rctype = (self.returnType == nil)? @"v" : @"@";
     [ctypes appendFormat:@"%@^v^c",rctype];
     
-    for(Class c in self.parameterTypes){
+    for(id c in self.parameterTypes){
         NSString* ctype = [self cTypeOf:c];
         [ctypes appendFormat:@"%@",ctype];
     }

@@ -13,6 +13,7 @@
     
 }
 
+-(id)initWithUri:(NSString*)uri;
 -(void)setHost:(NSString*)host andObjId:(NSString*)oid;
 -(NSString*)getHost;
 -(id)toProxy:(Class)type;

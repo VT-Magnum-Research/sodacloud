@@ -11,6 +11,18 @@
 
 @implementation ObjRef
 
+-(id)initWithUri:(NSString*)uri
+{
+    self = [super init];
+    if(self == nil){
+        return nil;
+    }
+    
+    self.uri = uri;
+    
+    return self;
+}
+
 -(id)toProxy:(Class)type
 {
     return [[ObjProxy alloc]initWithObjRef:self andSodaObject:[[type alloc]init]];

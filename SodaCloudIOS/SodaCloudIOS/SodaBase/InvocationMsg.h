@@ -10,8 +10,8 @@
 
 @interface InvocationMsg : Msg
 
-@property(nonatomic,assign)NSString* method;
-@property(nonatomic,assign)NSString* uri;
-@property(nonatomic,assign)NSArray* parameters;
+@property(nonatomic,retain)NSString* method;
+@property(nonatomic,retain)NSString* uri;
+@property(nonatomic,retain)NSArray* parameters;
 
 @end

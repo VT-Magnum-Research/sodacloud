@@ -10,6 +10,7 @@
 #import "ObjRef.h"
 #import "SodaObject.h"
 #import "ResponseCatcherFactory.h"
+#import "Soda.h"
 
 #define PROXY(ref,type) [[ObjProxy alloc]initWithObjRef:ref andSodaObject:[[type alloc]init]];
 
@@ -20,8 +21,9 @@
     id interface;
 }
 
-@property (nonatomic, assign) ObjRef* remoteObj;
-@property (nonatomic, assign) id<ResponseCatcherFactory> catcherFactory;
+@property (nonatomic, retain) ObjRef* remoteObj;
+@property (nonatomic, retain) id<ResponseCatcherFactory> catcherFactory;
+@property (nonatomic, retain) Soda* soda;
 
 - (id)initWithObjRef:(ObjRef*)ref andSodaObject:(id)spec;
 

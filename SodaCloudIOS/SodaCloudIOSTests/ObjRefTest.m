@@ -25,6 +25,12 @@
     STAssertNotNil(oref.uri, @"The objref did not have a uri set");
     STAssertEqualObjects(oref.uri, @"soda://localhost#123", @"The objref did not initialize the correct uri.");
     STAssertEqualObjects(host,@"soda://localhost",@"The host for the objref was not set properly");
+    
+    oref = [[ObjRef alloc]initWithUri:@"soda://foo"];
+    STAssertNotNil(oref, @"The objref was unexpectedly nil");
+    STAssertNotNil(oref.uri, @"The objref did not have a uri set");
+    STAssertEqualObjects(oref.uri, @"soda://foo", @"The objref did not initialize the correct uri.");
+
 }
 
 - (void)testMarshalling
