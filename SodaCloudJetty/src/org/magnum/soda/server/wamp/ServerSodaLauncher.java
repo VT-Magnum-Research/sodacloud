@@ -18,6 +18,8 @@ package org.magnum.soda.server.wamp;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.magnum.soda.msg.Protocol;
+import org.magnum.soda.protocol.generic.DefaultProtocol;
 import org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler;
 
 
@@ -28,7 +30,11 @@ public class ServerSodaLauncher {
 		server.launch(8081, null);
 	}
 	
-	public void launch(int tcpPort, final ServerSodaListener l) {
+	public void launch(int tcpPort, ServerSodaListener l) {
+		launch(new DefaultProtocol(), tcpPort, l);
+	}
+	
+	public void launch(final Protocol protoc, int tcpPort, final ServerSodaListener l) {
 		Server jettyServer = new Server(tcpPort);
 
 		ServletContextHandler context = new ServletContextHandler(
@@ -48,7 +54,7 @@ public class ServerSodaLauncher {
 				
 				@Override
 				public void run() {
-					ServerSoda soda = new ServerSoda(8081);
+					ServerSoda soda = new ServerSoda(protoc, 8081);
 					soda.connect(null);
 					if(l != null){
 						l.started(soda);
