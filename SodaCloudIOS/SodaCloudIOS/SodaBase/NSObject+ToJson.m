@@ -10,6 +10,7 @@
 
 #import "ObjRef.h"
 #import <objc/runtime.h>
+#import "SodaPass.h"
 #import <SBJson/SBJson.h>
 #import <DCKeyValueObjectMapping/DCKeyValueObjectMapping.h>
 
@@ -93,6 +94,10 @@
     }
     else if([value isKindOfClass:[NSArray class]]){
         return [self arrayValueOf:value];
+    }
+    else if([SodaPass isByReference:[value class]]){
+        // convert to an ObjRef and return
+        // return [self dictionaryForObjRef:ref];
     }
     else {
         return [self dictionaryWithPropertiesOfObject:value];

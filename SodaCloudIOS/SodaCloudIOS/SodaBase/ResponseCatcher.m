@@ -10,8 +10,9 @@
 
 @implementation ResponseCatcher
 
--(id)initWithId:(NSString *)id{
+-(id)initWithId:(NSString *)id andReturnType:(Class)type{
     waitLock = [[NSCondition alloc] init];
+    self.returnType = type;
     return self;
 }
 

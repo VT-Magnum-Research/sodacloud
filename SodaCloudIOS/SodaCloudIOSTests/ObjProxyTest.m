@@ -15,13 +15,15 @@
 -(NSString*)foo:(NSString*)val;
 -(void)doIt:(NSNumber*)a b:(NSString*)b c:(ObjProxyTest*)test;
 -(ObjProxyTest*)getTest;
+-(void)setTest:(ObjProxyTest*)test;
 @end
 @implementation MockSodaSvc
 
 SODA_METHODS(
              SODA_METHOD(@"foo", NSString, PARAM(NSString)),
              SODA_VOID_METHOD(@"doIt", PARAM(NSNumber),PARAM(NSString),PARAM(ObjProxyTest)),
-             SODA_NOARG_METHOD(@"getTest", ObjProxyTest)
+             SODA_NOARG_METHOD(@"getTest", ObjProxyTest),
+             SODA_VOID_METHOD(@"setTest",REF(ObjProxyTest))
             )
 @end
 
@@ -63,7 +65,8 @@ SODA_METHODS(
     STAssertEquals(rslt, @"correct_result", @"The proxy method invocation returned the wrong result.");
 
     proxy3.catcherFactory = nil;
-    [svc doIt:@(1) b:@"a" c:self];
+    int v = 1;
+    [svc doIt:@(v) b:@"a" c:self];
     
     proxy3.catcherFactory = fact;
     [fact setResult:self];

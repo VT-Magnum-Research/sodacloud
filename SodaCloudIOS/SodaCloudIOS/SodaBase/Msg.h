@@ -13,8 +13,9 @@
     
 }
 
-@property(nonatomic,assign)NSString* id;
-@property(nonatomic,assign)NSString* responseTo;
-@property(nonatomic,assign)NSString* destination;
-@property(nonatomic,assign)NSString* type;
+@property(nonatomic,retain)NSString* id;
+@property(nonatomic,retain)NSString* responseTo;
+@property(nonatomic,retain)NSString* destination;
+@property(nonatomic,retain)NSString* type;
+@property(nonatomic,retain)NSString* source;
 @end

@@ -14,7 +14,9 @@
     id result;
 }
 
+@property(nonatomic,retain)Class returnType;
+
 -(void)setResult:(id)rslt;
 -(id)getResult;
--(id)initWithId:(NSString*)id;
+-(id)initWithId:(NSString*)id andReturnType:(Class)type;
 @end

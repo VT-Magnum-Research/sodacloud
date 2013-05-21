@@ -16,6 +16,8 @@
 package org.magnum.soda.server.wamp;
 
 import org.magnum.soda.Soda;
+import org.magnum.soda.msg.Protocol;
+import org.magnum.soda.protocol.generic.DefaultProtocol;
 import org.magnum.soda.svc.PingSvc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +27,12 @@ public class ServerSoda extends Soda {
 	private static final Logger Log = LoggerFactory.getLogger(ServerSoda.class);
 
 	public ServerSoda(int port) {
+		this(new DefaultProtocol(), port);
+	}
+	
+	public ServerSoda(Protocol protoc, int port) {
 		super(true);
-		setTransport(new WebsocketTransport(getMsgBus(), getLocalAddress(),
+		setTransport(new WebsocketTransport(protoc,getMsgBus(), getLocalAddress(),
 				port));
 
 		bind(new PingSvc() {

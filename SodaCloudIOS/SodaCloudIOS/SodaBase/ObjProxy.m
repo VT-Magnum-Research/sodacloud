@@ -12,6 +12,7 @@
 #import "InvocationMsg.h"
 #import "ResponseCatcher.h"
 #import "NSObject+ToJson.h"
+#import "SodaPass.h"
 
 @implementation ObjProxy
 
@@ -41,14 +42,14 @@
         invoke.method = method.name;
         invoke.destination = [target getHost];
         invoke.uri = target.uri;
-        invoke.parameters = [self getArgsFromInvocation:anInvocation withTotal:method.parameterTypes.count];
+        invoke.parameters = [self getArgsFromInvocation:anInvocation withMethod:method];
         
         [self sendInvocation:invoke];
         
         if(method.returnType != nil || ![method isAsyncIfVoid]){
             
             ResponseCatcher* catcher = (self.catcherFactory == nil)?
-                [[ResponseCatcher alloc] initWithId:invoke.id]:
+                [[ResponseCatcher alloc] initWithId:invoke.id andReturnType:method.returnType]:
                 [self.catcherFactory createCatcher:invoke];
     
             __unsafe_unretained id answer = [catcher getResult];
@@ -65,11 +66,22 @@
     
 }
 
--(NSArray*)getArgsFromInvocation:(NSInvocation*)invocation withTotal:(int)count
+-(NSArray*)getArgsFromInvocation:(NSInvocation*)invocation withMethod:(SodaMethod*)method
 {
+    int count = method.parameterTypes.count;
+    
     NSMutableArray* args = [[NSMutableArray alloc]init];
     for(int i = 2; i < count + 2; i++){
         id arg = [invocation getArgumentAtIndexAsObject:i];
+        
+        id type = [method.parameterTypes objectAtIndex:(i-2)];
+        if([type isKindOfClass:[RefParam class]] ||
+           [SodaPass isByReference:type]){
+            // do the magic to convert the
+            // object into an obj ref;
+            // arg = converted objref;
+        }
+        
         [args addObject:arg];
     }
     
