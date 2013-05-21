@@ -9,6 +9,7 @@ package org.magnum.soda.example.maint;
 import java.util.Iterator;
 
 import org.magnum.soda.Soda;
+import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.magnum.soda.server.wamp.ServerSoda;
 import org.magnum.soda.server.wamp.ServerSodaLauncher;
 import org.magnum.soda.server.wamp.ServerSodaListener;
@@ -26,7 +27,7 @@ public class MaintenanceServer implements ServerSodaListener {
 	 */
 	public static void main(String[] args) {
 		ServerSodaLauncher launcher = new ServerSodaLauncher();
-		launcher.launch(8081, new MaintenanceServer());
+		launcher.launch(new NativeJavaProtocol(), 8081, new MaintenanceServer());
 
 	}
 
