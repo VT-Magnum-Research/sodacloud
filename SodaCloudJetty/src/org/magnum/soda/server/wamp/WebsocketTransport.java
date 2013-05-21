@@ -24,6 +24,7 @@ package org.magnum.soda.server.wamp;
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.MetaAddress;
+import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
 import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.magnum.soda.server.wamp.client.EventReceiver;
@@ -48,6 +49,11 @@ public class WebsocketTransport extends Transport {
 
 	public WebsocketTransport(MsgBus msgBus, LocalAddress addr, int port) {
 		super(new DefaultProtocol(), msgBus, addr);
+		handler_ = new ServerPubSubHandler(port);
+	}
+	
+	public WebsocketTransport(Protocol proto, MsgBus msgBus, LocalAddress addr, int port) {
+		super(proto, msgBus, addr);
 		handler_ = new ServerPubSubHandler(port);
 	}
 
