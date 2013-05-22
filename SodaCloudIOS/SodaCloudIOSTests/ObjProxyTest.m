@@ -10,6 +10,7 @@
 
 #import "ObjProxy.h"
 #import "SodaObject.h"
+#import "MockCatcherFactory.h"
 
 @interface MockSodaSvc : NSObject<SodaObject>
 -(NSString*)foo:(NSString*)val;
@@ -27,18 +28,6 @@ SODA_METHODS(
             )
 @end
 
-@interface MockCatcherFactory : NSObject<ResponseCatcherFactory>
--(ResponseCatcher*)createCatcher:(InvocationMsg *)msg;
-@property(nonatomic,assign) id result;
-@end
-@implementation MockCatcherFactory
--(ResponseCatcher*)createCatcher:(InvocationMsg *)msg
-{
-    ResponseCatcher* catch = [[ResponseCatcher alloc]init];
-    [catch setResult:self.result];
-    return catch;
-}
-@end
 
 @implementation ObjProxyTest
 

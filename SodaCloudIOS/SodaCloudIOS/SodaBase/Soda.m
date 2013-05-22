@@ -35,6 +35,7 @@
         ObjProxy* prox = PROXY(ref,type);
         prox.soda = self;
         proxy = prox;
+        [self.namingService bindObject:proxy toRef:ref];
     }
     
     return proxy;

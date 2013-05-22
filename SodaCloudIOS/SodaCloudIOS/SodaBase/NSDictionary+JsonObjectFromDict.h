@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Soda.h"
+
 @interface NSDictionary (JsonObjectFromDict)
 {}
 -(id) toJsonObjectFromDict:(Class)jtype;

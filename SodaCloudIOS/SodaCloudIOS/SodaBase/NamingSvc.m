@@ -28,6 +28,12 @@ SODA_METHODS(
     return self;
 }
 
+-(void)bindObject:(id)obj toRef:(ObjRef*)ref
+{
+    [self.bindings setObject:obj forKey:ref.uri];
+    [self.refs setObject:ref forKey:obj];
+}
+
 -(ObjRef*)bindObject:(id)obj toId:(NSString*)oid
 {
     ObjRef* ref = [self.refs objectForKey:obj];
@@ -36,9 +42,9 @@ SODA_METHODS(
         ref = [[ObjRef alloc]init];
         [ref setHost:self.host andObjId:oid];
         [self.bindings setObject:obj forKey:oid];
-        [self.bindings setObject:obj forKey:ref.uri];
-        [self.refs setObject:ref forKey:obj];
         [self.refs setObject:ref forKey:oid];
+        
+        [self bindObject:obj toRef:ref];
     }
     
     return ref;
