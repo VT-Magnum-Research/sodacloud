@@ -43,7 +43,6 @@ public class AndroidSoda extends Soda {
 		context_ = ctx;
 		final AndroidSoda soda = new AndroidSoda();
 		soda.connect(new UriAddress("ws://" + host + ":" + port));
-		Log.info("inside init");
 		Runnable r = new Runnable() {
 
 			@Override
@@ -97,12 +96,8 @@ public class AndroidSoda extends Soda {
 	}
 
 	@Override
-	protected synchronized ProxyCreator getProxyCreator() {
-		if(context_==null)
-			Log.error("null context.");
-		File t = context_.getDir("dx", Context.MODE_PRIVATE);
-		
-		return new DexProxyCreator(t);
+	protected synchronized ProxyCreator getProxyCreator() {	
+		return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
 	}
 
 	public void setContext(Context context) {
@@ -110,10 +105,7 @@ public class AndroidSoda extends Soda {
 		handler_ = new Handler(context_.getMainLooper());
 		dispatcher_ = new AndroidInvocationDispatcher(handler_);
 		inUiDispatcher_ = new AndroidInvocationDispatcher(handler_, true);
-		getInvoker().setDispatcher(dispatcher_);
-		
-		if(context_==null)
-			Log.error("null context inside setContext.");
+		getInvoker().setDispatcher(dispatcher_);	
 	}
 
 	public <T> T invokeInUi(T obj) {
