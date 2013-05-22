@@ -18,4 +18,5 @@
     
     return [parser parseDictionary:self];
 }
+
 @end
