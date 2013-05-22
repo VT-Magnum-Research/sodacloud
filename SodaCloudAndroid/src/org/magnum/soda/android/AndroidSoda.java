@@ -15,6 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.android;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -24,20 +25,25 @@ import java.util.concurrent.Future;
 import org.magnum.soda.Soda;
 import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.transport.UriAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.content.Context;
 import android.os.Handler;
 
 public class AndroidSoda extends Soda {
-
+	private static final Logger Log = LoggerFactory
+			.getLogger(AndroidSoda.class);
+	
 	private static final ExecutorService executor_ = Executors
 			.newFixedThreadPool(5);
 
 	public static void init(final Context ctx, final String host,
 			final int port, final AndroidSodaListener l) {
+		context_ = ctx;
 		final AndroidSoda soda = new AndroidSoda();
 		soda.connect(new UriAddress("ws://" + host + ":" + port));
-
+		Log.info("inside init");
 		Runnable r = new Runnable() {
 
 			@Override
@@ -61,7 +67,7 @@ public class AndroidSoda extends Soda {
 
 	private CountDownLatch connectGate_ = new CountDownLatch(1);
 
-	private Context context_;
+	private static Context context_;
 
 	private Handler handler_;
 
@@ -92,7 +98,11 @@ public class AndroidSoda extends Soda {
 
 	@Override
 	protected synchronized ProxyCreator getProxyCreator() {
-		return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
+		if(context_==null)
+			Log.error("null context.");
+		File t = context_.getDir("dx", Context.MODE_PRIVATE);
+		
+		return new DexProxyCreator(t);
 	}
 
 	public void setContext(Context context) {
@@ -101,6 +111,9 @@ public class AndroidSoda extends Soda {
 		dispatcher_ = new AndroidInvocationDispatcher(handler_);
 		inUiDispatcher_ = new AndroidInvocationDispatcher(handler_, true);
 		getInvoker().setDispatcher(dispatcher_);
+		
+		if(context_==null)
+			Log.error("null context inside setContext.");
 	}
 
 	public <T> T invokeInUi(T obj) {
