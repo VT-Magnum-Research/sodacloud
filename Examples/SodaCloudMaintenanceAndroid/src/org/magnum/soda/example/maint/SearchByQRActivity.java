@@ -18,7 +18,7 @@ import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 import org.magnum.soda.ctx.ImageContainer;
-import org.magnum.soda.ctx.SodaQR;
+import org.magnum.soda.android.ctx.SodaQR;
 
 
 import android.app.Activity;
@@ -290,7 +290,8 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 				  if (scanResult != null) {
 				   SodaQR qr= SodaQR.create(scanResult.getContents());
 				   ImageContainer img= qr.getImg_();
-				   qrBitmap= img.getQrBitCodeImage_();
+				   if(img.getQrCodeImage_() instanceof Bitmap)
+					   qrBitmap= (Bitmap)img.getQrCodeImage_();
 				 
 			//	qrBitmap = scaleBitmap("/sdcard/IMG_target.jpg");
 

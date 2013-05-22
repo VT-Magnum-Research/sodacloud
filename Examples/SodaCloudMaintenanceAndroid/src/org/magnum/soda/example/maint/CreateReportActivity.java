@@ -13,8 +13,9 @@ import java.util.concurrent.Future;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
+import org.magnum.soda.android.ctx.SodaQR;
 import org.magnum.soda.ctx.ImageContainer;
-import org.magnum.soda.ctx.SodaQR;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -150,9 +151,11 @@ public class CreateReportActivity extends Activity implements
 
 					SodaQR qr_ = SodaQR.create(mContent);
 					ImageContainer bitmap = qr_.getImg_();
-					QRView.setImageBitmap(bitmap.getQrBitCodeImage_());
+					if(bitmap.getQrCodeImage_() instanceof Bitmap)
+					{QRView.setImageBitmap((Bitmap)bitmap.getQrCodeImage_());
 					QRView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 					QRView.setAdjustViewBounds(true);
+					}
 
 				}
 				Log.d("SODA", "QR");
@@ -214,7 +217,7 @@ public class CreateReportActivity extends Activity implements
 
 					@Override
 					public void reportchanged(final MaintenanceReport r) {
-						// TODO Auto-generated method stub
+						
 						
 					}
 				});
