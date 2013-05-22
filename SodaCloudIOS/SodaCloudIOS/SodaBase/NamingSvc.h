@@ -27,6 +27,7 @@
 @property(nonatomic, retain)NSMutableDictionary* refs;
 
 -(id)initWithHost:(NSString*)host;
+-(void)bindObject:(id)obj toRef:(ObjRef*)ref;
 -(ObjRef*)bindObject:(id)obj toId:(NSString*)id;
 -(ObjRef*)bindObject:(id)obj;
 -(id)getObject:(ObjRef*)ref;

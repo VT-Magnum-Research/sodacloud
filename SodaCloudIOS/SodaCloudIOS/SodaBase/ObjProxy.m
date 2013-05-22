@@ -51,13 +51,20 @@
             ResponseCatcher* catcher = (self.catcherFactory == nil)?
                 [[ResponseCatcher alloc] initWithId:invoke.id andReturnType:method.returnType]:
                 [self.catcherFactory createCatcher:invoke];
+            catcher.soda = self.soda;
     
             __unsafe_unretained id answer = [catcher getResult];
             [anInvocation setReturnValue:&answer];
         }
     }
     else {
-        [super forwardInvocation:anInvocation];
+        NSString* name = NSStringFromSelector(anInvocation.selector);
+        if([name isEqualToString:@"hash:"]){
+            [anInvocation setTarget:target];
+        }
+        else {
+            [super forwardInvocation:anInvocation];
+        }
     }
 }
 
@@ -109,11 +116,33 @@
 	if(sig==nil)
 	{
         SodaMethod* method = [self methodFromSelector:sel];
-        NSString* ctype = [method cTypes];
-		sig=[NSMethodSignature signatureWithObjCTypes:[ctype cString]];
+        
+        if(method != nil){
+            NSString* ctype = [method cTypes];
+            sig=[NSMethodSignature signatureWithObjCTypes:[ctype cString]];
+        }
+        else {
+            if(sel == @selector(hash)){
+                sig = [NSMethodSignature signatureWithObjCTypes:"@^c^v"];
+            }
+            else if(sel == @selector(copyWithZone:)){
+                 sig = [NSMethodSignature signatureWithObjCTypes:"@^c^v@"];
+            }
+        }
 	}
 	
 	return sig;
+}
+
+-(NSUInteger)hash
+{
+    return [target hash];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    ObjProxy *copy = [[[self class] alloc] initWithObjRef:target andSodaObject:interface];
+    return copy;
 }
 
 @end

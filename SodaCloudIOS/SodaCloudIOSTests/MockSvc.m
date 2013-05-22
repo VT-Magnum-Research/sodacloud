@@ -6,8 +6,15 @@
 //  Copyright (c) 2013 Jules White. All rights reserved.
 //
 
-#import "MockSodaSvc.h"
+#import "MockSvc.h"
 
-@implementation MockSodaSvc
+@implementation MockSvc
 
+SODA_METHODS(
+             SODA_METHOD(@"foo", NSString, PARAM(NSString)),
+             SODA_VOID_METHOD(@"doIt", PARAM(NSNumber),PARAM(NSString),PARAM(MockSvc)),
+             SODA_NOARG_METHOD(@"getTest", MockSvc),
+             SODA_VOID_METHOD(@"setTest",REF(MockSvc))
+             )
 @end
+
