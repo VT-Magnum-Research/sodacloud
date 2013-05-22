@@ -10,6 +10,14 @@
 	<packaging>apk</packaging>
 	<dependencies>
 		<dependency>
+			<groupId>com.google.android.gms</groupId>
+			<artifactId>google-play-services</artifactId>
+			<version>r5</version>
+			<type>jar</type>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/google-play-services.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<version>4.0.1.2</version>
