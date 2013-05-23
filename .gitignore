@@ -2,6 +2,7 @@
 SodaCloud/target/*
 SodaCloudJetty/target/*
 SodaCloudAndroid/target/*
+config.soda
 
 .DS_Store
 # built application files
