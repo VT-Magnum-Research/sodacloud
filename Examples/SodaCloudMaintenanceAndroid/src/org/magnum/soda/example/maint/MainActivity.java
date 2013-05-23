@@ -50,7 +50,7 @@ public class MainActivity extends Activity{
     }
     
     private void CreateWatchZoneIntent(){
-    	Intent i =new Intent(this, WatchZoneActivity.class);
+    	Intent i =new Intent(this, MonitorZoneActivity.class);
 		startActivity(i);
     }
     
