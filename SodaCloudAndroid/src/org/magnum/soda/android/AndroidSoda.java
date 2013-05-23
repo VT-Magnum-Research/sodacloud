@@ -28,6 +28,8 @@ import org.magnum.soda.transport.UriAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.magnum.soda.svc.NamingService;
+
 import android.content.Context;
 import android.os.Handler;
 
@@ -79,8 +81,10 @@ public class AndroidSoda extends Soda {
 	}
 
 	@Override
-	public void connected() {
-		super.connected();
+	public void connected(Class<?> ...classes) {
+	
+		Class<?> []cls={this.getNamingService().getClass()};
+		super.connected(cls);
 		connectGate_.countDown();
 	}
 

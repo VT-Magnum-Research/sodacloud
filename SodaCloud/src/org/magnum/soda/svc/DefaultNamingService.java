@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.proxy.SodaInferReturnTypeFromArgument;
@@ -32,6 +33,10 @@ public class DefaultNamingService implements NamingService {
 	private NamingService parent_;
 	
 	private ProxyFactory proxyFactory_;
+	
+	public static final ObjRef ROOT_NAMING_SVC = new ObjRef(
+			ObjRef.createObjUri(MetaAddress.META_ADDRESS.toString(), SVC_NAME),
+			DefaultNamingService.class.getName());
 
 	public DefaultNamingService() {
 	}

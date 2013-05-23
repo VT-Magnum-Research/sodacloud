@@ -15,9 +15,10 @@
  ****************************************************************************/
 package org.magnum.soda.transport;
 
+
 public interface TransportListener {
 	
-	public void connected();
+	public void connected(Class<?> ...classes );
 	
 	public void disconnected();
 	

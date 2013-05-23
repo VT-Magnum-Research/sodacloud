@@ -33,7 +33,7 @@ public class DexProxyCreator implements ProxyCreator {
 
 		Object proxy = null;
 		try {
-			if (arg1.length == 1) {
+			if (arg1.length == 1 && !arg1[0].isInterface()) {
 				proxy = ProxyBuilder.forClass(arg1[0]).dexCache(dexCache_)
 						.handler(arg2).build();
 			} else {

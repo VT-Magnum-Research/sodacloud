@@ -234,9 +234,19 @@ public class Soda implements TransportListener {
 	 * (var geoHash in matching) { tmp.push(matching[geoHash]); } return tmp; }
 	 */
 	@Override
-	public void connected() {
+	public void connected(Class<?> ...classes ) {
 		try {
-			ObjRef ref = NamingService.ROOT_NAMING_SVC;
+			ObjRef ref =null;
+			if(classes.length==0)
+			{
+				ref= NamingService.ROOT_NAMING_SVC;
+			}
+			else
+			{
+				if(classes[0].equals(DefaultNamingService.class))
+					ref= DefaultNamingService.ROOT_NAMING_SVC;
+			}
+			
 			NamingService svc = (NamingService) proxyFactory_.createProxy(ref);
 			namingService_.setParent(svc,proxyFactory_);
 		} catch (Exception e) {
