@@ -17,6 +17,7 @@ import org.magnum.soda.android.SodaInvokeInUi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -132,6 +133,11 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						SharedPreferences sharedPref = ctx_.getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE);
+						SharedPreferences.Editor editor = sharedPref.edit();
+						editor.putString("username", "test_Username");
+						editor.commit();
+						
 						Intent i =new Intent(ctx_, MainActivity.class);
 						startActivity(i);
 					}
@@ -208,11 +214,17 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	{
 		runOnUiThread(new Runnable()
 		{
-		
+			
 		@Override
 		public void run() {
+			Log.e("SODA", "inside executeIntent");
 			// TODO Auto-generated method stub
 			if (success) {
+				SharedPreferences sharedPref = ctx_.getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = sharedPref.edit();
+				editor.putString("username", mEmail);
+				editor.commit();
+				
 				Intent i =new Intent(ctx_, MainActivity.class);
 				startActivity(i);
 			} else {

@@ -14,6 +14,9 @@ import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,16 +41,23 @@ public class MonitorZoneActivity extends Activity implements OnMapClickListener,
 	private Button createZoneButton;
 	private double selectedLatitude;
 	private double selectedLongitude;
+	private String username;
 	static final LatLng Blacksburg = new LatLng(37.225134, -80.425425);
 	private List<MaintenanceReport> mReportList = new ArrayList<MaintenanceReport>();
 	private AndroidSodaListener asl_ = null;
 	private AndroidSoda as = null;
+	
+	//temporary
+	private List<MonitorZone> zonelist= new ArrayList<MonitorZone>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_monitorzone);
 		radiusText = (EditText) findViewById(R.id.monitorzone_radius_edittext);
 		createZoneButton = (Button) findViewById(R.id.CreateMonitorZone_Button);
+		
+		SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE);
+		username = sharedPref.getString("username", "no");
 		
 		Properties prop = new Properties();
 
@@ -66,7 +76,7 @@ public class MonitorZoneActivity extends Activity implements OnMapClickListener,
 		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Blacksburg, 15));
 		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		int radius = Integer.valueOf(radiusText.getText().toString());
+		
 		
 		CircleOptions circleOptions = new CircleOptions()
 	    .center(new LatLng(37.222134, -80.425425))
@@ -86,7 +96,7 @@ public class MonitorZoneActivity extends Activity implements OnMapClickListener,
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         
-        AndroidSoda.init(this, mHost, 8081, asl_);
+     //   AndroidSoda.init(this, mHost, 8081, asl_);
         List<LatLng> l= new ArrayList<LatLng>();
         l.add(new LatLng(37.223134, -80.425425));
         l.add(new LatLng(37.223134, -80.425625));
@@ -99,8 +109,15 @@ public class MonitorZoneActivity extends Activity implements OnMapClickListener,
         createZoneButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				int radius = Integer.valueOf(radiusText.getText().toString());
 				
-				
+				MonitorZone zone= new MonitorZone();
+				zone.setRadius_(radius);
+				zone.setLatitude_(selectedLatitude);
+				zone.setLongitude_(selectedLongitude);
+				zone.setOwnerName_(username);
+				Log.i("Soda", "Radius:"+radius+"  Username:"+username);
+				zonelist.add(zone);
 			}
 			
         });
