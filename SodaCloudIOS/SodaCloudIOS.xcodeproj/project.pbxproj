@@ -62,6 +62,7 @@
 		8463D9F6174BDCFB006692FC /* ResponseCatcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463D9F5174BDCFB006692FC /* ResponseCatcherTest.m */; };
 		8463D9F9174BDEF4006692FC /* MockSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463D9F8174BDEF4006692FC /* MockSvc.m */; };
 		8463D9FC174C42EC006692FC /* MockCatcherFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463D9FB174C42EC006692FC /* MockCatcherFactory.m */; };
+		8463D9FF174C4502006692FC /* ObjInvoker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463D9FE174C4502006692FC /* ObjInvoker.m */; };
 		84FD05FF174AB600009411A9 /* NamingSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD05FE174AB600009411A9 /* NamingSvc.m */; };
 		84FD0602174ABA4E009411A9 /* NamingSvcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD0601174ABA4E009411A9 /* NamingSvcTest.m */; };
 		C4FF9184B1804CB49315AB25 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 740B4715B55E4079A2769B58 /* libPods.a */; };
@@ -181,6 +182,8 @@
 		8463D9F8174BDEF4006692FC /* MockSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockSvc.m; sourceTree = "<group>"; };
 		8463D9FA174C42EC006692FC /* MockCatcherFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockCatcherFactory.h; sourceTree = "<group>"; };
 		8463D9FB174C42EC006692FC /* MockCatcherFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockCatcherFactory.m; sourceTree = "<group>"; };
+		8463D9FD174C4501006692FC /* ObjInvoker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjInvoker.h; sourceTree = "<group>"; };
+		8463D9FE174C4502006692FC /* ObjInvoker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjInvoker.m; sourceTree = "<group>"; };
 		84FD05FD174AB600009411A9 /* NamingSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamingSvc.h; sourceTree = "<group>"; };
 		84FD05FE174AB600009411A9 /* NamingSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NamingSvc.m; sourceTree = "<group>"; };
 		84FD0600174ABA4E009411A9 /* NamingSvcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamingSvcTest.h; sourceTree = "<group>"; };
@@ -361,6 +364,8 @@
 				840014DA1749B16B00E75A60 /* Soda.m */,
 				84FD05FD174AB600009411A9 /* NamingSvc.h */,
 				84FD05FE174AB600009411A9 /* NamingSvc.m */,
+				8463D9FD174C4501006692FC /* ObjInvoker.h */,
+				8463D9FE174C4502006692FC /* ObjInvoker.m */,
 			);
 			path = SodaBase;
 			sourceTree = "<group>";
@@ -580,6 +585,7 @@
 				840014DB1749B16C00E75A60 /* Soda.m in Sources */,
 				84FD05FF174AB600009411A9 /* NamingSvc.m in Sources */,
 				8463D9F0174BCC3C006692FC /* InvocationResponseMsg.m in Sources */,
+				8463D9FF174C4502006692FC /* ObjInvoker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

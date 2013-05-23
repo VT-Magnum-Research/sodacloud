@@ -141,19 +141,6 @@
          timestampString = "390862540.758104"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "102"
-         endingLineNumber = "102"
-         landmarkName = "-findMethod:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "SodaCloudIOS/SodaBase/ObjProxy.m"
-         timestampString = "390862540.758104"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
          startingLineNumber = "89"
          endingLineNumber = "89"
          landmarkName = "-getArgsFromInvocation:withMethod:"
@@ -352,19 +339,6 @@
          startingLineNumber = "114"
          endingLineNumber = "114"
          landmarkName = "-methodSignatureForSelector:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "SodaCloudIOS/SodaBase/ObjProxy.m"
-         timestampString = "390862540.758104"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
-         landmarkName = "-findMethod:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
