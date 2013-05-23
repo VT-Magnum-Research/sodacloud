@@ -1,4 +1,12 @@
 #
+#
+# Setup: create a file called "config.soda" in the working directory and insert:
+#
+# aws_access_key:<aws access key>
+# aws_secret_key:<aws secret key>
+# ssh_key:<path to your key.pem>
+#
+#
 # Sample Usage:
 #    fab deploy:ami=ami-05355a6c,keyname=soda,userdata=test123,type=t1.micro,securitygroup=docker-ec2 ensure_up get_user_data
 # -- launches an EC2 instance of the specified type, waits for ssh to come up on the instance
