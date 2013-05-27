@@ -96,7 +96,7 @@ def create_docker_image_with_remote_file(imgfile,imgid):
 	run("sudo cat %s | sudo docker import - %s" % (imgfile,imgid))
 
 def run_in_docker(imgid,cmd,port):
-	run("docker run -i -t -p %s %s %s" % (port,imgid,cmd))
+	run("docker run -i -t -p %s %s %s &" % (port,imgid,cmd))
 
 def deploy_docker_instance(keyname,userdata="docker",type="t1.micro",securitygroup="docker-ec2"):
 	deploy(ami="ami-3be88052",
@@ -106,7 +106,7 @@ def deploy_docker_instance(keyname,userdata="docker",type="t1.micro",securitygro
 			type=type,
 			securitygroup=securitygroup)
 
-def deploy(ami,keyname,user,userdata,type,securitygroup):
+def deploy(amis,keyname,user,userdata,type,securitygroup):
 	
 	res = conn.run_instances(
        	 	ami,
@@ -119,6 +119,15 @@ def deploy(ami,keyname,user,userdata,type,securitygroup):
 	
 	launched = [user + "@" + instance.public_dns_name for instance in res.instances]
 	print("Launched: %s" % launched)
+	env.hosts = launched
+    
 	
-	env.hosts = launched;
-	
+def test_app_on_nodes(keyname,userdata="docker",type="t1.micro",securitygroup="docker-ec2"):
+    deploy_docker_instance(keyname=soda) 
+    ensure_up 
+    get_user_data 
+    #create_docker_image_from_s3:imgid=soda,bucket=sodascale,key=soda-server.pkg run_in_docker:imgid=soda,cmd="java -jar /soda/soda-server.jar",port=8081
+    
+    
+    
+    

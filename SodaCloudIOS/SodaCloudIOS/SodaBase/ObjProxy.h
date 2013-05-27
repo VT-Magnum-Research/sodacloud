@@ -16,12 +16,11 @@
 
 @interface ObjProxy : NSProxy
 {
-    ObjRef* target;
     NSCondition* waitLock;
     id interface;
 }
 
-@property (nonatomic, retain) ObjRef* remoteObj;
+@property (nonatomic, retain) ObjRef* target;
 @property (nonatomic, retain) id<ResponseCatcherFactory> catcherFactory;
 @property (nonatomic, retain) Soda* soda;
 

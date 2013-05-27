@@ -11,6 +11,7 @@
 #import <objc/objc-runtime.h>
 #import "SodaMethod.h"
 #import "SodaObject.h"
+#import "NSArray+JsonObjects.h"
 
 @implementation ObjInvoker
 
@@ -37,13 +38,27 @@
     
     @try{
         SodaMethod* method = [self findMethod:msg.method inObj:target];
-        NSArray* paramTypes = [method parameterTypes];
         SEL tocall = [self findTargetMethod:msg.method in:target];
         
         NSMethodSignature* sig = [target methodSignatureForSelector:tocall];
         NSInvocation* inv = [NSInvocation invocationWithMethodSignature:sig];
         inv.selector = tocall;
         inv.target = target;
+        
+        NSArray* paramTypes = [method parameterTypes];
+        
+        Method m = class_getInstanceMethod([target class], tocall);
+        if(m == nil){
+            m = class_getClassMethod([target class], tocall);
+        }
+        
+        //count includes self and selector so we need
+        //to decrement by 2
+        int count = method_getNumberOfArguments(m);
+        if((count - 2) != paramTypes.count){
+            [NSException raise:@"Invalid method signature for SODA_METHOD" format:@"%@ has an invalid SODA_METHODS signature for method %@ and should have %i params rather than %i",
+                [target class],msg.method,count,paramTypes.count];
+        }
         
         NSArray* params = [self unmarshallParams:msg.parameters usingTypes:paramTypes];
         for (int i = 0; i < params.count; i++) {
@@ -52,10 +67,12 @@
         }
         
         [inv invoke];
-        __unsafe_unretained id rval = resp.result;
-        [inv getReturnValue:&rval];
         
-        resp.result = rval;
+        if(method.returnType != nil){
+            __unsafe_unretained id rval = resp.result;
+            [inv getReturnValue:&rval];
+            resp.result = rval;
+        }
     }
     @catch (NSException* e) {
         resp.exception = [e reason];
@@ -66,7 +83,7 @@
 
 -(NSArray*)unmarshallParams:(NSArray*)params usingTypes:(NSArray*)types
 {
-    return params;
+    return [params toJsonObjectsOfTypes:types andSoda:self.soda];
 }
 
 -(SodaMethod*)findMethod:(NSString*)methodName inObj:(id)target

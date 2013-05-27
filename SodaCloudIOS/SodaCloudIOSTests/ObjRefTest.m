@@ -15,6 +15,19 @@
 
 @implementation ObjRefTest
 
+- (void)testChecksForHostProtocol
+{
+    ObjRef* oref = [[ObjRef alloc] init];
+    [oref setHost:@"localhost" andObjId:@"123"];
+    
+    ObjRef* ref2 = [[ObjRef alloc]init];
+    [ref2 setHost:@"soda://localhost" andObjId:@"123"];
+    
+    STAssertEqualObjects(oref.uri, ref2.uri, @"the objref did not check for the host protocol when setting the uri with setHost andObjId");
+    STAssertEqualObjects(oref, ref2, @"the objref did not properly check equality of two refs that are the same");
+}
+
+
 - (void)testObjRefInit
 {
     ObjRef* oref = [[ObjRef alloc] init];

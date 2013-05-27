@@ -8,6 +8,8 @@
 
 #import "Soda.h"
 
+#import "NSObject+ToJson.h"
+#import "NSString+JsonObject.h"
 #import "ObjProxy.h"
 #import "ObjRef.h"
 
@@ -27,6 +29,25 @@
     return self;
 }
 
+-(ObjRef*)bindObject:(id<SodaObject>)obj toId:(NSString*)id
+{
+   return [self.namingService bindObject:obj toId:id];
+}
+
+-(ObjRef*)bindObject:(id<SodaObject>)obj 
+{
+    return [self.namingService bindObject:obj];
+}
+
+-(id) toObject:(ObjRef*)ref ofType:(Class)type
+{
+    id obj = [self.namingService getObject:ref];
+    if(obj == nil){
+        obj = [self createProxyWithRef:ref andType:type];
+    }
+    return obj;
+}
+
 -(id)createProxyWithRef:(ObjRef*)ref andType:(Class)type
 {
     id proxy = [self.namingService getObject:ref];
@@ -39,6 +60,16 @@
     }
     
     return proxy;
+}
+
+-(NSString*) marshall:(id)obj
+{
+    return [obj toJsonWithSoda:self];
+}
+
+-(id) unmarshall:(NSString*)json withType:(Class)type
+{
+    return [json toJsonObject:type];
 }
 
 -(void)connected

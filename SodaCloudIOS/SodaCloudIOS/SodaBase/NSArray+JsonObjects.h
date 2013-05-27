@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Soda.h"
 
 @interface NSArray (JsonObjects)
 
 -(NSArray*)toJsonObjectsOfTypes:(NSArray*)types;
+-(NSArray*)toJsonObjectsOfTypes:(NSArray*)types andSoda:(Soda*)soda;
 @end
