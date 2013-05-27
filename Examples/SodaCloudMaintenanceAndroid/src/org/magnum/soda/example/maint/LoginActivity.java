@@ -13,6 +13,7 @@ import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
+import org.magnum.soda.example.views.homeactivity.HomeActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -63,6 +64,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 	Context ctx_ = this;
 	// UI references.
 	private Button bypassButton;
+	private Button mHomeButton;
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
@@ -99,6 +101,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 
 		// Set up the login form.
     	bypassButton = (Button)findViewById(R.id.button_Bypass);
+    	mHomeButton = (Button)findViewById(R.id.button_home);
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.username_edit);
 		mEmailView.setText(mEmail);
@@ -142,6 +145,15 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 						startActivity(i);
 					}
 				});
+		mHomeButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent homeActivityIntent = new Intent(ctx_, HomeActivity.class);
+				startActivity(homeActivityIntent);
+				
+			}
+		});
 		
 		
 		
