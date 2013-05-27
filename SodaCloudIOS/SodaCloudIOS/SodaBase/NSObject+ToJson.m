@@ -9,6 +9,9 @@
 #import "NSObject+ToJson.h"
 
 #import "ObjRef.h"
+#import "Soda.h"
+#import "ObjProxy.h"
+#import "SodaObject.h"
 #import <objc/runtime.h>
 #import "SodaPass.h"
 #import <SBJson/SBJson.h>
@@ -18,7 +21,14 @@
 
 -(NSString*) toJson
 {
-    NSDictionary* attrs = [self dictionaryWithPropertiesOfObject:self];
+    NSDictionary* attrs = [self dictionaryValueOfObject:self andSoda:nil];
+    return [attrs JSONRepresentation];
+}
+
+-(NSString*) toJsonWithSoda:(Soda*)soda
+{
+    NSDictionary* attrs =
+    [self dictionaryValueOfObject:self andSoda:soda];
     return [attrs JSONRepresentation];
 }
 
@@ -28,7 +38,12 @@
     return [self dictionaryWithPropertiesOfObject:obj asType:[obj class]];
 }
 
--(NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj asType:(Class)type;
+-(NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj asType:(Class)type 
+{
+    return [self dictionaryWithPropertiesOfObject:obj asType:type andSoda:nil];
+}
+
+-(NSDictionary *) dictionaryWithPropertiesOfObject:(id)obj asType:(Class)type andSoda:(Soda*)soda
 {
     
     if([obj isKindOfClass:[ObjRef class]]){
@@ -45,7 +60,17 @@
         id val = [obj valueForKey:key];
         
         if(val != nil){
-            val = [self dictionaryValueOf:val];
+            if(soda != nil &&
+               [val conformsToProtocol:@protocol(SodaObject)] &&
+               ![SodaPass isByReference:[val class]]
+               ){
+                val = [soda bindObject:val];
+                val = [self dictionaryForObjRef:val];
+            }
+            else {
+                val = [self dictionaryValueOf:val andSoda:soda];
+            }
+            
             [dict setObject:val forKey:key];
         }
     }
@@ -69,19 +94,19 @@
         return dict;
 }
 
--(id) arrayValueOf:(NSArray*)arr
+-(id) arrayValueOf:(NSArray*)arr andSoda:(Soda*)soda
 {
     NSMutableArray* val = [[NSMutableArray alloc]initWithCapacity:arr.count];
     for (int i = 0; i < arr.count; i++) {
         id obj = [arr objectAtIndex:i];
-        obj = [self dictionaryValueOf:obj];
+        obj = [self dictionaryValueOf:obj andSoda:soda];
         [val addObject:obj];
     }
     
     return val;
 }
 
--(id) dictionaryValueOf:(id)value
+-(id) dictionaryValueOf:(id)value andSoda:(Soda*)soda
 {
     if ([value isKindOfClass:[NSNumber class]]){
          return value;
@@ -89,18 +114,35 @@
     else if ([value isKindOfClass:[NSString class]]){
          return value;
     }
-    else if([value isKindOfClass:[ObjRef class]]){
+    else {
+        return [self dictionaryValueOfObject:value andSoda:soda];
+    }
+}
+
+-(id) dictionaryValueOfObject:(id)value andSoda:(Soda*)soda
+{
+    if([value isKindOfClass:[ObjRef class]]){
         return [self dictionaryForObjRef:value];
     }
+    else if([value isKindOfClass:[ObjProxy class]]){
+        ObjProxy* prox = value;
+        ObjRef* ref = prox.target;
+        return [self dictionaryForObjRef:ref];
+    }
     else if([value isKindOfClass:[NSArray class]]){
-        return [self arrayValueOf:value];
+        return [self arrayValueOf:value andSoda:soda];
     }
     else if([SodaPass isByReference:[value class]]){
         // convert to an ObjRef and return
-        // return [self dictionaryForObjRef:ref];
+        return [self dictionaryWithPropertiesOfObject:value asType:[value class] andSoda:nil];
+    }
+    else if(soda != nil &&
+       [value conformsToProtocol:@protocol(SodaObject)]){
+        value = [soda bindObject:value];
+        return [self dictionaryForObjRef:value];
     }
     else {
-        return [self dictionaryWithPropertiesOfObject:value];
+        return [self dictionaryWithPropertiesOfObject:value asType:[value class] andSoda:soda];
     }
 }
 

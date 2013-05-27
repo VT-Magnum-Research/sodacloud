@@ -13,6 +13,7 @@
 @interface MockSvc : NSObject<SodaObject>
 -(NSString*)foo:(NSString*)val;
 -(void)doIt:(NSNumber*)a b:(NSString*)b c:(MockSvc*)test;
+-(NSDictionary*)doItAndReturnParams:(NSNumber*)a b:(NSString*)b c:(MockSvc*)test;
 -(MockSvc*)getTest;
 -(void)setTest:(MockSvc*)test;
 @end

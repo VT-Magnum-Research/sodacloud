@@ -9,9 +9,29 @@
 #import "NamingSvcTest.h"
 
 #import "NamingSvc.h"
+#import "MockSvc.h"
+#import "MockSvcImpl.h"
 #import <objc/runtime.h>
 
 @implementation NamingSvcTest
+
+
+// If this method blows up, it is probably because the
+// MockSvc does not respond to the copyWithZone selector,
+// even though it should.
+-(void)testCopyWithZoneBug
+{
+    MockSvc* svc = [[MockSvcImpl alloc]init];
+    NamingSvc* naming = [[NamingSvc alloc]initWithHost:@"test"];
+    ObjRef* ref = [naming bindObject:svc toId:@"svc"];
+    
+    svc = [naming get:@"svc"];
+    STAssertNotNil(svc, @"The mock service was not stored properly by the naming service.");
+    
+    svc = [naming getObject:ref];
+    STAssertNotNil(svc, @"The mock service was not stored properly by the naming service.");
+    
+}
 
 -(void)testInvocation
 {

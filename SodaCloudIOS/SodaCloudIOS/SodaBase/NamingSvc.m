@@ -28,15 +28,29 @@ SODA_METHODS(
     return self;
 }
 
+-(ObjRef*)refForObject:(id<NSObject>)obj
+{
+    // we have to do this b/c the passed obj
+    // may not implement NSCopying and dict
+    // keys must implement it
+    NSNumber* hash = @([obj hash]);
+    return [self.refs objectForKey:hash];
+}
+
 -(void)bindObject:(id)obj toRef:(ObjRef*)ref
 {
     [self.bindings setObject:obj forKey:ref.uri];
-    [self.refs setObject:ref forKey:obj];
+    
+    // we have to do this b/c the passed obj
+    // may not implement NSCopying and dict
+    // keys must implement it
+    NSNumber* hash = @([obj hash]);
+    [self.refs setObject:ref forKey:hash];
 }
 
 -(ObjRef*)bindObject:(id)obj toId:(NSString*)oid
 {
-    ObjRef* ref = [self.refs objectForKey:obj];
+    ObjRef* ref = [self refForObject:obj];
     
     if(ref == nil){
         ref = [[ObjRef alloc]init];

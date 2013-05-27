@@ -21,5 +21,7 @@
 
 -(id)initWithSoda:(Soda*)soda;
 -(InvocationResponseMsg*)invoke:(InvocationMsg*)msg;
+-(NSArray*)unmarshallParams:(NSArray*)params usingTypes:(NSArray*)types;
+-(SodaMethod*)findMethod:(NSString*)methodName inObj:(id)target;
 
 @end

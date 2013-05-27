@@ -30,7 +30,9 @@
 
 -(void)setHost:(NSString*)host andObjId:(NSString*)oid
 {
-    self.uri = [NSString stringWithFormat:@"soda://%@#%@",host,oid];
+    self.uri = ([host rangeOfString:@"soda://"].location != NSNotFound)?
+          [NSString stringWithFormat:@"%@#%@",host,oid]
+        : [NSString stringWithFormat:@"soda://%@#%@",host,oid];
 }
 
 -(NSString*)getHost

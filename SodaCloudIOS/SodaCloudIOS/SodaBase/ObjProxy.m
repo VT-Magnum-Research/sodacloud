@@ -19,7 +19,7 @@
 
 - (id)initWithObjRef:(ObjRef*)ref andSodaObject:(id)spec;
 {
-    target = ref;
+    _target = ref;
     interface = spec;
     waitLock = [[NSCondition alloc] init];
     return self;
@@ -40,8 +40,8 @@
     if(method != nil){
         InvocationMsg* invoke = [[InvocationMsg alloc]init];
         invoke.method = method.name;
-        invoke.destination = [target getHost];
-        invoke.uri = target.uri;
+        invoke.destination = [_target getHost];
+        invoke.uri = _target.uri;
         invoke.parameters = [self getArgsFromInvocation:anInvocation withMethod:method];
         
         [self sendInvocation:invoke];
@@ -60,7 +60,10 @@
     else {
         NSString* name = NSStringFromSelector(anInvocation.selector);
         if([name isEqualToString:@"hash:"]){
-            [anInvocation setTarget:target];
+            [anInvocation setTarget:_target];
+        }
+        else if([interface respondsToSelector:anInvocation.selector]){
+            [anInvocation setTarget:interface];
         }
         else {
             [super forwardInvocation:anInvocation];
@@ -134,14 +137,19 @@
 	return sig;
 }
 
+-(BOOL)isKindOfClass:(Class)aClass
+{
+    return [interface isKindOfClass:aClass] || [aClass isSubclassOfClass:[ObjProxy class]];
+}
+
 -(NSUInteger)hash
 {
-    return [target hash];
+    return [_target hash];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    ObjProxy *copy = [[[self class] alloc] initWithObjRef:target andSodaObject:interface];
+    ObjProxy *copy = [[[self class] alloc] initWithObjRef:_target andSodaObject:interface];
     return copy;
 }
 
