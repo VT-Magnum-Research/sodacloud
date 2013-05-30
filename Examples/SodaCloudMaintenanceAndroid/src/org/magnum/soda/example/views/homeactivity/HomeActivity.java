@@ -5,7 +5,14 @@ import org.magnum.soda.example.views.followersfragment.FollowersFragment;
 import org.magnum.soda.example.views.followingfragment.FollowingFragment;
 import org.magnum.soda.example.views.newsfragment.NewsFragment;
 import org.magnum.soda.example.views.projectsfragment.ProjectsFragment;
+//import org.magnum.soda.example.views.followersfragment.FollowersFragment;
+//import org.magnum.soda.example.views.followingfragment.FollowingFragment;
+//import org.magnum.soda.example.views.newsfragment.NewsFragment;
+//import org.magnum.soda.example.views.projectsfragment.ProjectsFragment;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
@@ -25,15 +32,16 @@ public class HomeActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      
         setContentView(R.layout.activity_home);
         
         instantiateMemberVariables();
         setupActionBar();
         createTabs(savedInstanceState);
    
-
+//
     }
-    
+//    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {  	
     	initMenu(menu);
