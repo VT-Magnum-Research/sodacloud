@@ -29,6 +29,14 @@
 		<item name="android:textColor">#444</item>
 		<item name="android:textSize">14sp</item>
 	</style>
+	
+    <style name ="HomeActivityStyle" parent="@style/Theme.Sherlock">
+        <item name = "actionBarTabStyle">@style/Widget.Custom.TabView</item>
+        <item name = "android:actionBarTabStyle">@style/Widget.Custom.TabView</item>
+    </style>
+    <style name="Widget.Custom.TabView" parent ="@style/Widget.Sherlock.ActionBar.TabView">
+        <item name="android:background">@drawable/transparent</item>
+    </style>
 
     
     

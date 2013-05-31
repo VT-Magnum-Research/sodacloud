@@ -98,6 +98,15 @@
 	     android:layout_centerVertical="true"
 	     android:text="Bypass" />
 
+	 <Button
+	     android:id="@+id/button_home"
+	     style="?android:attr/buttonStyleSmall"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_centerVertical="true"
+	     android:layout_toRightOf="@+id/button_Bypass"
+	     android:text="View Home Screen" />
+
 	    </RelativeLayout>
  
 </LinearLayout>
