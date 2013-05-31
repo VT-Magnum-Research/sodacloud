@@ -45,6 +45,27 @@
     }
 }
 
+-(void) testObjInvocationNoParamAndObjectReturn
+{
+    Soda* soda = [[Soda alloc]init];
+    MockSvc* svc = [[MockSvcImpl alloc]init];
+    [soda bindObject:svc toId:@"svc"];
+    
+    ObjInvoker* invoker = [[ObjInvoker alloc] initWithSoda:soda];
+    
+    InvocationMsg* msg = [[InvocationMsg alloc]init];
+    msg.uri = [NSString stringWithFormat:@"%@#%@",soda.host,@"svc"];
+    msg.parameters = [[NSArray alloc] init];
+    msg.method = @"getTest";
+    
+    NSString* json = [soda marshall:msg];
+    msg = [soda unmarshall:json withType:[InvocationMsg class]];
+    
+    InvocationResponseMsg* response = [invoker invoke:msg];
+    STAssertNotNil(response, @"obj invocation failed to generate a response from the objinvoker");
+    STAssertEqualObjects(svc, response.result, @"obj invocation produced an incorrect response");
+}
+
 -(void) testObjInvocationSingleStringParamAndStringReturn
 {
     Soda* soda = [[Soda alloc]init];

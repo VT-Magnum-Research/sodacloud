@@ -83,4 +83,18 @@
     self.namingService.parent = nil;
 }
 
+// network
+-(void) send:(Msg*)msg
+{
+    
+}
+-(void) addMsgReceiver:(id<MsgReceiver>)receiver
+{
+    
+}
+-(void) removeMsgReceiver:(id<MsgReceiver>)receiver
+{
+    
+}
+
 @end

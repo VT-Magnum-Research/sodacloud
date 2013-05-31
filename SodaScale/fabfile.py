@@ -1,133 +1,47 @@
-#
-#
-# Setup: create a file called "config.soda" in the working directory and insert:
-#
-# aws_access_key:<aws access key>
-# aws_secret_key:<aws secret key>
-# ssh_key:<path to your key.pem>
-#
-#
-# Sample Usage:
-#    fab deploy:ami=ami-05355a6c,keyname=soda,userdata=test123,type=t1.micro,securitygroup=docker-ec2 ensure_up get_user_data
-# -- launches an EC2 instance of the specified type, waits for ssh to come up on the instance
-#    and then grabs and prints the user data for each node
+from sodascale import *
 
+petstore_instances = []
 
-from __future__ import with_statement
-import time
-import boto.ec2
-from boto.ec2.connection import EC2Connection
-from fabric.api import *
-from fabric.contrib.console import confirm
+@experiment("peformance measurement")
+def performance_measurement():
+    types = ["t1.micro","m1.large","m3.xlarge"]
+    for type in types:
+        petstore_node.node_config['type'] = type
+        run_experiment("Benchmark-%s" % type)
+    data = combine_csv('stats.csv')
+    for row in data:
+        print row
 
-MAXIMUM_NUMBER_OF_ATTEMPTS = 12
-
-config = {}
-with open("config.soda") as f:
-    for line in f:
-       (key, val) = line.strip().split(":")
-       config[key] = val
-
-
-AWS_ACCESS_KEY = config['aws_access_key']
-AWS_SECRET_KEY = config['aws_secret_key']
-env.key_filename = config['ssh_key']
-
-conn = EC2Connection(AWS_ACCESS_KEY, AWS_SECRET_KEY)
-
-
-
-
-def install_docker():
-	put("./scripts/install_docker.sh","/install_docker.sh",mode=0755,use_sudo=True)
-	run("/install_docker.sh")  
-	
-def install_s3cmd():
-	run("sudo apt-get install s3cmd") 
-	put("scripts/s3cfg","/home/ubuntu/.s3cfg",mode=0700)
-	run("sed -i -e's/__ak__/%s/' /home/ubuntu/.s3cfg" % AWS_ACCESS_KEY)
-	run("sed -i -e's/__pk__/%s/' /home/ubuntu/.s3cfg" % AWS_SECRET_KEY)
-	run("sed -i -e's/__pf__/%s/' /home/ubuntu/.s3cfg" % AWS_SECRET_KEY)
+@app_node(ami="ami-3be88052",
+          instances=1,
+          type="m3.xlarge",
+          security_group="docker-ec2",
+          user='ubuntu',
+          key_pair="soda")
+def petstore_node(node_state):
+    create_docker_image_from_s3(imgid='petstore',bucket='sodascale',key='springpetstore.tar')
+    id = run("docker run -i -t -d -p 9966 petstore mvn -f /petstore/spring-petclinic/pom.xml tomcat7:run")
+    port = run("docker port %s 9966" % id)
     
-def ensure_running(instances):
-	print("Waiting for %i to come up" % len(instances))
-
-	for instance in instances:
-		print("checking instance %s" % instance)
-		while not instance.update() == 'running':
-  			time.sleep(5)
-  			
- 	for instance in instances:
-		print("Instance %s host:%s is up" % (instance, instance.public_dns_name))
-
-def ensure_ssh_is_up():
-	for attempt in range(MAXIMUM_NUMBER_OF_ATTEMPTS):
-	    try:
-	    	print("Checking ssh on running instances...")
-	        run("uname -a")
-	        print("SSH is up!")
-	    except: # replace " as " with ", " for Python<2.6
-	    	print("SSH is not up yet, retrying...")
-	        time.sleep(10)
-	    else: # we tried, and we had no failure, so
-	        break
-	else: # we never broke out of the for loop
-   		raise RuntimeError("maximum number of unsuccessful attempts reached")
-
-def ensure_up():
-	print("Ensuring SSH is up on %s" % env.hosts);
-	ensure_ssh_is_up();
-
-def get_user_data():
-	run("wget http://169.254.169.254/latest/user-data")
-	run("cat user-data")
-
-def create_docker_image_from_s3(imgid,bucket,key):
-	install_s3cmd()
-	run("sudo s3cmd --no-check-md5 --no-progress get s3://%s/%s /%s" % (bucket,key,imgid))
-	create_docker_image_with_remote_file("/"+imgid,imgid)
-
-def create_docker_image_from_file(imgid,img):
-	#with settings(hosts=instances):
-		put(img,"/" + imgid,mode=0755,use_sudo=True)
-		create_docker_image_with_remote_file("/" + imgid, imgid)
-		
-def create_docker_image_with_remote_file(imgfile,imgid):		
-	run("sudo cat %s | sudo docker import - %s" % (imgfile,imgid))
-
-def run_in_docker(imgid,cmd,port):
-	run("docker run -i -t -p %s %s %s &" % (port,imgid,cmd))
-
-def deploy_docker_instance(keyname,userdata="docker",type="t1.micro",securitygroup="docker-ec2"):
-	deploy(ami="ami-3be88052",
-			user="ubuntu",
-			keyname=keyname,
-			userdata=userdata,
-			type=type,
-			securitygroup=securitygroup)
-
-def deploy(amis,keyname,user,userdata,type,securitygroup):
-	
-	res = conn.run_instances(
-       	 	ami,
-       	 	key_name=keyname,
-        	user_data=userdata,
-        	instance_type=type,
-        	security_groups=[securitygroup])
-	
-	ensure_running(instances=res.instances)
-	
-	launched = [user + "@" + instance.public_dns_name for instance in res.instances]
-	print("Launched: %s" % launched)
-	env.hosts = launched
+    node_state['docker.id'] = id
+    node_state['docker.port'] = port
+    node_state['petstore.url'] = "http://%s:%s" % (node_state['host'],port)
+    print("http://%s:%s/petclinic" % (node_state['host'],port))
     
-	
-def test_app_on_nodes(keyname,userdata="docker",type="t1.micro",securitygroup="docker-ec2"):
-    deploy_docker_instance(keyname=soda) 
-    ensure_up 
-    get_user_data 
-    #create_docker_image_from_s3:imgid=soda,bucket=sodascale,key=soda-server.pkg run_in_docker:imgid=soda,cmd="java -jar /soda/soda-server.jar",port=8081
-    
-    
-    
+    petstore_instances.append(node_state)
+
+
+@test_node(ami="ami-57147e3e",
+          instances=1,
+          security_group="docker-ec2",
+          user='ubuntu',
+          key_pair="soda")
+def load_generator(node_state):
+    url = petstore_instances[0]['petstore.url']
+    urls = ["%s/petclinic" % url]
+    wait_for_http(urls)
+    run("locust -H %s -c 100 -r 100 -n 1000 --no-web -f load_generator/locustfile.py" % url)
+    run("mv stats.csv output/")
+    run("mv distribution.stats.csv output/")
+   
     

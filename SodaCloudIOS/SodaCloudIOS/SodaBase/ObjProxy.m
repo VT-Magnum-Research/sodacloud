@@ -44,6 +44,12 @@
         invoke.uri = _target.uri;
         invoke.parameters = [self getArgsFromInvocation:anInvocation withMethod:method];
         
+        
+        // Need to think about this next block. It is possible, although very unlikely,
+        // that the msg could make it across to the target and be answered before the
+        // ResponseCatcher was created and ready to receive the response...
+        //
+        // 
         [self sendInvocation:invoke];
         
         if(method.returnType != nil || ![method isAsyncIfVoid]){
@@ -90,6 +96,11 @@
             // do the magic to convert the
             // object into an obj ref;
             // arg = converted objref;
+            //
+            // Update: this is now handled
+            // automatically in the marshalling
+            // code in NSObject+toJson and is
+            // not needed here
         }
         
         [args addObject:arg];
