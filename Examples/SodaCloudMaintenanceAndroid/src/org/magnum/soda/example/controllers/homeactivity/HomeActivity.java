@@ -10,30 +10,38 @@ import org.magnum.soda.example.maint.R;
 //import org.magnum.soda.example.views.newsfragment.NewsFragment;
 //import org.magnum.soda.example.views.projectsfragment.ProjectsFragment;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class HomeActivity extends SherlockFragmentActivity {
+public class HomeActivity extends SlidingFragmentActivity {
     private ViewPager mViewPager;
     private TabsAdapter mTabsAdapter;
     
     public static final String TAG = HomeActivity.class.getName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
         setContentView(R.layout.activity_home);
+        setBehindContentView(R.layout.menu_frame);
+        
+        FragmentTransaction t = this.getSupportFragmentManager()
+				.beginTransaction();
+		// init MenuFragment
+		Fragment slidingMenuFragment = new SlidingMenuFragment();
+		// set MenuFragment
+		t.replace(R.id.menu_frame, slidingMenuFragment);
+		t.commit();
+		
+		setupSlidingMenu();
         
         instantiateMemberVariables();
         setupActionBar();
@@ -41,6 +49,16 @@ public class HomeActivity extends SherlockFragmentActivity {
    
 //
     }
+    
+    private void setupSlidingMenu() {
+		SlidingMenu sm = getSlidingMenu();
+		sm.setShadowWidthRes(R.dimen.shadow_width);
+		sm.setShadowDrawable(R.drawable.shadow);
+		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		sm.setFadeDegree(0.35f);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		
+	}
 //    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {  	

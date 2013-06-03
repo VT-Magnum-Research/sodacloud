@@ -15,6 +15,11 @@
     <string name="followers_tab_name">followers</string>
     <string name="following_tab_name">following</string>
     
+    <string name="menu_create_report">Create Report</string>
+    <string name="menu_search_by_qr">Search by QR Code</string>
+    <string name="menu_search_by_location">Search by Location</string>
+    <string name="menu_home_screen">Home</string>
+    
     
     
     
