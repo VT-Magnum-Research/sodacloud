@@ -33,10 +33,6 @@ public class DefaultNamingService implements NamingService {
 	private NamingService parent_;
 	
 	private ProxyFactory proxyFactory_;
-	
-	public static final ObjRef ROOT_NAMING_SVC = new ObjRef(
-			ObjRef.createObjUri(MetaAddress.META_ADDRESS.toString(), SVC_NAME),
-			DefaultNamingService.class.getName());
 
 	public DefaultNamingService() {
 	}

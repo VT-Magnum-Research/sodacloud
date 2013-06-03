@@ -23,6 +23,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.magnum.soda.Soda;
+import org.magnum.soda.msg.Protocol;
+import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.transport.UriAddress;
 import org.slf4j.Logger;
@@ -42,8 +44,13 @@ public class AndroidSoda extends Soda {
 
 	public static void init(final Context ctx, final String host,
 			final int port, final AndroidSodaListener l) {
+		init(ctx,new NativeJavaProtocol(),host,port,l);
+	}
+	
+	public static void init(final Context ctx, Protocol protocol, final String host,
+			final int port, final AndroidSodaListener l) {
 		context_ = ctx;
-		final AndroidSoda soda = new AndroidSoda();
+		final AndroidSoda soda = new AndroidSoda(protocol);
 		soda.connect(new UriAddress("ws://" + host + ":" + port));
 		Runnable r = new Runnable() {
 
@@ -79,12 +86,16 @@ public class AndroidSoda extends Soda {
 		super();
 		setTransport(new SodaAndroidTransport(getMsgBus(), getLocalAddress()));
 	}
+	
+	private AndroidSoda(Protocol proto) {
+		super();
+		setTransport(new SodaAndroidTransport(proto, getMsgBus(), getLocalAddress()));
+	}
+
 
 	@Override
-	public void connected(Class<?> ...classes) {
-	
-		Class<?> []cls={this.getNamingService().getClass()};
-		super.connected(cls);
+	public void connected() {
+		super.connected();
 		connectGate_.countDown();
 	}
 
@@ -99,10 +110,10 @@ public class AndroidSoda extends Soda {
 		return context_;
 	}
 
-	@Override
-	protected synchronized ProxyCreator getProxyCreator() {	
-		return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
-	}
+//	@Override
+//	protected synchronized ProxyCreator getProxyCreator() {	
+//		return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
+//	}
 
 	public void setContext(Context context) {
 		context_ = context;
