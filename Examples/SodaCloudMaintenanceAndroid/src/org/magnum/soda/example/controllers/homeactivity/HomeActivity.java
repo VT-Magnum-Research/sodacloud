@@ -1,10 +1,10 @@
-package org.magnum.soda.example.views.homeactivity;
+package org.magnum.soda.example.controllers.homeactivity;
 
+import org.magnum.soda.example.controllers.followersfragment.FollowersFragment;
+import org.magnum.soda.example.controllers.followingfragment.FollowingFragment;
+import org.magnum.soda.example.controllers.newsfragment.NewsFragment;
+import org.magnum.soda.example.controllerss.reportsfragment.ReportsFragment;
 import org.magnum.soda.example.maint.R;
-import org.magnum.soda.example.views.followersfragment.FollowersFragment;
-import org.magnum.soda.example.views.followingfragment.FollowingFragment;
-import org.magnum.soda.example.views.newsfragment.NewsFragment;
-import org.magnum.soda.example.views.projectsfragment.ProjectsFragment;
 //import org.magnum.soda.example.views.followersfragment.FollowersFragment;
 //import org.magnum.soda.example.views.followingfragment.FollowingFragment;
 //import org.magnum.soda.example.views.newsfragment.NewsFragment;
@@ -65,8 +65,8 @@ public class HomeActivity extends SherlockFragmentActivity {
         final com.actionbarsherlock.app.ActionBar bar = getSupportActionBar();
         mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_news_tab_icon),
                 NewsFragment.class, null);
-        mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_projects_tab_icon),
-                ProjectsFragment.class, null);
+        mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_reports_tab_icon),
+                ReportsFragment.class, null);
         mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_followers_tab_icon),
                 FollowersFragment.class, null);
         mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_following_tab_icon),

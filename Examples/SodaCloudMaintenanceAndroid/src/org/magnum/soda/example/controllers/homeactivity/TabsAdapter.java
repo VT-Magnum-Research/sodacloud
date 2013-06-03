@@ -1,4 +1,4 @@
-package org.magnum.soda.example.views.homeactivity;
+package org.magnum.soda.example.controllers.homeactivity;
 
 import java.util.ArrayList;
 

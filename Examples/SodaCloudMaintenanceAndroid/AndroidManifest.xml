@@ -48,7 +48,7 @@
         <activity android:name="org.magnum.soda.example.maint.WatchZoneActivity"/>
         <activity android:name="org.magnum.soda.example.maint.MonitorZoneActivity"/>
         <activity 
-            android:name="org.magnum.soda.example.views.homeactivity.HomeActivity"
+            android:name="org.magnum.soda.example.controllers.homeactivity.HomeActivity"
             android:theme="@style/HomeActivityStyle"/>
         
        <!-- <activity android:name="org.magnum.soda.example.maint.leadtools.annotationsdemo.AnnotationsDemoActivity"/>

@@ -10,6 +10,12 @@
     <string name="login_register_link">Do not have an account? <a href="#">Register</a></string>
     
     
+    <string name="news_tab_name">news</string>
+    <string name="reports_tab_name">reports</string>
+    <string name="followers_tab_name">followers</string>
+    <string name="following_tab_name">following</string>
+    
+    
     
     
     

@@ -13,7 +13,7 @@ import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
-import org.magnum.soda.example.views.homeactivity.HomeActivity;
+import org.magnum.soda.example.controllers.homeactivity.HomeActivity;
 
 import android.app.Activity;
 import android.content.Context;

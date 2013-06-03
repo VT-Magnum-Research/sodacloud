@@ -1,4 +1,4 @@
-package org.magnum.soda.example.views.projectsfragment;
+package org.magnum.soda.example.controllers.newsfragment;
 
 import org.magnum.soda.example.maint.R;
 
@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-
-public class ProjectsFragment extends SherlockFragment{
+public class NewsFragment extends SherlockFragment {
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_projects, container,false);
+		return inflater.inflate(R.layout.fragment_news, container,false);
 	}
 
 }

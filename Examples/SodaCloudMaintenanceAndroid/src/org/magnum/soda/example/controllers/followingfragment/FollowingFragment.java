@@ -1,4 +1,4 @@
-package org.magnum.soda.example.views.followingfragment;
+package org.magnum.soda.example.controllers.followingfragment;
 
 import org.magnum.soda.example.maint.R;
 
