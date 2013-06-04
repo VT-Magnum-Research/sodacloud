@@ -1,20 +1,23 @@
 package org.magnum.soda.example.controllers.homeactivity;
 
+import org.magnum.soda.example.maint.CreateReportActivity;
 import org.magnum.soda.example.maint.R;
+import org.magnum.soda.example.maint.SearchByLocationActivity;
+import org.magnum.soda.example.maint.SearchByQRActivity;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SlidingMenuFragment extends Fragment {
 	
@@ -24,7 +27,7 @@ public class SlidingMenuFragment extends Fragment {
 	private View currentedSelectedView;
 	// store if this is first time start
 	private boolean firstTimeStartup = true;
-
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// init menu view
 		View view = inflater.inflate(R.layout.sliding_menu, null);
@@ -50,10 +53,16 @@ public class SlidingMenuFragment extends Fragment {
 				case 0:
 					break;
 				case 1:
+					Intent i1 =new Intent(getActivity(), SearchByLocationActivity.class);
+					startActivity(i1);
 					break;
 				case 2:
+					Intent i2 =new Intent(getActivity(), SearchByQRActivity.class);
+					startActivity(i2);
 					break;
 				case 3:
+					Intent i3 =new Intent(getActivity(), CreateReportActivity.class);
+					startActivity(i3);
 					break;
 				}
 				

@@ -59,6 +59,8 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 	static Boolean mDataExecuted = false;
 	private byte dataBytes[];
 	private static final int CAPTURE_IMAGE = 200;
+	private static final String BITMAP_STORAGE_KEY = "qrbitmap";
+	private static final String LIST_STORAGE_KEY = "list";
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
 
@@ -353,7 +355,23 @@ public class SearchByQRActivity extends Activity implements AndroidSodaListener 
 
 		return f;
 	}
+	// Some lifecycle callbacks so that the image can survive orientation change
+		@Override
+		protected void onSaveInstanceState(Bundle outState) {
+			outState.putParcelable(BITMAP_STORAGE_KEY, qrBitmap);
+			super.onSaveInstanceState(outState);
+		}
 
+		@Override
+		protected void onRestoreInstanceState(Bundle savedInstanceState) {
+			super.onRestoreInstanceState(savedInstanceState);
+			qrBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
+			qrImage.setImageBitmap(qrBitmap);
+			
+			mAdapter.notifyDataSetChanged();
+
+		}
+		
 	@Override
 	public void connected(AndroidSoda s) {
 
