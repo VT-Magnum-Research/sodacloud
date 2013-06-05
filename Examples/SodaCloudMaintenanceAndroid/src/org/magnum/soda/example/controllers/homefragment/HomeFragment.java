@@ -42,48 +42,10 @@ public class HomeFragment extends BasePagerFragment {
 		
 		return v;
 	}
-	
-//    private ViewPager mViewPager;
-//    private TabsAdapter mTabsAdapter;
-//	public static final String TAG = HomeFragment.class.getName();
-//	
-//	//handlers
-//	private final Handler handler = new Handler();
-//	private Runnable runPager;
-//	private boolean mCreated = false;
-//    
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//    		Bundle savedInstanceState) {
-//    	Log.d(TAG,"onCreateView");
-//    	View v = inflater.inflate(R.layout.fragment_home, container, false);
-//    	mViewPager = (ViewPager)v.findViewById(R.id.viewPagerHomeFragment);
-//    	mViewPager.setOffscreenPageLimit(2);
-////    	setupActionBar();
-////    	createTabs();
-//    	
-//    	return v;
-//    }
-//    
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//    	// TODO Auto-generated method stub
-//    	super.onActivityCreated(savedInstanceState);
-////    	createTabs();
-//    	if(runPager != null) handler.post(runPager);
-//    	mCreated = true;
-//    	createTabs();
-//    }
-//    @Override
-//    public void onPause() {
-//    	// TODO Auto-generated method stub
-//    	super.onPause();
-//    	handler.removeCallbacks(runPager);
-//    }
-//    
 	private TabsAdapter createTabs() {
         TabsAdapter tabsAdapter = new TabsAdapter(this.getSherlockActivity(),mPager);
         final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity().getSupportActionBar();
+        bar.removeAllTabs();
         tabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_news_tab_icon),
                 NewsFragment.class, null);
         tabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_reports_tab_icon),
@@ -95,23 +57,6 @@ public class HomeFragment extends BasePagerFragment {
 
         return tabsAdapter;
     }
-//	
-//	protected void setAdapter(TabsAdapter adapter) {
-//		mTabsAdapter = adapter;
-//		runPager = new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				mViewPager.setAdapter(mTabsAdapter);
-//				
-//			}
-//		};
-//		if(mCreated)
-//		{
-//			handler.post(runPager);
-//		}
-//	}
-//    
 	private void setupActionBar() {
         final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity().getSupportActionBar();
         bar.show();
@@ -121,11 +66,5 @@ public class HomeFragment extends BasePagerFragment {
         getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(false);
 		
 	}
-
-//	@Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
-//    }
 
 }
