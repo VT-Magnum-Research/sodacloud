@@ -1,10 +1,11 @@
-package org.magnum.soda.example.controllers.homeactivity;
+package org.magnum.soda.example.controllers.homefragment;
 
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
@@ -13,7 +14,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.ActionBar.Tab;
 
-public class TabsAdapter extends FragmentPagerAdapter implements
+public class TabsAdapter extends FragmentStatePagerAdapter implements
 		ActionBar.TabListener, ViewPager.OnPageChangeListener {
 	private final Context mContext;
 	private final ActionBar mActionBar;
@@ -35,7 +36,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mContext = activity;
 		mActionBar = activity.getSupportActionBar();
 		mViewPager = pager;
-		mViewPager.setAdapter(this);
+//		mViewPager.setAdapter(this);
 		mViewPager.setOnPageChangeListener(this);
 	}
 

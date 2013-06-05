@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 public class SlidingMenuFragment extends Fragment {
 	
+	private HomeActivity mHomeActivity;
+	
 	private ListView lv;
 	private MainMenuListAdapter adapter;
 	// store the currently selected menu item
@@ -31,6 +33,8 @@ public class SlidingMenuFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// init menu view
 		View view = inflater.inflate(R.layout.sliding_menu, null);
+		
+		mHomeActivity = (HomeActivity)(this.getActivity());
 		
 		// init the main menu options with an adapter
 		lv = (ListView) view.findViewById(R.id.menu_list);
@@ -51,18 +55,16 @@ public class SlidingMenuFragment extends Fragment {
 					int position, long id) {								
 				switch (position) {
 				case 0:
+					mHomeActivity.switchContent(HomeActivity.FRAGMENT_HOME);
 					break;
 				case 1:
-					Intent i1 =new Intent(getActivity(), SearchByLocationActivity.class);
-					startActivity(i1);
+					mHomeActivity.switchContent(HomeActivity.FRAGMENT_SEARCH_LOCATION);
 					break;
 				case 2:
-					Intent i2 =new Intent(getActivity(), SearchByQRActivity.class);
-					startActivity(i2);
+					mHomeActivity.switchContent(HomeActivity.FRAGMENT_SEARCH_QR);
 					break;
 				case 3:
-					Intent i3 =new Intent(getActivity(), CreateReportActivity.class);
-					startActivity(i3);
+					mHomeActivity.switchContent(HomeActivity.FRAGMENT_CREATE_REPORT);
 					break;
 				}
 				

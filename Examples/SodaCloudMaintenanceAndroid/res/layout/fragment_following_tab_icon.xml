@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/textView1"
         android:paddingBottom="3dp"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/following_icon_selector"/>
 
     <TextView
         android:id="@+id/textView1"
