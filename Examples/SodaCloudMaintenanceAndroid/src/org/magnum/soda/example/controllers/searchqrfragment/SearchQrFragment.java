@@ -304,7 +304,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 		}
 
 		public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+			    super.onActivityResult(requestCode, resultCode, data);
 
 				org.magnum.soda.ThirdPartyIntent.IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 					  if (scanResult != null) {
@@ -316,12 +316,13 @@ import com.actionbarsherlock.app.SherlockFragment;
 				//	qrBitmap = scaleBitmap("/sdcard/IMG_target.jpg");
 
 					if (qrBitmap != null) {
+						Log.i("SearchQrFragment", "qrBitmap not null.");
 						qrImage.setImageBitmap(qrBitmap);
 						qrImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 						qrImage.setAdjustViewBounds(true);
 						imageLoaded = true;
 					} else
-						Log.i("getup", "failure of loading image.");
+						Log.e("SearchQrFragment", "failure of loading image.");
 				}
 
 		}

@@ -7,6 +7,7 @@
 package org.magnum.soda.example.maint;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.magnum.soda.proxy.SodaByValue;
 
@@ -16,6 +17,8 @@ public class MaintenanceReport implements Serializable {
 	private int id_;
 	private String contents_;
 	private String creatorId_;
+	private Date createTime_;
+	
 	private byte[] qrData;
 	
 	private byte[] imageData;
@@ -50,6 +53,13 @@ public class MaintenanceReport implements Serializable {
 
 	public void setContents(String contents) {
 		contents_ = contents;
+	}
+	public Date getCreateTime_() {
+		return createTime_;
+	}
+
+	public void setCreateTime_(Date createTime_) {
+		this.createTime_ = createTime_;
 	}
 
 	public String getCreatorId() {

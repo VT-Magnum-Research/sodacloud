@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +25,7 @@ import org.magnum.soda.example.maint.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -51,7 +54,7 @@ public class CreateReportFragment extends SherlockFragment implements
 		AndroidSodaListener {
 
 	// host
-	private String mHost;// ="172.31.55.100";
+	private String mHost;
 	// UI references.
 	private ImageButton attachedPhotoView;
 	private ImageView QRView;
@@ -79,7 +82,7 @@ public class CreateReportFragment extends SherlockFragment implements
 	private AndroidSoda as = null;
 	private String mContent = null;
 	private byte[] mImageData = null;
-
+    private String creator = null;
 	private View mRootView;
 
 	@Override
@@ -151,7 +154,9 @@ public class CreateReportFragment extends SherlockFragment implements
 
 				mContent = reportContent.getText().toString();
 				mImageData = getBytes(getBmp(attachedPhotoView.getDrawable()));
-
+				SharedPreferences sharedPref = ctx_.getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE);
+				creator = sharedPref.getString("username", "no");
+				
 				if (mContent != null && mImageData != null) {
 
 					AndroidSoda.init(ctx_, mHost, 8081, asl_);
@@ -243,11 +248,14 @@ public class CreateReportFragment extends SherlockFragment implements
 
 				MaintenanceReport r = new MaintenanceReport();
 				r.setContents(mContent);
-				Log.e("CreateRepostActibity", "length " + mImageData.length);
+				Log.e("CreateReportActivity", "length " + mImageData.length);
 				r.setImageData(mImageData);
 				r.setId(2);
-				r.setCreatorId("aks1");
-
+				r.setCreatorId(creator);
+				Calendar cal = Calendar.getInstance();
+		    	Date createTime = cal.getTime();
+		    	r.setCreateTime_(createTime);
+		    	
 				System.out
 						.println("========Input Content======== :" + mContent);
 				reportHandle.addReport(r);
