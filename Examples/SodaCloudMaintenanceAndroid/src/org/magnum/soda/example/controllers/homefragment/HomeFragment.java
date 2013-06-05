@@ -114,6 +114,7 @@ public class HomeFragment extends BasePagerFragment {
 //    
 	private void setupActionBar() {
         final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity().getSupportActionBar();
+        bar.show();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
         getSherlockActivity().getSupportActionBar().setDisplayShowTitleEnabled(false); 

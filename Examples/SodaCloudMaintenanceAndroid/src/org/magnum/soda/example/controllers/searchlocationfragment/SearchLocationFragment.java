@@ -14,7 +14,13 @@ public class SearchLocationFragment extends SherlockFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		setupActionBar();
 		return inflater.inflate(R.layout.fragment_search_location, container,false);
+	}
+	
+	private void setupActionBar() {
+		final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity().getSupportActionBar();
+		bar.hide();
 	}
 
 }

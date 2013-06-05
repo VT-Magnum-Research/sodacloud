@@ -28,7 +28,14 @@ public class SearchQrFragment extends SherlockFragment {
 		SearchLocationFragment frag = new SearchLocationFragment();
 		t.replace(R.id.fragment_search_qr_content_frame, frag);
 		t.commit();
+		
+		setupActionBar();
 		return mView;
+	}
+	
+	private void setupActionBar() {
+		final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity().getSupportActionBar();
+		bar.hide();
 	}
 
 }
