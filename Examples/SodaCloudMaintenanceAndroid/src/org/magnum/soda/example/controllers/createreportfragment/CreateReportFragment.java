@@ -59,6 +59,7 @@ public class CreateReportFragment extends SherlockFragment implements
 	private ImageButton attachedPhotoView;
 	private ImageView QRView;
 	private Bitmap mAttachedPhoto;
+	private EditText reportTitle;
 	private EditText reportContent;
 	private Button attachPhotoButton;
 	private Button saveButton;
@@ -80,6 +81,7 @@ public class CreateReportFragment extends SherlockFragment implements
 
 	private AndroidSodaListener asl_ = null;
 	private AndroidSoda as = null;
+	private String mTitle = null;
 	private String mContent = null;
 	private byte[] mImageData = null;
     private String creator = null;
@@ -114,6 +116,8 @@ public class CreateReportFragment extends SherlockFragment implements
 		attachedPhotoView = (ImageButton) mRootView
 				.findViewById(R.id.attachedPhotoView);
 		QRView = (ImageView) mRootView.findViewById(R.id.QRimage_createreport);
+		reportTitle = (EditText) mRootView
+				.findViewById(R.id.title_text);
 		reportContent = (EditText) mRootView
 				.findViewById(R.id.reportContentText);
 		attachPhotoButton = (Button) mRootView
@@ -152,12 +156,14 @@ public class CreateReportFragment extends SherlockFragment implements
 			@Override
 			public void onClick(View v) {
 
+				mTitle = reportTitle.getText().toString();
 				mContent = reportContent.getText().toString();
-				mImageData = getBytes(getBmp(attachedPhotoView.getDrawable()));
+				if(attachedPhotoView.getDrawable() != null)
+					mImageData = getBytes(getBmp(attachedPhotoView.getDrawable()));
 				SharedPreferences sharedPref = ctx_.getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE);
 				creator = sharedPref.getString("username", "no");
 				
-				if (mContent != null && mImageData != null) {
+				if (mContent != null) {
 
 					AndroidSoda.init(ctx_, mHost, 8081, asl_);
 				}
@@ -248,8 +254,10 @@ public class CreateReportFragment extends SherlockFragment implements
 
 				MaintenanceReport r = new MaintenanceReport();
 				r.setContents(mContent);
+				r.setTitle(mTitle);
 				Log.e("CreateReportActivity", "length " + mImageData.length);
-				r.setImageData(mImageData);
+				if(mImageData!=null)
+					r.setImageData(mImageData);
 				r.setId(2);
 				r.setCreatorId(creator);
 				Calendar cal = Calendar.getInstance();

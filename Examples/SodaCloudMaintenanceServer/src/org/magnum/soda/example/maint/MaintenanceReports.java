@@ -29,6 +29,8 @@ public interface MaintenanceReports {
 	@SodaAsync
 	public void getReports(Callback<List<MaintenanceReport>> callback,Soda s,byte[] b);
 	
+	@SodaAsync
+	public void getReports(String username, Callback<List<MaintenanceReport>> callback);
 	
 	public void addListener(MaintenanceListener l);
 	public void removeListener(MaintenanceListener l);

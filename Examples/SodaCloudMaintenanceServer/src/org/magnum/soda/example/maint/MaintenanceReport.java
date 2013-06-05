@@ -14,6 +14,7 @@ import org.magnum.soda.proxy.SodaByValue;
 public class MaintenanceReport {
 
 	private int id_;
+	private String title_;
 	private String contents_;
 	private String creatorId_;
 	private Date createTime_;
@@ -40,7 +41,13 @@ public class MaintenanceReport {
 	public int getId() {
 		return id_;
 	}
-
+	public String getTitle() {
+		return title_;
+	}
+	public void setTitle(String title) {
+		this.title_ = title;
+	}
+	
 	public void setId(int id) {
 		id_ = id;
 	}

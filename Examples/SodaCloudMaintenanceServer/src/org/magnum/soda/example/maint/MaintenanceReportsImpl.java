@@ -14,6 +14,7 @@ import java.util.ListIterator;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
+import org.magnum.soda.SodaContext;
 import org.magnum.soda.SodaQuery;
 import org.magnum.soda.ctx.SodaQR;
 import org.magnum.soda.proxy.SodaAsync;
@@ -66,13 +67,29 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 	@SodaAsync
 	public void getReports(Callback<List<MaintenanceReport>> callback,Soda s, byte[] b) {
 		
-	SodaQR _objQR=	SodaQR.fromImageData(b);
-	SodaQuery<MaintenanceReport> _objSQ=s.find(MaintenanceReport.class,_objQR);
+		SodaQR _objQR=	SodaQR.fromImageData(b);
+		SodaQuery<MaintenanceReport> _objSQ=s.find(MaintenanceReport.class,_objQR);
 	
-	callback.handle(_objSQ.getList_());	
+		callback.handle(_objSQ.getList_());	
 		
 	}
-
+	
+	@Override
+	@SodaAsync
+	public void getReports(String username, Callback<List<MaintenanceReport>> callback) {
+		
+		List<MaintenanceReport> queryresult = new LinkedList<MaintenanceReport>();
+		Iterator<MaintenanceReport> itr = reports_.iterator();
+		while(itr.hasNext()){
+			MaintenanceReport mreport = itr.next();
+			if (mreport.getCreatorId().equals(username)) {
+				queryresult.add(mreport);
+			}
+		}
+	
+		callback.handle(queryresult);	
+		
+	}
 
 	@Override
 	public void modifyReport(MaintenanceReport r) {

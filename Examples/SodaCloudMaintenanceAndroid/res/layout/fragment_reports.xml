@@ -5,11 +5,11 @@
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This fragment will display the user's active reports."
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+     <ListView
+          android:id="@+id/ListView_myreport"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:choiceMode="singleChoice" >
+     </ListView>
 
 </LinearLayout>
