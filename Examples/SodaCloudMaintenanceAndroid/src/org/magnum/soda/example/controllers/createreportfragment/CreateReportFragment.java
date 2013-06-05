@@ -92,7 +92,7 @@ public class CreateReportFragment extends SherlockFragment implements
 
 		asl_ = this;
 
-		mRootView = inflater.inflate(R.layout.activity_createreport, container,
+		mRootView = inflater.inflate(R.layout.fragment_create_report, container,
 				false);
 		
 		setupActionBar();
