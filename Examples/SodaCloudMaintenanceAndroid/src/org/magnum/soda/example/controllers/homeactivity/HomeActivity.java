@@ -47,18 +47,12 @@ public class HomeActivity extends SlidingFragmentActivity {
         
         FragmentTransaction t = this.getSupportFragmentManager()
 				.beginTransaction();
-		// init MenuFragment
 		mMenuFragment = new SlidingMenuFragment();
-		// set MenuFragment
 		t.replace(R.id.menu_frame, mMenuFragment);
 		t.commit();
 		
 		setupSlidingMenu();
-        
-//        instantiateMemberVariables();
-//        setupActionBar();
-//        createTabs(savedInstanceState);
-//   
+   
 		initMenuControlledFragments();
     }
     
@@ -70,7 +64,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 		mMenuControlledFragments.put(FRAGMENT_SEARCH_LOCATION, new SearchLocationFragment());
 
 		mMenuControlledFragments.put(FRAGMENT_SEARCH_QR, new SearchQrFragment());
-//
+
 		mMenuControlledFragments.put(FRAGMENT_CREATE_REPORT, new CreateReportFragment());
 
 		switchContent(FRAGMENT_HOME);
@@ -93,11 +87,6 @@ public class HomeActivity extends SlidingFragmentActivity {
 					getSlidingMenu().showContent();
 				}
 			}, 50);
-			// update ActionBar title
-
-//			TextView titleTextView = (TextView) this.getSupportActionBar()
-//					.getCustomView().findViewById(R.id.barTitle);
-//			titleTextView.setText(fragmentName);
 		}
 	}
     
@@ -110,69 +99,10 @@ public class HomeActivity extends SlidingFragmentActivity {
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		
 	}
-//    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {  	
-//    	initMenu(menu);
-     	
-    	return true;
-    }
-    
-    @Override
-    protected void onStop() {
-    	// TODO Auto-generated method stub
-    	super.onStop();
-    }
-
-//	private void initMenu(Menu menu) {
-//		
-//	}
-//
-//
-//	private void createTabs(Bundle savedInstanceState) {
-//        mTabsAdapter = new TabsAdapter(this, mViewPager);
-//        final com.actionbarsherlock.app.ActionBar bar = getSupportActionBar();
-//        mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_news_tab_icon),
-//                NewsFragment.class, null);
-//        mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_reports_tab_icon),
-//                ReportsFragment.class, null);
-//        mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_followers_tab_icon),
-//                FollowersFragment.class, null);
-//        mTabsAdapter.addTab(bar.newTab().setCustomView(R.layout.fragment_following_tab_icon),
-//                FollowingFragment.class, null);
-//
-//
-//
-//        if (savedInstanceState != null) {
-//        	//Use saved instance state to set currentTabe
-////	            bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
-//        }
-//    }
-//
-//	private void setupActionBar() {
-//        final com.actionbarsherlock.app.ActionBar bar = getSupportActionBar();
-//        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//        bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false); 
-//        getSupportActionBar().setDisplayShowHomeEnabled(false);
-//		
-//	}
-
-//	private void instantiateMemberVariables() {
-//		mViewPager = (ViewPager) findViewById(R.id.viewPager1);
-//		
-//	}
-
-//	@Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
-//    }
 	
 	
 	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub		
+	protected void onDestroy() {	
 		Log.i(TAG, "Deleting all fragments");
 		FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();		
 		if (ft != null && mMenuControlledFragments != null && mMenuControlledFragments.size() > 0) {
