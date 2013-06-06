@@ -1,9 +1,6 @@
 package org.magnum.soda.example.controllers.homeactivity;
 
-import org.magnum.soda.example.maint.CreateReportActivity;
 import org.magnum.soda.example.maint.R;
-import org.magnum.soda.example.maint.SearchByLocationActivity;
-import org.magnum.soda.example.maint.SearchByQRActivity;
 
 import android.content.Context;
 import android.content.Intent;

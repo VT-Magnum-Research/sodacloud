@@ -56,4 +56,10 @@ public class UsersImpl implements Users {
 		listeners_.remove(l);
 		
 	}
+	@Override
+	public List<UserListener> getListener() {
+		// TODO Auto-generated method stub
+		return listeners_;
+		
+	}
 }

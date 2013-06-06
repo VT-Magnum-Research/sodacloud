@@ -17,5 +17,7 @@ public interface Users {
 	
 	public void addListener(UserListener l);
 	public void removeListener(UserListener l);
+	public  List<UserListener>  getListener();
+	
 	
 }

@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -258,7 +259,8 @@ public class CreateReportFragment extends SherlockFragment implements
 				Log.e("CreateReportActivity", "length " + mImageData.length);
 				if(mImageData!=null)
 					r.setImageData(mImageData);
-				r.setId(2);
+				UUID id = UUID.randomUUID();
+				r.setId(id);
 				r.setCreatorId(creator);
 				Calendar cal = Calendar.getInstance();
 		    	Date createTime = cal.getTime();

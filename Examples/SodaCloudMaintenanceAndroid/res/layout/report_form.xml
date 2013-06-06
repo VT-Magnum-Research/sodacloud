@@ -4,84 +4,138 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:background="@drawable/background_login">
-
-    <EditText
-        android:id="@+id/reportEditText"
+<ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.69"
-        android:text="Large Text"
-        android:layout_margin="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.18" >
+        android:layout_height="wrap_content" >
 
-        <TextView
-        android:id="@+id/textView_creator"
-        android:layout_width="109dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.21"
-        android:text="CreatorID:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/textView_creatorID"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView_creator"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:orientation="vertical" >
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.18" >
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="TITLE" />
 
-        <TextView
-        android:id="@+id/textView_time"
-        android:layout_width="109dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.21"
-        android:text="Create Time:"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <EditText
+                android:id="@+id/title_text_editreport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Enter a title"
+                android:inputType="textMultiLine" />
 
-        <TextView
-            android:id="@+id/textView_createTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView_time"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="PHOTO" />
 
-    </RelativeLayout>
-    
-    <ImageButton
-        android:id="@+id/editReportView"
-        android:layout_width="145dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.66"
-         android:layout_margin="6dp"
-        android:src="@drawable/object_stamp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.69" >
+                <ImageButton
+                    android:id="@+id/image_editreport"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@android:color/darker_gray"
+                    android:cropToPadding="true" />
 
-        <Button
-            android:id="@+id/saveReportButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/bindLocationButton"
-            android:background="@drawable/blue_button"
-            android:text="Save Report" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
 
-        <Button
+                    <Button
+                        android:id="@+id/attachphotoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="Attach Photo" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="DETAILS" />
+
+            <EditText
+                android:id="@+id/reportEditText_editreport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:ems="10"
+                android:hint="Enter report content" />
+            
+            <TextView
+        		android:id="@+id/textView_creator"
+        		android:layout_width="109dp"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="0.21"
+        		android:text="CreatorID:"
+        		android:textAppearance="?android:attr/textAppearanceLarge" />
+			<TextView
+            	android:id="@+id/textView_creatorID"
+            	android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/textView_creator"
+                android:ems="10"/>
+			<TextView
+       		 	android:id="@+id/textView_time"
+        		android:layout_width="109dp"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="0.21"
+        		android:text="Create Time:"
+        		android:textAppearance="?android:attr/textAppearanceLarge" />
+			 <TextView
+            	android:id="@+id/textView_createTime"
+            	android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/textView_time"
+                android:ems="10"/>
+			 
+            <TextView
+                android:id="@+id/textView2"
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Command Options" />
+
+            <Button
+                android:id="@+id/saveButton_reportedit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_alignRight="@+id/bindLocationButton"
+                android:text="Save" />
+            
+            <Button
             android:id="@+id/BindQR"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="114dp"
@@ -94,15 +148,6 @@
             android:text="Bind QR" />
 
         <Button
-            android:id="@+id/bindLocationButton"
-            android:layout_width="116dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/blue_button"
-            android:text="Bind Location" />
-
-        <Button
             android:id="@+id/DeleteButton"
             android:layout_width="116dp"
             android:layout_height="wrap_content"
@@ -111,7 +156,25 @@
             android:background="@drawable/blue_button"
             android:text="Delete Report" />
 
-    </RelativeLayout>
-    
+        <Button
+            android:id="@+id/Button_follow"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/saveReportButton"
+            android:background="@drawable/blue_button"
+            android:text="Follow the Creator" />
 
+        <Button
+            android:id="@+id/bindLocationButton"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/Button_follow"
+            android:background="@drawable/blue_button"
+            android:text="Bind Location" />
+        </LinearLayout>
+    </ScrollView>
+ 
 </LinearLayout>

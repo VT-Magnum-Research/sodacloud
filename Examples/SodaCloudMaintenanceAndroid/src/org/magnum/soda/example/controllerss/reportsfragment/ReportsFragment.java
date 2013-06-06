@@ -21,14 +21,14 @@ import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
 import org.magnum.soda.android.ctx.SodaQR;
 import org.magnum.soda.ctx.ImageContainer;
-import org.magnum.soda.example.maint.CreateReportActivity;
+
 import org.magnum.soda.example.maint.MaintenanceListener;
 import org.magnum.soda.example.maint.MaintenanceReport;
 import org.magnum.soda.example.maint.MaintenanceReports;
 import org.magnum.soda.example.maint.R;
 import org.magnum.soda.example.maint.ReportEditorActivity;
 import org.magnum.soda.example.maint.ReportParcelable;
-import org.magnum.soda.example.maint.CreateReportActivity.MyLocationListener;
+
 
 import android.app.Activity;
 import android.content.Context;
@@ -211,7 +211,7 @@ AndroidSodaListener{
 			String item = "Title:"+temp.getTitle()+"\n content:"+temp.getContents()+"\n"+temp.getCreatorId()+"   "+ sdf.format(temp.getCreateTime_());
 			map.put("itemDescription", item);
 			
-			sm.put(temp.getContents(),temp);
+			sm.put(item,temp);
 			mMapList.add(sm);
 			mDisplayList.add(map);
 
