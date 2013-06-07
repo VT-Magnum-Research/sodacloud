@@ -285,8 +285,8 @@ import com.actionbarsherlock.app.SherlockFragment;
 		static File img = null;
 
 		private void captureQRImageIntent(Context c) {
-			IntentIntegrator integrator = new IntentIntegrator(this.getActivity());
-			integrator.initiateScan();
+			IntentIntegrator integrator = new IntentIntegrator(this,this.getActivity());
+			integrator.initiateScan(); 
 			/*
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			File f = null;
