@@ -45,8 +45,8 @@ public class MainActivity extends Activity{
 	}
 	
     private void CreateReportIntent(){
-    	Intent i =new Intent(this, CreateReportActivity.class);
-		startActivity(i);
+    //	Intent i =new Intent(this, CreateReportActivity.class);
+	//	startActivity(i);
     }
     
     private void CreateWatchZoneIntent(){

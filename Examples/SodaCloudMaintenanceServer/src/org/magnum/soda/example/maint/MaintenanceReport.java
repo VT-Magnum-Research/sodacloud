@@ -6,14 +6,19 @@
  */
 package org.magnum.soda.example.maint;
 
+import java.util.Date;
+import java.util.UUID;
+
 import org.magnum.soda.proxy.SodaByValue;
 
 @SodaByValue
 public class MaintenanceReport {
 
-	private int id_;
+	private UUID id_;
+	private String title_;
 	private String contents_;
 	private String creatorId_;
+	private Date createTime_;
 	private byte[] qrData;
 	
 	private byte[] imageData;
@@ -34,11 +39,17 @@ public class MaintenanceReport {
 		this.qrData = qrData;
 	}
 
-	public int getId() {
+	public UUID getId() {
 		return id_;
 	}
-
-	public void setId(int id) {
+	public String getTitle() {
+		return title_;
+	}
+	public void setTitle(String title) {
+		this.title_ = title;
+	}
+	
+	public void setId(UUID id) {
 		id_ = id;
 	}
 
@@ -49,7 +60,13 @@ public class MaintenanceReport {
 	public void setContents(String contents) {
 		contents_ = contents;
 	}
+	public Date getCreateTime_() {
+		return createTime_;
+	}
 
+	public void setCreateTime_(Date createTime_) {
+		this.createTime_ = createTime_;
+	}
 	public String getCreatorId() {
 		return creatorId_;
 	}

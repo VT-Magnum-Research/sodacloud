@@ -31,6 +31,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 /**
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link Intent}s. This is a simple
  * way to invoke barcode scanning and receive the result, without any need to integrate, modify, or learn the
@@ -123,7 +125,8 @@ public final class IntentIntegrator {
           // TODO add more -- what else supports this intent?
       );
   
-  private final Activity activity;
+  private Activity activity;
+  private SherlockFragment fragment;
   private String title;
   private String message;
   private String buttonYes;
@@ -138,7 +141,16 @@ public final class IntentIntegrator {
     buttonNo = DEFAULT_NO;
     targetApplications = TARGET_ALL_KNOWN;
   }
-  
+  public IntentIntegrator(SherlockFragment fragment, Activity activity) {
+
+	  	this.activity = activity;
+	    this.fragment = fragment;
+	    title = DEFAULT_TITLE;
+	    message = DEFAULT_MESSAGE;
+	    buttonYes = DEFAULT_YES;
+	    buttonNo = DEFAULT_NO;
+	    targetApplications = TARGET_ALL_KNOWN;
+	  }
   public String getTitle() {
     return title;
   }
@@ -235,7 +247,7 @@ public final class IntentIntegrator {
     intentScan.setPackage(targetAppPackage);
     intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-    activity.startActivityForResult(intentScan, REQUEST_CODE);
+    fragment.startActivityForResult(intentScan, REQUEST_CODE);
     return null;
   }
   

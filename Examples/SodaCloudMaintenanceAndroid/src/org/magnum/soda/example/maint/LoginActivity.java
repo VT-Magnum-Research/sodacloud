@@ -13,7 +13,7 @@ import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
-import org.magnum.soda.example.views.homeactivity.HomeActivity;
+import org.magnum.soda.example.controllers.homeactivity.HomeActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -141,7 +141,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 						editor.putString("username", "test_Username");
 						editor.commit();
 						
-						Intent i =new Intent(ctx_, MainActivity.class);
+						Intent i =new Intent(ctx_, HomeActivity.class);
 						startActivity(i);
 					}
 				});
@@ -149,7 +149,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 			
 			@Override
 			public void onClick(View v) {
-				Intent homeActivityIntent = new Intent(ctx_, HomeActivity.class);
+				Intent homeActivityIntent = new Intent(ctx_, MainActivity.class);
 				startActivity(homeActivityIntent);
 				
 			}
@@ -237,7 +237,7 @@ public class LoginActivity extends Activity implements AndroidSodaListener {
 				editor.putString("username", mEmail);
 				editor.commit();
 				
-				Intent i =new Intent(ctx_, MainActivity.class);
+				Intent i =new Intent(ctx_, HomeActivity.class);
 				startActivity(i);
 			} else {
 				mPasswordView

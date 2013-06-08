@@ -6,11 +6,10 @@
 */
 package org.magnum.soda.example.maint;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.UUID;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
@@ -23,6 +22,8 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 	private List<MaintenanceListener> listeners_ = new LinkedList<MaintenanceListener>();
 	private List<MaintenanceReport> reports_ = new LinkedList<MaintenanceReport>();
 	
+	private List<User> followers_ = new LinkedList<User>();
+	
 	@Override
 	public void addReport(MaintenanceReport r) {
 		
@@ -34,6 +35,20 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 		}
 	}
 	
+	@Override
+	public void deleteReport(UUID id) {
+
+		Iterator<MaintenanceReport> it=reports_.iterator();
+		while(it.hasNext())
+		{
+			if(it.next().getId().equals(id))
+			{
+			reports_.remove(it.next());
+			break;
+			}
+		}
+		
+	}
 
 	public void bindQRContext(Soda s, MaintenanceReport r)
 	{
@@ -66,13 +81,29 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 	@SodaAsync
 	public void getReports(Callback<List<MaintenanceReport>> callback,Soda s, byte[] b) {
 		
-	SodaQR _objQR=	SodaQR.fromImageData(b);
-	SodaQuery<MaintenanceReport> _objSQ=s.find(MaintenanceReport.class,_objQR);
+		SodaQR _objQR=	SodaQR.fromImageData(b);
+		SodaQuery<MaintenanceReport> _objSQ=s.find(MaintenanceReport.class,_objQR);
 	
-	callback.handle(_objSQ.getList_());	
+		callback.handle(_objSQ.getList_());	
 		
 	}
-
+	
+	@Override
+	@SodaAsync
+	public void getReports(String username, Callback<List<MaintenanceReport>> callback) {
+		
+		List<MaintenanceReport> queryresult = new LinkedList<MaintenanceReport>();
+		Iterator<MaintenanceReport> itr = reports_.iterator();
+		while(itr.hasNext()){
+			MaintenanceReport mreport = itr.next();
+			if (mreport.getCreatorId().equals(username)) {
+				queryresult.add(mreport);
+			}
+		}
+	
+		callback.handle(queryresult);	
+		
+	}
 
 	@Override
 	public void modifyReport(MaintenanceReport r) {
@@ -84,9 +115,10 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 		while(it.hasNext())
 		{
 			MaintenanceReport temp =it.next();
-			if(temp.getContents().equals(r.getContents()))
+			if(temp.getId().equals(r.getId()))
 			{
 			temp.setImageData(r.getImageData());
+			temp.setContents(r.getContents());
 			success=true;
 			break;
 			}
@@ -98,6 +130,20 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 		
 		}
 		}
+	}
+
+	@Override
+	public void addFollower(User u) {
+		// TODO Auto-generated method stub
+	/*	followers_.add(u);
+		for(User  ur : followers_)
+		{
+			
+		for(UserListener  l : ){
+			l.notifyFollowers(u);
+		
+		}
+		}*/
 	}
 
 }

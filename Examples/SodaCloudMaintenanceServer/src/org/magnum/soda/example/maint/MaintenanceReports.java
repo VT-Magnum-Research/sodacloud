@@ -7,6 +7,7 @@
 package org.magnum.soda.example.maint;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
@@ -18,6 +19,9 @@ public interface MaintenanceReports {
 	
 	public void addReport(MaintenanceReport r);
 	public void modifyReport(MaintenanceReport r);
+	public void deleteReport(UUID id);
+	
+	public void addFollower(User u);
 	
 	public List<MaintenanceReport> getReports();
 	
@@ -29,6 +33,8 @@ public interface MaintenanceReports {
 	@SodaAsync
 	public void getReports(Callback<List<MaintenanceReport>> callback,Soda s,byte[] b);
 	
+	@SodaAsync
+	public void getReports(String username, Callback<List<MaintenanceReport>> callback);
 	
 	public void addListener(MaintenanceListener l);
 	public void removeListener(MaintenanceListener l);

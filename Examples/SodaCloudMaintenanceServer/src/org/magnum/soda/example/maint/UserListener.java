@@ -13,4 +13,7 @@ public interface UserListener {
 	@SodaAsync
 	public void userAdded(User u);
 	
+	@SodaAsync
+	public void notifyFollowers(User u);
+	
 }

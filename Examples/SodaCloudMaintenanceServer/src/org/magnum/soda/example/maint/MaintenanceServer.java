@@ -7,6 +7,7 @@
 package org.magnum.soda.example.maint;
 
 import java.util.Iterator;
+import java.util.UUID;
 
 import org.magnum.soda.Soda;
 import org.magnum.soda.protocol.java.NativeJavaProtocol;
@@ -34,7 +35,7 @@ public class MaintenanceServer implements ServerSodaListener {
 	@Override
 	public void started(Soda soda) {
 		MaintenanceReport r = new MaintenanceReport();
-		r.setId(11);
+		r.setId(UUID.randomUUID());
 		r.setContents("first");
 		r.setCreatorId("aks");
 		MaintenanceReports reports = new MaintenanceReportsImpl();

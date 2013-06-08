@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/textView1"
         android:paddingBottom="3dp"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/following_icon_selector"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="following"
+        android:text="@string/following_tab_name"
         android:textColor="@drawable/tab_icon_text_color_selector"
         android:textSize="10dp" />
 
