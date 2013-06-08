@@ -19,6 +19,7 @@ import requests
 import boto.ec2
 import os.path
 import csv
+import re
 import uuid
 from boto.ec2.connection import EC2Connection
 from fabric.api import *
@@ -166,6 +167,7 @@ def app_node(ami,
              ssh_key=key_name,
              requires=[],
              tags=[],
+             capture_load_stats=True,
              terminate_when_done=True,
              stop_when_done=False):
  
@@ -182,7 +184,8 @@ def app_node(ami,
                            'user_data':user_data,
                            'ssh_key':ssh_key,
                            'terminate_when_done':terminate_when_done,
-                           'stop_when_done':stop_when_done
+                           'stop_when_done':stop_when_done,
+                           'capture_load_stats':capture_load_stats
                            }
          app_nodes.append(node_config)
          
@@ -201,6 +204,7 @@ def test_node(ami,
              ssh_key=key_name,
              requires=[],
              tags=[],
+             capture_load_stats=True,
              terminate_when_done=True,
              stop_when_done=False):
  
@@ -219,7 +223,8 @@ def test_node(ami,
                            'user_data':user_data,
                            'ssh_key':ssh_key,
                            'terminate_when_done':terminate_when_done,
-                           'stop_when_done':stop_when_done
+                           'stop_when_done':stop_when_done,
+                           'capture_load_stats':capture_load_stats
                            }
          test_nodes.append(node_config)
          
@@ -238,16 +243,24 @@ def deploy_test_nodes():
         print "Deploying (test) %i instances of %s tags:%s" % (node['instances'],node['ami'],node['tags'])
         deploy_node(node,test_node_instances)
 
+def import_app_output():
+    import_output_from_instances(app_node_instances)
+
 def import_test_output():
+    import_output_from_instances(test_node_instances)
+
+def import_output_from_instances(instances):
     outdir = "%soutput" % output_prefix
     print "Will save output to: %s" % outdir
     if not os.path.isdir(outdir):
         local("mkdir %s" % outdir)
     oid = exp_time
-    local("mkdir %s/%s" % (outdir,oid))
+    tdir = "%s/%s" % (outdir,oid)
+    if not os.path.isdir(tdir):
+        local("mkdir %s" % tdir)
     
     i = 0
-    for node in test_node_instances:
+    for node in instances:
             with settings(host_string=("%s@%s" % (node['user'],node['host'])),
                           key_filename=node['ssh_key'],
                           disable_known_hosts=True):
@@ -256,10 +269,20 @@ def import_test_output():
                 import_output(outputid,"output","%s/%s/%s/" % (outdir,oid,outputid))
                 i = i + 1
 
+loadreg = re.compile('([0-9]+\.[0-9]+[\s]*[0-9]+\.[0-9]+[\s]*[0-9]+\.[0-9]+[\s]*[0-9]+\.[0-9]+[\s]*[0-9]+\.[0-9]+)')  
+def convert_stats_to_csv(fname):
+    f = open(fname)
+    stats = [m.group(1) for l in f for m in (loadreg.search(l),) if m]
+    stats = [re.sub(r"[\s]+",",",l) for l in stats]
+    f.close()
+    return stats
+
 def deploy_node(node,running):        
         config = node['config']
         
         for i in range(0,node['instances']):
+            lstart = time.time()
+            
             node_state = {'state':'launching','name':config.__name__}
             node_state.update(node)
             config.instances.append(node_state)
@@ -275,6 +298,7 @@ def deploy_node(node,running):
             id = launched[0]['id']
             node_state['host'] = host
             node_state['id'] = id
+            node_state['host_string'] = launched[0]['host_string']
             
             print "Setting up host: %s" % node_state['host']
             
@@ -284,16 +308,57 @@ def deploy_node(node,running):
                           disable_known_hosts=True):
                 ensure_up()
                 
+                upend = time.time()
+                
+                
                 node_state['state'] ='configuring'
                 
                 run("mkdir -p output")
                 copy_local_files(node_state)
                 
+                if node_state['capture_load_stats']:
+                    apt_install('sysstat')
+                
+                cstart = time.time()
+                
                 config(node_state)
+                
+                lend = time.time()
+                
+                node_state['vm_launch_start'] = lstart
+                node_state['vm_launch_end'] = upend
+                node_state['vm_launch_time'] = (upend - lstart)
+                node_state['config_start'] = cstart
+                node_state['config_end'] = lend
+                node_state['config_time'] = (lend - cstart)
+                node_state['launch_start'] = lstart
+                node_state['launch_end'] = lend
+                node_state['launch_time'] = (lend - lstart)
+                
+                if node_state['capture_load_stats']:
+                    run("nohup iostat -c 10 > output/load_stats.log &", pty=False)
+                
                 node_state['state'] = 'ready'
                 
                 running.append(node_state)
                 print "Deployed: %s" % node_state
+
+
+def start_load_capture(id,nodes):
+    for node in nodes:
+        for instance in node.instances:
+            with settings(host_string=instance['host_string'],
+                          key_filename=instance['ssh_key'],
+                          disable_known_hosts=True):
+                run("nohup iostat -c 10 > output/%s.log &" % id, pty=False)
+
+def stop_load_capture(nodes):
+    for node in nodes:
+        for instance in node.instances:
+            with settings(host_string=instance['host_string'],
+                          key_filename=instance['ssh_key'],
+                          disable_known_hosts=True):
+                run("pkill iostat")
 
 def copy_local_files(node_state):
     host = node_state['host']
@@ -373,6 +438,11 @@ def combine(root,accepts,get_key):
                     all.append(row)
     return all
 
+# def extract_data_points(file,key):
+#     data = combine_csv(file)
+#     for row in data:
+#         print row
+
 def csv_to_dicts(file,hasheader=False):
     ifile  = open(file, "rb")
     reader = csv.reader(ifile)
@@ -444,6 +514,7 @@ def setup(target=[]):
         deploy_app_nodes()
         deploy_test_nodes()
         import_test_output()
+        import_app_output()
     else:
         print "Invoke: %s" % target
         m = __import__ ('fabfile')
@@ -452,20 +523,26 @@ def setup(target=[]):
 
 def terminate_instances(instances):
     ids = ids = [n['id'] for n in instances]
-    print "Terminating %s" % ids
-    conn.terminate_instances(instance_ids=ids)
+    if len(ids) > 0:
+        print "Terminating %s" % ids
+        conn.terminate_instances(instance_ids=ids)
     
 def stop_instances(instances):
     ids = ids = [n['id'] for n in instances]
-    print "Stopping %s" % ids
-    conn.stop_instances(instance_ids=ids)
+    if len(ids) > 0:
+        print "Stopping %s" % ids
+        conn.stop_instances(instance_ids=ids)
     
 def cleanup_node(node):
-    if node['terminate_when_done']:
-        terminate_instances(node['config'].instances)
-    elif node['stop_when_done']:
-        stop_instances(node['config'].instances)   
-    node['config'].instances = []
+    try:
+        if node['terminate_when_done']:
+            terminate_instances(node['config'].instances)
+        elif node['stop_when_done']:
+            stop_instances(node['config'].instances)   
+        
+        node['config'].instances = []
+    except:
+        print "Error tearing down instances..."
     
 def teardown():
     global test_node_instances
@@ -487,7 +564,13 @@ def run_experiment(name,with_nodes=None):
     print "Launching experiment [%s]" % name
     print "#####################################################"
     start = time.time()
-    setup()
+    try:
+        setup()
+    except:
+        print "Error running experiment, tearing down..."
+        teardown()
+        raise
+    
     teardown()
     end = time.time()
     print "#####################################################"
