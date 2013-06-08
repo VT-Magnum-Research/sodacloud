@@ -33,6 +33,19 @@
     return method;
 }
 
+-(id)returnTypeForMethod:(SodaMethod*)method withParams:(NSArray*)params
+{
+    Class type = nil;
+    if(method.returnTypeFromParamIndex != -1){
+        type = [params objectAtIndex:method.returnTypeFromParamIndex];
+    }
+    else{
+        type = method.returnType;
+    }
+    
+    return type;
+}
+
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     SodaMethod* method = [self methodFromSelector:anInvocation.selector];
@@ -52,10 +65,12 @@
         // 
         [self sendInvocation:invoke];
         
-        if(method.returnType != nil || ![method isAsyncIfVoid]){
+        if(![method isVoid] || ![method isAsyncIfVoid]){
+            
+            Class type = [method returnTypeForMethodWithInvocation:anInvocation];
             
             ResponseCatcher* catcher = (self.catcherFactory == nil)?
-                [[ResponseCatcher alloc] initWithId:invoke.id andReturnType:method.returnType]:
+                [[ResponseCatcher alloc] initWithId:invoke.id andReturnType:type andSoda:self.soda]:
                 [self.catcherFactory createCatcher:invoke];
             catcher.soda = self.soda;
     
@@ -79,7 +94,7 @@
 
 - (void)sendInvocation:(InvocationMsg*)msg
 {
-    
+    [self.soda send:msg];
 }
 
 -(NSArray*)getArgsFromInvocation:(NSInvocation*)invocation withMethod:(SodaMethod*)method
@@ -88,6 +103,7 @@
     
     NSMutableArray* args = [[NSMutableArray alloc]init];
     for(int i = 2; i < count + 2; i++){
+        
         id arg = [invocation getArgumentAtIndexAsObject:i];
         
         id type = [method.parameterTypes objectAtIndex:(i-2)];
@@ -96,11 +112,9 @@
             // do the magic to convert the
             // object into an obj ref;
             // arg = converted objref;
-            //
-            // Update: this is now handled
-            // automatically in the marshalling
-            // code in NSObject+toJson and is
-            // not needed here
+            RefParam* param = type;
+            ObjRef* ref = [self.soda bindObject:arg toInterface:[[param.type alloc]init]];
+            arg = ref;
         }
         
         [args addObject:arg];

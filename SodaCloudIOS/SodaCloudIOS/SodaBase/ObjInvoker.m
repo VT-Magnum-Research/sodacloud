@@ -11,6 +11,7 @@
 #import <objc/objc-runtime.h>
 #import "SodaMethod.h"
 #import "SodaObject.h"
+#import "SodaObjectDecorator.h"
 #import "NSArray+JsonObjects.h"
 
 @implementation ObjInvoker
@@ -35,6 +36,8 @@
     id target = [self.soda.namingService getObject:ref];
     
     InvocationResponseMsg* resp = [[InvocationResponseMsg alloc]init];
+    resp.destination = msg.source;
+    resp.responseTo = msg.id;
     
     @try{
         SodaMethod* method = [self findMethod:msg.method inObj:target];
@@ -48,9 +51,19 @@
         NSArray* paramTypes = [method parameterTypes];
         
         Method m = class_getInstanceMethod([target class], tocall);
+
         if(m == nil){
             m = class_getClassMethod([target class], tocall);
         }
+        
+        if(m == nil && [target isKindOfClass:[SodaObjectDecorator class]]){
+            m = class_getInstanceMethod([[target getTarget] class], tocall);
+            
+            if(m == nil){
+                m = class_getClassMethod([[target getTarget] class], tocall);
+            }
+        }
+        
         
         //count includes self and selector so we need
         //to decrement by 2
@@ -102,7 +115,10 @@
 
 -(SEL)findTargetMethod:(NSString*)methodName in:(id)targetObject
 {
-    Class clz = [targetObject class];
+    
+    Class clz = ([targetObject isKindOfClass:[SodaObjectDecorator class]])?
+        [[targetObject getTarget] class] :
+        [targetObject class];
     Method rslt = nil;
     
     int unsigned numMethods;

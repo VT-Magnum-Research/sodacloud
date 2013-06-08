@@ -17,6 +17,7 @@
 -(void)doIt:(NSNumber*)a b:(NSString*)b c:(ObjProxyTest*)test;
 -(ObjProxyTest*)getTest;
 -(void)setTest:(ObjProxyTest*)test;
+-(id)get:(NSString*)oid asType:(Class)type;
 @end
 @implementation MockSodaSvc
 
@@ -24,7 +25,8 @@ SODA_METHODS(
              SODA_METHOD(@"foo", NSString, PARAM(NSString)),
              SODA_VOID_METHOD(@"doIt", PARAM(NSNumber),PARAM(NSString),PARAM(ObjProxyTest)),
              SODA_NOARG_METHOD(@"getTest", ObjProxyTest),
-             SODA_VOID_METHOD(@"setTest",REF(ObjProxyTest))
+             SODA_VOID_METHOD(@"setTest",REF(ObjProxyTest)),
+             SODA_METHOD_RETURN_TYPE_FROM_PARAM(@"get", 1, PARAM(NSString))
             )
 @end
 
@@ -64,7 +66,9 @@ SODA_METHODS(
     
     STAssertEquals(rslt, self, @"The proxy method invocation returned the wrong result.");
 
-    
+    [fact setResult:self];
+    rslt = [svc get:@"foo" asType:[self class]];
+    STAssertEquals(rslt, self, @"The proxy method invocation returned the wrong result.");
     //id proxy2 = [ref toProxy:[MockSodaSvc class]];
 }
 

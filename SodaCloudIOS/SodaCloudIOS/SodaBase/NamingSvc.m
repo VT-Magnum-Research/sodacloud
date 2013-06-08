@@ -11,7 +11,7 @@
 @implementation NamingSvc
 
 SODA_METHODS(
-    SODA_METHOD(@"get", NSObject, PARAM(NSString))
+    SODA_METHOD_RETURN_TYPE_FROM_PARAM(@"get", 1, PARAM(NSString))
 )
 
 -(id)initWithHost:(NSString*)host
@@ -64,18 +64,18 @@ SODA_METHODS(
     return ref;
 }
 
--(id)getObject:(ObjRef*)ref
-{
-    id obj = [self.bindings objectForKey:ref.uri];
-    return obj;
-}
-
--(id)get:(NSString*)name
+-(id)get:(NSString*)name asType:(Class)type
 {
     id obj = [self.bindings objectForKey:name];
     if(obj == nil){
-        obj = [self.parent get:name];
+        obj = [self.parent get:name asType:type];
     }
+    return obj;
+}
+
+-(id)getObject:(ObjRef*)ref
+{
+    id obj = [self.bindings objectForKey:ref.uri];
     return obj;
 }
 

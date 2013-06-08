@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SodaViewController : UIViewController<MDWampDelegate>
+#import "SodaBase/SodaListener.h"
+
+@interface SodaViewController : UIViewController<MDWampDelegate,SodaListener>
+
+
+-(void) connected:(Soda*)soda;
+-(void) disconnected;
 
 @end

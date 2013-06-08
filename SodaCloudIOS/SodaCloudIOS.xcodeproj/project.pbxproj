@@ -24,6 +24,7 @@
 		840014D217494FBA00E75A60 /* RefParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014D117494FB900E75A60 /* RefParam.m */; };
 		840014D81749539500E75A60 /* SodaPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014D71749539400E75A60 /* SodaPass.m */; };
 		840014DB1749B16C00E75A60 /* Soda.m in Sources */ = {isa = PBXBuildFile; fileRef = 840014DA1749B16B00E75A60 /* Soda.m */; };
+		84010E0B1763762D0021A6AB /* SodaObjectDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 84010E0A1763762D0021A6AB /* SodaObjectDecorator.m */; };
 		84500F55174538040055697A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84500F54174538040055697A /* UIKit.framework */; };
 		84500F57174538040055697A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84500F56174538040055697A /* Foundation.framework */; };
 		84500F59174538040055697A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84500F58174538040055697A /* CoreGraphics.framework */; };
@@ -66,6 +67,8 @@
 		8480A46B17538A1B007756C0 /* ObjInvokerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480A46A17538A1B007756C0 /* ObjInvokerTest.m */; };
 		8480A46E17538AEE007756C0 /* MockSvcImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480A46D17538AEE007756C0 /* MockSvcImpl.m */; };
 		8480A4711753ADEC007756C0 /* SodaTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480A4701753ADEC007756C0 /* SodaTest.m */; };
+		84CFA3FC1761119B00870338 /* SodaMDWampTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CFA3FB1761119B00870338 /* SodaMDWampTest.m */; };
+		84CFA3FF176125C600870338 /* MsgContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CFA3FE176125C600870338 /* MsgContainer.m */; };
 		84FD05FF174AB600009411A9 /* NamingSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD05FE174AB600009411A9 /* NamingSvc.m */; };
 		84FD0602174ABA4E009411A9 /* NamingSvcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD0601174ABA4E009411A9 /* NamingSvcTest.m */; };
 		C4FF9184B1804CB49315AB25 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 740B4715B55E4079A2769B58 /* libPods.a */; };
@@ -118,6 +121,8 @@
 		840014D71749539400E75A60 /* SodaPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SodaPass.m; sourceTree = "<group>"; };
 		840014D91749B16900E75A60 /* Soda.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soda.h; sourceTree = "<group>"; };
 		840014DA1749B16B00E75A60 /* Soda.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Soda.m; sourceTree = "<group>"; };
+		84010E091763762D0021A6AB /* SodaObjectDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SodaObjectDecorator.h; sourceTree = "<group>"; };
+		84010E0A1763762D0021A6AB /* SodaObjectDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SodaObjectDecorator.m; sourceTree = "<group>"; };
 		84500F51174538040055697A /* SodaCloudIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SodaCloudIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84500F54174538040055697A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84500F56174538040055697A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -194,6 +199,11 @@
 		8480A46F1753ADEC007756C0 /* SodaTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SodaTest.h; sourceTree = "<group>"; };
 		8480A4701753ADEC007756C0 /* SodaTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SodaTest.m; sourceTree = "<group>"; };
 		8480A4721754E020007756C0 /* MsgReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MsgReceiver.h; sourceTree = "<group>"; };
+		84CFA3FA1761119B00870338 /* SodaMDWampTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SodaMDWampTest.h; sourceTree = "<group>"; };
+		84CFA3FB1761119B00870338 /* SodaMDWampTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SodaMDWampTest.m; sourceTree = "<group>"; };
+		84CFA3FD176125C600870338 /* MsgContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgContainer.h; sourceTree = "<group>"; };
+		84CFA3FE176125C600870338 /* MsgContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgContainer.m; sourceTree = "<group>"; };
+		84CFA4001761FE6300870338 /* SodaListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SodaListener.h; sourceTree = "<group>"; };
 		84FD05FD174AB600009411A9 /* NamingSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamingSvc.h; sourceTree = "<group>"; };
 		84FD05FE174AB600009411A9 /* NamingSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NamingSvc.m; sourceTree = "<group>"; };
 		84FD0600174ABA4E009411A9 /* NamingSvcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamingSvcTest.h; sourceTree = "<group>"; };
@@ -325,6 +335,8 @@
 				8480A46D17538AEE007756C0 /* MockSvcImpl.m */,
 				8480A46F1753ADEC007756C0 /* SodaTest.h */,
 				8480A4701753ADEC007756C0 /* SodaTest.m */,
+				84CFA3FA1761119B00870338 /* SodaMDWampTest.h */,
+				84CFA3FB1761119B00870338 /* SodaMDWampTest.m */,
 			);
 			path = SodaCloudIOSTests;
 			sourceTree = "<group>";
@@ -383,6 +395,11 @@
 				8463D9FD174C4501006692FC /* ObjInvoker.h */,
 				8463D9FE174C4502006692FC /* ObjInvoker.m */,
 				8480A4721754E020007756C0 /* MsgReceiver.h */,
+				84CFA3FD176125C600870338 /* MsgContainer.h */,
+				84CFA3FE176125C600870338 /* MsgContainer.m */,
+				84CFA4001761FE6300870338 /* SodaListener.h */,
+				84010E091763762D0021A6AB /* SodaObjectDecorator.h */,
+				84010E0A1763762D0021A6AB /* SodaObjectDecorator.m */,
 			);
 			path = SodaBase;
 			sourceTree = "<group>";
@@ -603,6 +620,8 @@
 				84FD05FF174AB600009411A9 /* NamingSvc.m in Sources */,
 				8463D9F0174BCC3C006692FC /* InvocationResponseMsg.m in Sources */,
 				8463D9FF174C4502006692FC /* ObjInvoker.m in Sources */,
+				84CFA3FF176125C600870338 /* MsgContainer.m in Sources */,
+				84010E0B1763762D0021A6AB /* SodaObjectDecorator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +643,7 @@
 				8480A46B17538A1B007756C0 /* ObjInvokerTest.m in Sources */,
 				8480A46E17538AEE007756C0 /* MockSvcImpl.m in Sources */,
 				8480A4711753ADEC007756C0 /* SodaTest.m in Sources */,
+				84CFA3FC1761119B00870338 /* SodaMDWampTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

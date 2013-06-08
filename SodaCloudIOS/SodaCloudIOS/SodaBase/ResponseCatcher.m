@@ -12,9 +12,28 @@
 
 @implementation ResponseCatcher
 
+
+
 -(id)initWithId:(NSString *)id andReturnType:(Class)type{
     waitLock = [[NSCondition alloc] init];
     self.returnType = type;
+    return self;
+}
+
+-(id)initWithId:(NSString*)msgid andReturnType:(Class)type andSoda:(Soda*)soda
+{
+    self = [super init];
+    if(self == nil){
+        return nil;
+    }
+    
+    waitLock = [[NSCondition alloc] init];
+    self.returnType = type;
+    self.soda = soda;
+    self.msgId = msgid;
+    
+    [self.soda addResponseCatcher:self forId:msgid];
+    
     return self;
 }
 

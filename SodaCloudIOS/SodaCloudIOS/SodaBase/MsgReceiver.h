@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Msg.h"
 
 @protocol MsgReceiver <NSObject>
 

@@ -420,9 +420,9 @@ static __strong NSData *CRLFCRLF;
 
     dispatch_async(_callbackQueue, ^{
         if(self.delegate != nil){
-       // if ([self.delegate respondsToSelector:@selector(webSocketDidOpen:)]) {
-       //     [self.delegate webSocketDidOpen:self];
-       // }
+            if ([self.delegate respondsToSelector:@selector(webSocketDidOpen:)]) {
+                [self.delegate webSocketDidOpen:self];
+            }
         }
     });
 }

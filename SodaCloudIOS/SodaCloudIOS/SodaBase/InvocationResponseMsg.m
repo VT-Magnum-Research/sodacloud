@@ -13,4 +13,15 @@
 
 @implementation InvocationResponseMsg
 
+-(id)init
+{
+    self = [super init];
+    if(self == nil){
+        return self;
+    }
+    
+    self.type = @"response";
+    return self;
+}
+
 @end

@@ -25,7 +25,7 @@
     NamingSvc* naming = [[NamingSvc alloc]initWithHost:@"test"];
     ObjRef* ref = [naming bindObject:svc toId:@"svc"];
     
-    svc = [naming get:@"svc"];
+    svc = [naming get:@"svc" asType:[MockSvc class]];
     STAssertNotNil(svc, @"The mock service was not stored properly by the naming service.");
     
     svc = [naming getObject:ref];
@@ -59,7 +59,7 @@
     [parent bindObject:obj4 toId:@"with_parent"];
     
     svc.parent = parent;
-    STAssertEqualObjects([svc get:@"with_parent"],obj4, @"The naming svc did not return the correct object from the parent naming svc.");
+    STAssertEqualObjects([svc get:@"with_parent" asType:[NSString class]],obj4, @"The naming svc did not return the correct object from the parent naming svc.");
     
 }
 

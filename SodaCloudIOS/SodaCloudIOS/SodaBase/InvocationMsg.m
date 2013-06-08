@@ -19,6 +19,8 @@
         return nil;
     }
     
+    self.type = @"invocation";
+    
     return self;
 }
 //-(NSArray*)getMethodParamTypes:(id)targetObject

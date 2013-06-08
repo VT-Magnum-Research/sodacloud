@@ -7,6 +7,7 @@
 //
 
 #import "SodaMethod.h"
+#import "NSInvocation+OCMAdditions.h"
 
 @implementation SodaMethod
 
@@ -18,13 +19,23 @@
 -(NSString*)cTypes
 {
     NSMutableString* ctypes = [[NSMutableString alloc]init];
-    NSString* rctype = (self.returnType == nil)? @"v" : @"@";
+    NSString* rctype = (self.returnType == nil && self.returnTypeFromParamIndex == -1)? @"v" : @"@";
     [ctypes appendFormat:@"%@^v^c",rctype];
     
+    int i = 0;
     for(id c in self.parameterTypes){
+        if(i == self.returnTypeFromParamIndex){
+            [ctypes appendString:@"#"];
+        }
         NSString* ctype = [self cTypeOf:c];
         [ctypes appendFormat:@"%@",ctype];
+        
+        i++;
     }
+    if(i <= self.returnTypeFromParamIndex){
+        [ctypes appendString:@"#"];
+    }
+    
     return ctypes;
 }
 
@@ -143,6 +154,50 @@
 //        }
 }
 
+-(BOOL)isVoid
+{
+    return self.returnType == nil && self.returnTypeFromParamIndex == -1;
+}
+
+-(Class)returnTypeForMethodWithInvocation:(NSInvocation*)invoke;
+{
+    Class type = nil;
+    if(self.returnTypeFromParamIndex != -1){
+        [invoke getArgument:&type atIndex:self.returnTypeFromParamIndex+2];
+    }
+    else{
+        type = self.returnType;
+    }
+    
+    return type;
+}
+
+-(id)initWithName:(NSString*)name andReturnTypeFromParam:(int)paramnum, ...
+{
+    self = [super init];
+    if(!self){
+        return nil;
+    }
+    
+    self.name = name;
+    self.returnType = nil;
+    self.returnTypeFromParamIndex = paramnum;
+    self.parameterTypes = [[NSMutableArray alloc]init];
+    
+    va_list args;
+    va_start(args, paramnum);
+    Class value;
+    
+    while( (value = va_arg( args, Class)) ){
+        if(self.parameterTypes.count != self.returnTypeFromParamIndex){
+            [self.parameterTypes addObject:value];
+        }
+    }
+    va_end(args);
+    
+    return self;
+}
+
 -(id)initWithName:(NSString*)name andReturnType:(Class)rtype, ...
 {
     self = [super init];
@@ -152,6 +207,7 @@
     
     self.name = name;
     self.returnType = rtype;
+    self.returnTypeFromParamIndex = -1;
     self.parameterTypes = [[NSMutableArray alloc]init];
     
     va_list args;
@@ -175,6 +231,7 @@
     
     self.name = name;
     self.returnType = nil;
+    self.returnTypeFromParamIndex = -1;
     self.parameterTypes = [[NSMutableArray alloc]init];
     
     va_list args;

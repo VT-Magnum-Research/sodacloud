@@ -16,6 +16,34 @@
 #import "SodaViewController.h"
 
 
+@interface MaintenanceReport : NSObject
+
+@property(nonatomic,retain)NSString* id;
+@property(nonatomic,retain)NSString* contents;
+@end
+@implementation MaintenanceReport
+@end
+
+@interface MaintenanceListener : NSObject<SodaObject>
+@end
+@implementation MaintenanceListener
+SODA_METHODS(
+             SODA_VOID_METHOD(@"reportAdded", PARAM(MaintenanceReport))
+             )
+@end
+
+@interface MaintenanceReports : NSObject<SodaObject>
+-(void)addListener:(MaintenanceListener*)listener;
+@end
+@implementation MaintenanceReports
+    SODA_METHODS(
+             SODA_VOID_METHOD(@"addListener",REF(MaintenanceListener))
+    )
+@end
+
+
+
+
 @interface SodaViewController ()
 
 @end
@@ -25,35 +53,31 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     
-    
-    // if you want debug log set this to YES, default is NO
-    [MDWamp setDebug:YES];
-    
-    MDWamp *wamp = [[MDWamp alloc] initWithUrl:@"ws://localhost:8081" delegate:self];
-    
-    // set if MDWAMP should automatically try to reconnect after a network fail default YES
-    [wamp setShouldAutoreconnect:YES];
-    
-    // set number of times it tries to autoreconnect after a fail
-    [wamp setAutoreconnectMaxRetries:2];
-    
-    // set seconds between each reconnection try
-    [wamp setAutoreconnectDelay:5];
-    
-    [wamp connect];
-    
-    
-    NSString* json = @"{\"id\":\"1\"}";
-    
-    //NSDictionary *jsonParsed = [json JSONValue];
-    
-    //DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass: [Msg class]];
-    Msg* msg = [json toJsonObject:[Msg class]];//[parser parseDictionary:jsonParsed];
-    NSLog(@"MSG ID ### %@", msg.id);
-    NSLog(@"MSG Json %@",[msg toJson]);
+     NSString* host = @"ws://localhost:8081";
+    //
+    Soda* soda = [[Soda alloc]init];
+    [soda connect:host withListener:self];
 }
+
+-(void) reportAdded:(MaintenanceReport*)report
+{
+    NSLog(@"Added report: id:%@ content:%@",report.id, report.contents);
+}
+
+-(void) connected:(Soda*)soda
+{
+    id obj = [soda.namingService get:@"maintenance" asType:[MaintenanceReports class]];
+    NSLog(@"From namingsvc: %@",obj);
+    
+    [obj addListener:self];
+}
+
+-(void) disconnected
+{
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {

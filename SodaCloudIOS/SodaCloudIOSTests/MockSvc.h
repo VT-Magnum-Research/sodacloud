@@ -16,4 +16,5 @@
 -(NSDictionary*)doItAndReturnParams:(NSNumber*)a b:(NSString*)b c:(MockSvc*)test;
 -(MockSvc*)getTest;
 -(void)setTest:(MockSvc*)test;
+-(id)get:(NSString*)objid asType:(Class)type;
 @end

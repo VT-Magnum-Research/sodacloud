@@ -12,6 +12,8 @@
 {
 }
 
+-(id)init;
+
 @property(nonatomic,retain)id result;
 @property(nonatomic,retain)NSString* exception;
 

@@ -31,5 +31,6 @@
 -(ObjRef*)bindObject:(id)obj toId:(NSString*)id;
 -(ObjRef*)bindObject:(id)obj;
 -(id)getObject:(ObjRef*)ref;
--(id)get:(NSString*)name;
+-(id)get:(NSString*)ref asType:(Class)type;
+//-(id)get:(NSString*)name;
 @end
