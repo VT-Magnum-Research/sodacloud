@@ -11,13 +11,14 @@ public interface Users {
 	
 	public void addUser(User r);
 	public List<User> getUsers();
+	
+	public User findUser(String usr);
 		
 	@SodaAsync
 	public void getUsers(Callback<List<User>> callback);	
 	
 	public void addListener(UserListener l);
 	public void removeListener(UserListener l);
-	public  List<UserListener>  getListener();
 	
 	
 }

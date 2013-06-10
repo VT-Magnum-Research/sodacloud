@@ -25,7 +25,7 @@ public class UsersImpl implements Users {
 		}
 		return false;
 	}
-	
+	@Override 
 	public User findUser(String username){
 		for(User u:users_){
 			if(u.getUsername_().equals(username))
@@ -37,7 +37,7 @@ public class UsersImpl implements Users {
 	public List<User>getUsers(){
 		return users_;
 	}
-	@Override
+	@Override 
 	public void getUsers(Callback<List<User>> callback) {
 		// TODO Auto-generated method stub
 		callback.handle(users_);
@@ -56,10 +56,7 @@ public class UsersImpl implements Users {
 		listeners_.remove(l);
 		
 	}
-	@Override
-	public List<UserListener> getListener() {
-		// TODO Auto-generated method stub
-		return listeners_;
-		
-	}
+	
+	
+	
 }

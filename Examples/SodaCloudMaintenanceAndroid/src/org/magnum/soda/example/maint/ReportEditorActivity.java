@@ -24,6 +24,7 @@ import org.magnum.soda.android.SodaInvokeInUi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -54,6 +55,7 @@ public class ReportEditorActivity extends Activity implements
 	private Button followButton_;
 	private ImageButton photoView_;
 
+	private String username;
 	private MaintenanceReports reports_;
 	private MaintenanceReport currReport_;
 	private ReportParcelable current;
@@ -101,6 +103,9 @@ public class ReportEditorActivity extends Activity implements
 			createtimeText_ = (TextView) findViewById(R.id.textView_createTime);
 			photoView_ = (ImageButton) findViewById(R.id.image_editreport);
 
+			SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE);
+			username = sharedPref.getString("username", "no");
+			
 			Intent callingintent = getIntent();
 
 			if (getIntent().hasExtra("mReport")) {
@@ -171,21 +176,26 @@ public class ReportEditorActivity extends Activity implements
 					public void run() {
 						reports_ = as.get(MaintenanceReports.class,
 								MaintenanceReports.SVC_NAME);
-						reports_.addListener(new MaintenanceListener() {
+						reports_.addFollowerListener(currReport_.getId(),new UserListener() {
 
-							@SodaInvokeInUi
-							public void reportAdded(final MaintenanceReport r) {
+							@Override
+							public void userAdded(User u) {
+								// TODO Auto-generated method stub
+								
 							}
 
 							@Override
-							public void reportchanged(MaintenanceReport r) {
+							public void notifyFollowers(MaintenanceReport u) {
 								// TODO Auto-generated method stub
-							
-								}
+								Log.d("SODA",
+										"-------notify followers---: " + u.getContents());
+								
+							}
 
+						
 							});
 						
-					//	reports_.addFollower();
+					reports_.addFollower(currReport_,username);
 						
 					}
 					

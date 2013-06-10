@@ -11,8 +11,7 @@ public class User {
 	private String pwd_;
 	private String name_;
 	private String phone_;
-	private List<String> following_= new ArrayList<String>();
-	private List<UserListener> follower_= new ArrayList<UserListener>();
+	/*private List<String> following_= new ArrayList<String>();;
 	
 	public void addfollowing(String username){
 		following_.add(username);
@@ -22,17 +21,7 @@ public class User {
 	}
 	public boolean isfollowing(String username){
 		return following_.contains(username);
-	}
-	
-	public void addfollower(String username){
-		following_.add(username);
-	}
-	public void removefollower(String username){
-		following_.remove(username);
-	}
-	public boolean isfollower(String username){
-		return following_.contains(username);
-	}
+	}*/
 	
 	public String getUsername_() {
 		return username_;
