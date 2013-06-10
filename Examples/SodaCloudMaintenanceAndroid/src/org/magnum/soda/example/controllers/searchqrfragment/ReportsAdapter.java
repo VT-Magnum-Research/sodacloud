@@ -33,7 +33,6 @@ public class ReportsAdapter extends ArrayAdapter<MaintenanceReport> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.d(TAG,"getView()");
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View reportView = inflater.inflate(R.layout.report_item_view, parent,false);
 		if(mReports != null) {
