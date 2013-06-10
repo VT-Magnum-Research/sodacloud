@@ -4,9 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="SEARCH" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
         android:orientation="horizontal" >
 
         <RelativeLayout
@@ -40,21 +48,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Get QR Report" />
-            <Button
-                android:id="@+id/buttonLoadDummyReports"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Load Dummy Reports" />
         </LinearLayout>
-
     </LinearLayout>
+
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="OPTIONS" />
+
+    <Button
+        android:id="@+id/buttonLoadDummyReports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Load Dummy Reports" />
 
     <FrameLayout
         android:id="@+id/frameLayoutReportListFrame"
         android:layout_width="match_parent"
-        android:layout_height="0dp" 
-        android:layout_weight="100">
+        android:layout_height="0dp"
+        android:layout_weight="100" >
     </FrameLayout>
-    
-    </LinearLayout>
 
+</LinearLayout>
