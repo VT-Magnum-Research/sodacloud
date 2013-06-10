@@ -1,16 +1,21 @@
 package org.magnum.soda.example.controllers.searchlocationfragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import leadtools.demos.BitmapUtils;
+import leadtools.demos.BitmapUtils.GetBitmapListener;
+
 import org.magnum.soda.Callback;
 import org.magnum.soda.android.AndroidSoda;
 import org.magnum.soda.android.AndroidSodaListener;
 import org.magnum.soda.android.SodaInvokeInUi;
+import org.magnum.soda.example.controllers.searchqrfragment.ReportsListFragment;
 import org.magnum.soda.example.maint.MaintenanceReport;
 import org.magnum.soda.example.maint.MaintenanceReports;
 import org.magnum.soda.example.maint.R;
@@ -26,6 +31,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,7 +46,7 @@ public class SearchLocationFragment extends SherlockFragment implements
 	// UI references.
 	private Button searchButton;
 	private EditText rangeText;
-	private ListView searchResultList;
+	// private ListView searchResultList;
 	private List<MaintenanceReport> mReportList = new ArrayList<MaintenanceReport>();
 	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	private Context ctx_;
@@ -49,23 +55,38 @@ public class SearchLocationFragment extends SherlockFragment implements
 	private AndroidSodaListener asl_ = null;
 
 	private AndroidSoda as = null;
+	private ReportsListFragment mReportsListFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		ctx_ = this.getActivity();
-		
+
 		setupActionBar();
 
-		View rootView = inflater.inflate(R.layout.activity_searchbylocation,
+		View rootView = inflater.inflate(R.layout.fragment_search_location,
 				container, false);
 		// setContentView(R.layout.activity_searchbylocation);
+		mReportsListFragment = new ReportsListFragment();
+		getFragmentManager().beginTransaction()
+				.replace(R.id.frameLayoutReportListFrame, mReportsListFragment)
+				.commit();
+		Button loadDummyReportsButton = (Button) rootView
+				.findViewById(R.id.buttonLoadDummyReports);
+		loadDummyReportsButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				displayDummyReports();
+
+			}
+		});
 
 		searchButton = (Button) rootView.findViewById(R.id.searchButton);
 		rangeText = (EditText) rootView.findViewById(R.id.rangeText);
-		searchResultList = (ListView) rootView
-				.findViewById(R.id.location_listView);
+		// searchResultList = (ListView) rootView
+		// .findViewById(R.id.location_listView);
 
 		searchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -92,23 +113,24 @@ public class SearchLocationFragment extends SherlockFragment implements
 				new int[] { R.id.item_description });
 		// map the layout part in xml to element in HashMap
 		// bind Adapter
-		searchResultList.setAdapter(mAdapter);
+		// searchResultList.setAdapter(mAdapter);
 		// bind listView's listener
-		searchResultList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
-				HashMap<String, String> map = (HashMap<String, String>) searchResultList
-						.getItemAtPosition(position);
-				String des = map.get("itemDescription");
-				ReportDetailIntent(des);
-			}
-
-		});
+		// searchResultList.setOnItemClickListener(new OnItemClickListener() {
+		// @Override
+		// public void onItemClick(AdapterView<?> parent, View view,
+		// int position, long id) {
+		//
+		// HashMap<String, String> map = (HashMap<String, String>)
+		// searchResultList
+		// .getItemAtPosition(position);
+		// String des = map.get("itemDescription");
+		// ReportDetailIntent(des);
+		// }
+		//
+		// });
 
 		AndroidSoda.init(this.getActivity(), "10.0.1.8", 8081, this);
-		
+
 		return rootView;
 
 	}
@@ -147,7 +169,7 @@ public class SearchLocationFragment extends SherlockFragment implements
 								// @SodaInvokeInUi
 								public void handle(List<MaintenanceReport> arg0) {
 									mReportList = arg0;
-									populateList();
+									populateList(mReportList);
 								}
 							});
 					Log.e("obtained", "------------------------------------");
@@ -174,28 +196,59 @@ public class SearchLocationFragment extends SherlockFragment implements
 
 	}
 
-	private void populateList() {
-		Iterator<MaintenanceReport> itr = mReportList.iterator();
+	private void displayDummyReports() {
+		List<MaintenanceReport> dummyReports = new ArrayList<MaintenanceReport>();
+		final MaintenanceReport reportWithImage = new MaintenanceReport();
+		reportWithImage.setContents("This report has an image!");
+		reportWithImage.setTitle("Report with an image");
+		String url = "https://si0.twimg.com/profile_images/2725938749/60d4af1fa99056b83e9ccc746a81c88b.png";
+		BitmapUtils.getBitmapByteArrayFromUrlAsync(url,
+				new GetBitmapListener<byte[]>() {
 
-		while (itr.hasNext()) {
-			HashMap<String, String> map = new HashMap<String, String>();
-			MaintenanceReport temp = ((MaintenanceReport) itr.next());
-			Log.e("-- items--", temp.getCreatorId());
-			map.put("itemDescription", temp.getContents());
-			list.add(map);
+					@Override
+					public void onResponse(byte[] bitmaps) {
+						reportWithImage.setImageData(bitmaps);
 
-		}
-		Log.e("size", ":" + list.size());
-
-		getActivity().runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				mAdapter.notifyDataSetInvalidated();//
-				mAdapter.notifyDataSetChanged();
+					}
+				});
+		dummyReports.add(reportWithImage);
+		for (int i = 0; i < 10; ++i) {
+			MaintenanceReport report = new MaintenanceReport();
+			report.setTitle("Report Title");
+			report.setCreateTime_(new Date());
+			report.setContents("These are the contents of this report.");
+			if (i == 4) {
+				report.setContents("The contents of this report are very very very very very long: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
 			}
+			dummyReports.add(report);
+		}
+		populateList(dummyReports);
 
-		});
+	}
+
+	private void populateList(List<MaintenanceReport> reports) {
+		mReportsListFragment.setReports(reports);
+		// Iterator<MaintenanceReport> itr = mReportList.iterator();
+		//
+		// while (itr.hasNext()) {
+		// HashMap<String, String> map = new HashMap<String, String>();
+		// MaintenanceReport temp = ((MaintenanceReport) itr.next());
+		// Log.e("-- items--", temp.getCreatorId());
+		// map.put("itemDescription", temp.getContents());
+		// list.add(map);
+		//
+		// }
+		// Log.e("size", ":" + list.size());
+		//
+		// getActivity().runOnUiThread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// mAdapter.notifyDataSetInvalidated();//
+		// mAdapter.notifyDataSetChanged();
+		// }
+		//
+		// });
 
 	}
 
@@ -251,9 +304,10 @@ public class SearchLocationFragment extends SherlockFragment implements
 	private void dataChanged() {
 		mAdapter.notifyDataSetChanged();
 	}
-	
+
 	private void setupActionBar() {
-		final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity().getSupportActionBar();
+		final com.actionbarsherlock.app.ActionBar bar = getSherlockActivity()
+				.getSupportActionBar();
 		bar.hide();
 	}
 }
