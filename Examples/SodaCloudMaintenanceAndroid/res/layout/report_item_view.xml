@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="-2dp"
+    android:background="@drawable/report_item_border"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/report_picture_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingTop="10dp" >
+
+        <ImageView
+            android:id="@+id/imageViewReportImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/abs__ab_bottom_solid_dark_holo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/report_text_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/report_picture_layout"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/textViewReportTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title not available"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textViewReportLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location not available"
+            android:textColor="#737373"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textViewReportContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:linksClickable="true"
+            android:text="Content not available"
+            android:textColor="#737373"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/report_layout_bottomline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"        
+        android:background="#d8d8d8" 
+        android:visibility="gone"/>
+
+</RelativeLayout>

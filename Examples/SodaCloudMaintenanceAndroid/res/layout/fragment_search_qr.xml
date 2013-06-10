@@ -1,5 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_search_qr_content_frame"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/QRImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/object_stamp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/getQRCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Read QRCode" />
+
+            <Button
+                android:id="@+id/searchQRReports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Get QR Report" />
+            <Button
+                android:id="@+id/buttonLoadDummyReports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Load Dummy Reports" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayoutReportListFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" 
+        android:layout_weight="100">
+    </FrameLayout>
+    
+    </LinearLayout>
+
