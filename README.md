@@ -73,6 +73,8 @@ Android, Javascript, iOS.
 Architecture of SodaCloud
 ------------
 
+![Soda L](Docs/images/architecture.PNG "Soda")
+
 Setting up a Java server-side project
 ------------
 - Download SodaCloud and SodaCloudJetty project.
