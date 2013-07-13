@@ -3,16 +3,48 @@ Sodacloud Documentation
 
 Overview of SodaCloud
 ------------
-- SodaCloud is a shared object distribution architecture for cloud systems. SodaCloud provides a platform that automatically creates mobile/cloud applications with optimized communications, cloud-based data sharding, cyber-physical information usage (e.g. geo-located data), and code generation / testing methods for ensuring platform correctness. 
+SodaCloud is a shared object distribution architecture for cloud systems. 
+SodaCloud provides a platform that automatically creates mobile/cloud applications with optimized communications,
+cloud-based data sharding, cyber-physical information usage (e.g. geo-located data), 
+and code generation / testing methods for ensuring platform correctness. 
 
-- Using SodaCloud, the developer will be able to build a model of the client/server services, data, and security requirements and automatically generate an entire system backbone. The backbone will allow developers to enter key system logic manually, while the backbone will take care of client/cloud communications, automatic platform instrumentation and replay of request data for QA, data marshaling infrastructure, and capture of key performance / cloud resource sizing data to aid in resource allocation decisions and operations cost optimization.
+Using SodaCloud, the developer will be able to build a model of the client/server services, data, and 
+security requirements and automatically generate an entire system backbone. The backbone will allow developers 
+to enter key system logic manually, while the backbone will take care of client/cloud communications, 
+automatic platform instrumentation and replay of request data for QA, data marshaling infrastructure, 
+and capture of key performance / cloud resource sizing data to aid in resource allocation decisions and 
+operations cost optimization.
+
+![Soda L](Docs/images/architecture.PNG "Soda")
+
+SodaCloud supports automatic creation of cloud mobile client to cloud server communication infrastructure,
+including data marshaling mechanisms, that alleviate the need for developers to hand-code complex 
+asynchronous communication pathways and optimize underlying protocols for the target API. 
+
+SodaCloud is built on top of an HTTP + push messaging communication system. HTTP is the most widely used mobile 
+communications protocol and leveraged by key apps, such as Facebook, LinkedIn, etc. A key challenge with HTTP-based 
+communication from apps is the API-boundaries that transition from traditional OO-based programming to high-latency, 
+non-OO, request-response style communication. SodaCloud builds an OO-based abstraction on top of this communication 
+pathway to hide these complexities from developers and simplify testing. 
+
+Moreover, when using HTTP-based communication approaches, they are biased towards client-initiated communication
+and make server-to-device pushing of data challenging. Other mechanisms for pushing data to devices, 
+such as Android’s C2DM push messaging are available, but they required complex authentication and negotiation 
+between both the client and server and the server and third-party messaging servers. Further, these push notification
+systems have multiple asynchronous operations that must complete and state management requirements that 
+add another layer of complexity on communications. SodaCloud provides a seamless abstraction
+on top of both HTTP and these push messaging mechanisms to provide simplified two-way client/server interaction 
+initiation.
+
+![Soda L](Docs/images/layer.png "Soda")
 
 A simple example with the Observer pattern 
 ------------
 
 In the following example, we will use the object “MaintenanceReport” for illustration. In a simple user scenario, the user wants to add a new report in the client side and the server side needs to handle this.
 
-- In Java server-side: a MaintenancesListener interface is declared:
+- In Java server-side: a MaintenancesListener interface is declared. Two method is defined for the interface to handle
+the add and change event of th report.
 
 ```java
 public interface MaintenanceListener {
@@ -22,7 +54,8 @@ public interface MaintenanceListener {
 	public void reportchanged(MaintenanceReport r);
 }
 ```
-A manager class “MaintenanceReports” is declared: 
+A manager class “MaintenanceReports” is declared. It stores the reports and listeners for the reports in lists. When a new
+report is uploaded, it will be added to the list of report and all the listeners will be notified.
   
 ```java  
 public class MaintenanceReportsImpl implements MaintenanceReports {
@@ -36,7 +69,7 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 		}
 	}
 	……
-@Override
+	@Override
 	public void addListener(MaintenanceListener l) {
 		listeners_.add(l);
 	}
@@ -44,36 +77,36 @@ public class MaintenanceReportsImpl implements MaintenanceReports {
 }
 ```
 
-- In Java client-side (Android), the reportHandle is fetched from server and a listener is implemented and added to the reportHande.
+- In Java client-side (Android), AndroidSoda.async() is the method to call when you need to invoke 
+network connection with server. A new thread will be created. The reportHandle is fetched from server using SVC naming service.
+A listener is implemented and then added to the handle. Remember to annotate with @SodaInvokeInUi if you try to make any 
+changes to UI elements. In the end, addReport() method is called to add the new report to the server.
+
 
 ```java  
 AndroidSoda.async(new Runnable() {
+	@Override
+	public void run() {
+		MaintenanceReports reportHandle = as.get(MaintenanceReports.class, MaintenanceReports.SVC_NAME);
+		reportHandle.addListener(new MaintenanceListener() {
+			@SodaInvokeInUi
+			public void reportAdded(final MaintenanceReport r) {
+				Toast.makeText(CreateReportFragment.this.getActivity(),"New report:" + r.getContents(),
+						Toast.LENGTH_SHORT).show();
+			}
 			@Override
-			public void run() {
-				MaintenanceReports reportHandle = as.get(
-						MaintenanceReports.class, MaintenanceReports.SVC_NAME);
-				reportHandle.addListener(new MaintenanceListener() {
-					@SodaInvokeInUi
-					public void reportAdded(final MaintenanceReport r) {
-						Toast.makeText(CreateReportFragment.this.getActivity(),
-								"New report:" + r.getContents(),
-								Toast.LENGTH_SHORT).show();
-					}
-					@Override
-					public void reportchanged(final MaintenanceReport r) {
-					}
-});
+			public void reportchanged(final MaintenanceReport r) {
+			}
+		});
+		reportHandle.addReport(r);
+	}
+}
 ```
 - Javascript client-side
 
 Overview of supported platforms
 ------------
 Android, Javascript, iOS.
-
-Architecture of SodaCloud
-------------
-
-![Soda L](Docs/images/architecture.PNG "Soda")
 
 Setting up a Java server-side project
 ------------
