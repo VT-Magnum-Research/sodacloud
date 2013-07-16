@@ -110,11 +110,11 @@ Android, Javascript, iOS.
 
 Setting up a Java server-side project
 ------------
-- Download SodaCloud and SodaCloudJetty project.
+1. ownload SodaCloud and SodaCloudJetty project.
 
-- Create a Java project in eclipse and add SodaCloud and SodaCloudJetty to the build path.
+2. Create a Java project in eclipse and add SodaCloud and SodaCloudJetty to the build path.
 
-- To create a basic server with Jetty. Create the main class implements ServerSodaListener interface.
+3. To create a basic server with Jetty. Create the main class implements ServerSodaListener interface.
 
 ```java 
    public class Server implements ServerSodaListener {
@@ -127,7 +127,7 @@ Setting up a Java server-side project
 	  }
 }
 ```
-- Defining interfaces for remoteable objects
+4. Defining interfaces for remoteable objects
 
 Here we define the manage interface “MaintenanceReports”
 
@@ -140,14 +140,14 @@ public interface MaintenanceReports {
 ……
 }
 ```
--How to bind objects
+5. How to bind objects
 
 To bind an object, call the function soda.bind(object, SVC_NAME); Where the first parameter is the object to be bind and the second parameter is the String of its SVC name.
 
 ```java
 soda.bind(reports, MaintenanceReports.SVC_NAME);
 ```
-- How dynamic proxies are created
+6. How dynamic proxies are created
 
 After the call of soda.bind(), the proxies of the object are created automatically by Soda. The process happens in DefaultNamingService.java.
 
@@ -156,9 +156,9 @@ ObjRef ref = new ObjRef("" + data.get("uri"),type.getName());
 obj = (T)proxyFactory_.createProxy(new Class[]{type}, ref);
 ```
 
-- NativeJavaProtocol vs. DefaultProtocol configuration
+7. NativeJavaProtocol vs. DefaultProtocol configuration
 
-- Java implementation limitations
+8. Java implementation limitations
 
 a.	In Java, only parameters that are of an interface type can be
 passed by reference.
@@ -169,11 +169,11 @@ value types because Java does not have reified generic types.
 Setting up an Android project
 ------------
 
-- Importing the Android library project
+1. Importing the Android library project
 
-- Setting the correct permissions
+2. Setting the correct permissions
 
-- Initializing AndroidSoda and connecting
+3. Initializing AndroidSoda and connecting
 
 a)	The activity will need to implement AndroidSodaListener interface and override the connected() method. Then AndroidSoda.init() will call the connected method and return the AndroidSoda object. After that, you can use AndroidSoda for any connection with the server.
 
@@ -193,7 +193,7 @@ a)	The activity will need to implement AndroidSodaListener interface and overrid
 }
 ```
 
-- Looking up objects on the server with the naming service
+4. Looking up objects on the server with the naming service
 
 To start a query, call AndroidSoda.async() method:
 
@@ -205,24 +205,24 @@ To start a query, call AndroidSoda.async() method:
       }
     }
 ```
-- Defining interfaces for remote objects
+5. Defining interfaces for remote objects
 
-- Soda threading architecture
+6. Soda threading architecture
 
 When the AndroidSoda is initialized, a new thread is created. The network operation is conducted in the new thread. A callback is passed as parameter which handles the result of the network communication. The update of UI after network communication is always done on UI thread of Android. This is ensured by using @SodaInvokeInUi annotation.
 
-- Use of the Soda annotations for interactions with the UI thread
+7. Use of the Soda annotations for interactions with the UI thread
 
 @SodaInvokeInUi
 This annotation marks methods that should always be invoked by Soda in the context of the UI thread on Android. 
 If you apply this annotation, you cannot invoke any blocking Soda methods (e.g. any Soda methods that are not void and annotated with @SodaAsync) inside of the method or Android will freak out for doing network ops in the gui thread.
 
-- Use of the Soda annotations for pass by reference and pass by value
+8. Use of the Soda annotations for pass by reference and pass by value
 
 @SodaByValue 
 This annotation marks classes that should be passed by value rather than object reference.
 
-- Sharing object refs via QR code
+9. Sharing object refs via QR code
 
 To share an object via QR code, you need to bind the QR code context to the object. SodaQR is created from a QR image and bind to Soda object.
 
@@ -240,27 +240,27 @@ SodaQuery<MaintenanceReport> _objSQ = s.find(MaintenanceReport.class,_objQR);
 callback.handle(_objSQ.getList_());
 ```
 
-- Android implementation limitations
+10. Android implementation limitations
 
 Setting up a Javascript project
 ------------
-- Importing soda.js
+1. Importing soda.js
 
-- Connecting to the server
+2. Connecting to the server
 
-- Looking up objects on the server with the naming service
+3. Looking up objects on the server with the naming service
 
-- Constructing objects that are remoteable
+4. Constructing objects that are remoteable
 
-- How remote object proxies are created
+5. How remote object proxies are created
 
-- Invoking remote methods and transparent creation of object
+6. Invoking remote methods and transparent creation of object
 references for local objects
 
-- Rules for pass by value vs. pass by reference (e.g. it has a
+7. Rules for pass by value vs. pass by reference (e.g. it has a
 function as a attribute)
 
-- Javascript implementation limitations
+8. Javascript implementation limitations
 
 a)	In Javascript, all objects with a function are automatically passed
 by reference.
@@ -274,17 +274,17 @@ objects to ObjRefs.
 Setting up an Objective-C project
 ------------
 
-- Adding SodaCloud to your XCode project
+1. Adding SodaCloud to your XCode project
 
-- no-arc and other build settings with cocoapods
+2. no-arc and other build settings with cocoapods
 
-- Initializing Soda
+3. Initializing Soda
 
 ```
     Soda* soda = [[Soda alloc]init];
     [soda connect:host withListener:self];
 ```    
-- Defining interfaces for remotable objects with SODA_METHODS macros
+4. Defining interfaces for remotable objects with SODA_METHODS macros
 
 Obj-C doesn't support runtime introspection of method parameter types,
 so several macros are created to capture this info:
@@ -301,15 +301,15 @@ MaintenanceListener.
     )
 @end
 ```
-- Rules for pass by reference vs pass by value with REF(...)
+5. Rules for pass by reference vs pass by value with REF(...)
 
-- Looking up remote objects with the naming service
+6. Looking up remote objects with the naming service
 
 ```
 id obj = [soda.namingService get:@"maintenance" asType:[MaintenanceReports class]];
 ```
-- Soda threading architecture with Grand Central Dispatch
+7. Soda threading architecture with Grand Central Dispatch
 
-- How NSProxies are created
+8.How NSProxies are created
 
 [![Build Status](https://buildhive.cloudbees.com/job/VT-Magnum-Research/job/sodacloud/badge/icon)](https://buildhive.cloudbees.com/job/VT-Magnum-Research/job/sodacloud/)
