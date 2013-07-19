@@ -21,9 +21,15 @@ public interface MaintenanceReports {
 	public void modifyReport(MaintenanceReport r);
 	public void deleteReport(UUID id);
 	
-	public void addFollower(User u);
+	public void addFollower(MaintenanceReport r,String u);
+	public void removeFollower(MaintenanceReport r,String u);
+	
+
+	public List<String> getFollowers(UUID r);
+	public List<MaintenanceReport> getFollowing(String user);
 	
 	public List<MaintenanceReport> getReports();
+	public MaintenanceReport getReportsById(UUID id);
 	
 	public void bindQRContext(Soda s, MaintenanceReport r);
 	@SodaAsync
@@ -38,5 +44,10 @@ public interface MaintenanceReports {
 	
 	public void addListener(MaintenanceListener l);
 	public void removeListener(MaintenanceListener l);
+	
+	public void addFollowerListener(UUID id,UserListener l);
+	public void removeFollowerListener(UUID id,UserListener l);
+	
+	
 	
 }

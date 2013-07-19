@@ -6,12 +6,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+
+import leadtools.demos.BitmapUtils;
+import leadtools.demos.BitmapUtils.GetBitmapListener;
 
 import org.magnum.soda.Callback;
 import org.magnum.soda.ThirdPartyIntent.IntentIntegrator;
@@ -39,6 +43,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -51,14 +56,17 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 	
 	public class SearchQrFragment extends SherlockFragment implements AndroidSodaListener {
+		private static final String TAG = SearchQrFragment.class.getName();		
+		
 		// host
 		private String mHost;
 		// UI references.
 		private Button getQRImage;
 		private Button getReport;
+		private Button mLoadDummyReportsButton;
 		private ImageView qrImage;
 		private Bitmap qrBitmap;
-		private ListView searchResultList;
+//		private ListView searchResultList;
 		private static SimpleAdapter mAdapter;
 		private List<MaintenanceReport> mReportList = new ArrayList<MaintenanceReport>();
 		private List<HashMap<String, String>> mDisplayList = new ArrayList<HashMap<String, String>>();
@@ -80,6 +88,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 		private AndroidSoda as = null;
 		
 		private View mRootView;
+		private ReportsListFragment mReportsListFragment;
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,7 +97,10 @@ import com.actionbarsherlock.app.SherlockFragment;
 			asl_ = this;
 			ctx_ = this.getActivity();
 
-			mRootView = inflater.inflate(R.layout.activity_searchbyqr, container,false);
+			mRootView = inflater.inflate(R.layout.fragment_search_qr, container,false);
+			mReportsListFragment = new ReportsListFragment();
+			getFragmentManager().beginTransaction().replace(R.id.frameLayoutReportListFrame, mReportsListFragment).commit();
+			
 //			setContentView(R.layout.activity_searchbyqr);
 			setupActionBar();
 			Properties prop = new Properties();
@@ -107,17 +119,26 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 			getQRImage = (Button) mRootView.findViewById(R.id.getQRCode);
 			getReport = (Button) mRootView.findViewById(R.id.searchQRReports);
+			mLoadDummyReportsButton = (Button) mRootView.findViewById(R.id.buttonLoadDummyReports);
+			mLoadDummyReportsButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					displayDummyReports();
+					
+				}
+			});
 			qrImage = (ImageView) mRootView.findViewById(R.id.QRImage);
-			searchResultList = (ListView) mRootView.findViewById(R.id.QR_ListView);
-
-			mAdapter = new SimpleAdapter(
-					this.getActivity(),
-					mDisplayList,// data source
-					R.layout.listview_item_nocheckbox,
-					new String[] { "itemDescription" },
-					new int[] { R.id.item_description });
-			mAdapter.notifyDataSetChanged();
-			searchResultList.setAdapter(mAdapter);
+//			searchResultList = (ListView) mRootView.findViewById(R.id.QR_ListView);
+//
+//			mAdapter = new SimpleAdapter(
+//					this.getActivity(),
+//					mDisplayList,// data source
+//					R.layout.listview_item_nocheckbox,
+//					new String[] { "itemDescription" },
+//					new int[] { R.id.item_description });
+//			mAdapter.notifyDataSetChanged();
+//			searchResultList.setAdapter(mAdapter);
 
 			getQRImage.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -157,18 +178,18 @@ import com.actionbarsherlock.app.SherlockFragment;
 				}
 			});
 
-			searchResultList.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-
-					@SuppressWarnings("unchecked")
-					HashMap<String, String> map = (HashMap<String, String>) searchResultList
-							.getItemAtPosition(position);
-					String des = map.get("itemDescription");
-					ReportDetailIntent(des);
-				}
-			});
+//			searchResultList.setOnItemClickListener(new OnItemClickListener() {
+//				@Override
+//				public void onItemClick(AdapterView<?> parent, View view,
+//						int position, long id) {
+//
+//					@SuppressWarnings("unchecked")
+//					HashMap<String, String> map = (HashMap<String, String>) searchResultList
+//							.getItemAtPosition(position);
+//					String des = map.get("itemDescription");
+//					ReportDetailIntent(des);
+//				}
+//			});
 			
 			return mRootView;
 
@@ -201,7 +222,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 									//@SodaInvokeInUi
 									public void handle(List<MaintenanceReport> arg0) {
 										mReportList = arg0;
-										populateList();
+										populateList(mReportList);
 									}
 								});
 						Log.e("obtained", "------------------------------------");
@@ -228,36 +249,68 @@ import com.actionbarsherlock.app.SherlockFragment;
 			}
 
 		}
-
-		private void populateList() {
-			
-			mDisplayList.clear();
-			mMapList.clear();
-			Iterator<MaintenanceReport> itr = mReportList.iterator();
-
-			while (itr.hasNext()) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				HashMap<String,MaintenanceReport> sm=new HashMap<String,MaintenanceReport>();
-				MaintenanceReport temp = ((MaintenanceReport) itr.next());
-				Log.e("-- items--", temp.getCreatorId());
-				map.put("itemDescription", temp.getContents());
-				sm.put(temp.getContents(),temp);
-				mMapList.add(sm);
-				mDisplayList.add(map);
-
-			}
-			Log.e("size", ":" + mDisplayList.size());
-			
-			getActivity().runOnUiThread(new Runnable()
-			{
-
-				@Override
-				public void run() {
-					mAdapter.notifyDataSetInvalidated();//
-					mAdapter.notifyDataSetChanged();
-				}
+		
+		private void displayDummyReports() {
+			List<MaintenanceReport> dummyReports = new ArrayList<MaintenanceReport>();
+			final MaintenanceReport reportWithImage = new MaintenanceReport();
+			reportWithImage.setContents("This report has an image!");
+			reportWithImage.setTitle("Report with an image");
+			String url = "https://si0.twimg.com/profile_images/2725938749/60d4af1fa99056b83e9ccc746a81c88b.png";
+			BitmapUtils.getBitmapByteArrayFromUrlAsync(url, new GetBitmapListener<byte[]>() {
 				
+				@Override
+				public void onResponse(byte[] bitmaps) {
+					reportWithImage.setImageData(bitmaps);
+					
+				}
 			});
+			dummyReports.add(reportWithImage);
+			for(int i=0;i<10;++i) {
+				MaintenanceReport report = new MaintenanceReport();
+				report.setTitle("Report Title");
+				report.setCreateTime_(new Date());
+				report.setContents("These are the contents of this report.");
+				if(i == 4) {
+					report.setContents("The contents of this report are very very very very very long: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
+				}
+				dummyReports.add(report);
+			}
+			populateList(dummyReports);
+			
+		}
+
+		private void populateList(List<MaintenanceReport> reports) {
+			Log.d(TAG,"populateList()");
+			mReportsListFragment.setReports(reports);
+			
+			
+//			mDisplayList.clear();
+//			mMapList.clear();
+//			Iterator<MaintenanceReport> itr = mReportList.iterator();
+//
+//			while (itr.hasNext()) {
+//				HashMap<String, String> map = new HashMap<String, String>();
+//				HashMap<String,MaintenanceReport> sm=new HashMap<String,MaintenanceReport>();
+//				MaintenanceReport temp = ((MaintenanceReport) itr.next());
+//				Log.e("-- items--", temp.getCreatorId());
+//				map.put("itemDescription", temp.getContents());
+//				sm.put(temp.getContents(),temp);
+//				mMapList.add(sm);
+//				mDisplayList.add(map);
+//
+//			}
+//			Log.e("size", ":" + mDisplayList.size());
+//			
+//			getActivity().runOnUiThread(new Runnable()
+//			{
+//
+//				@Override
+//				public void run() {
+//					mAdapter.notifyDataSetInvalidated();//
+//					mAdapter.notifyDataSetChanged();
+//				}
+//				
+//			});
 			
 		
 
