@@ -15,7 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.android;
 
-import java.io.File;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -23,16 +23,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.magnum.soda.Soda;
+import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.java.NativeJavaProtocol;
-import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.transport.UriAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.magnum.soda.svc.NamingService;
-
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 
 public class AndroidSoda extends Soda {
@@ -50,7 +49,10 @@ public class AndroidSoda extends Soda {
 	public static void init(final Context ctx, Protocol protocol, final String host,
 			final int port, final AndroidSodaListener l) {
 		context_ = ctx;
-		final AndroidSoda soda = new AndroidSoda(protocol);
+		
+		LocalAddress addr = initLocalAddress();
+		
+		final AndroidSoda soda = new AndroidSoda(protocol,addr);
 		soda.connect(new UriAddress("ws://" + host + ":" + port));
 		Runnable r = new Runnable() {
 
@@ -63,6 +65,13 @@ public class AndroidSoda extends Soda {
 		};
 
 		executor_.submit(r);
+	}
+
+	private static LocalAddress initLocalAddress() {
+		SharedPreferences settings = context_.getSharedPreferences("soda.prefs", 0);
+	    String id = settings.getString("soda.clientId", UUID.randomUUID().toString());
+	    LocalAddress addr = new LocalAddress(id);
+		return addr;
 	}
 
 	public static Future<?> async(Runnable r) {
@@ -78,6 +87,8 @@ public class AndroidSoda extends Soda {
 	private static Context context_;
 
 	private Handler handler_;
+	
+	private LocalAddress address_;
 
 	private AndroidInvocationDispatcher dispatcher_;
 	private AndroidInvocationDispatcher inUiDispatcher_;
@@ -87,8 +98,8 @@ public class AndroidSoda extends Soda {
 		setTransport(new SodaAndroidTransport(getMsgBus(), getLocalAddress()));
 	}
 	
-	private AndroidSoda(Protocol proto) {
-		super();
+	private AndroidSoda(Protocol proto,LocalAddress addr) {
+		super(addr);
 		setTransport(new SodaAndroidTransport(proto, getMsgBus(), getLocalAddress()));
 	}
 
@@ -121,6 +132,7 @@ public class AndroidSoda extends Soda {
 		dispatcher_ = new AndroidInvocationDispatcher(handler_);
 		inUiDispatcher_ = new AndroidInvocationDispatcher(handler_, true);
 		getInvoker().setDispatcher(dispatcher_);	
+
 	}
 
 	public <T> T invokeInUi(T obj) {
@@ -130,4 +142,5 @@ public class AndroidSoda extends Soda {
 	public void inUi(Runnable r) {
 		handler_.post(r);
 	}
+	
 }

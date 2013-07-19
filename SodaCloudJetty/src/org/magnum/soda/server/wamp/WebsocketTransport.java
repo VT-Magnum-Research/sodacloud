@@ -26,7 +26,6 @@ import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
-import org.magnum.soda.protocol.java.NativeJavaProtocol;
 import org.magnum.soda.server.wamp.client.EventReceiver;
 import org.magnum.soda.server.wamp.messages.EventMessage;
 import org.magnum.soda.transport.Address;
@@ -100,5 +99,12 @@ public class WebsocketTransport extends Transport {
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Override
+	public boolean isConnected() {
+		return handler_.isConnected();
+	}
+	
+	
 
 }

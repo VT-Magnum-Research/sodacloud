@@ -35,7 +35,7 @@ public class ServerSodaLauncher {
 	}
 	
 	public void launch(final Protocol protoc, int tcpPort, final ServerSodaListener l) {
-		Server jettyServer = new Server(tcpPort);
+	    final Server jettyServer = new Server(tcpPort);
 
 		ServletContextHandler context = new ServletContextHandler(
 				ServletContextHandler.SESSIONS);
@@ -55,6 +55,7 @@ public class ServerSodaLauncher {
 				@Override
 				public void run() {
 					ServerSoda soda = new ServerSoda(protoc, 8081);
+					soda.setServer(jettyServer);
 					soda.connect(null);
 					if(l != null){
 						l.started(soda);

@@ -24,13 +24,14 @@ import org.magnum.soda.server.wamp.client.WampClient;
 public class ServerPubSubHandler {
 
 	private WampClient wampClient_;
+	private JettyClient client_;
 
 	public ServerPubSubHandler(int port) {
 
 		try {
-			JettyClient client = new JettyClient();
-			client.connect(null, "", port);
-			wampClient_ = client.getWampClient();
+			JettyClient client_ = new JettyClient();
+			client_.connect(null, "", port);
+			wampClient_ = client_.getWampClient();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -43,5 +44,9 @@ public class ServerPubSubHandler {
 
 	public void publish(String topicId, Object msg) throws IOException {
 		wampClient_.publish(topicId, msg);
+	}
+	
+	public boolean isConnected(){
+		return client_.isConnected();
 	}
 }

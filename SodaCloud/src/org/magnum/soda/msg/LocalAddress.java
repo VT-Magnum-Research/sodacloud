@@ -28,6 +28,13 @@ public class LocalAddress implements Address {
 	
 	private String uriBase_ = "soda://"+hostId_;
 	
+	public LocalAddress(){}
+	
+	public LocalAddress(String id){
+		hostId_ = id;
+		uriBase_ = "soda://"+hostId_;
+	}
+	
 	public String toString(){
 		return uriBase_;
 	}

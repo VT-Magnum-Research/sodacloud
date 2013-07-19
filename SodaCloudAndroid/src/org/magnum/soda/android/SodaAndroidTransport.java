@@ -113,4 +113,11 @@ public class SodaAndroidTransport extends Transport implements
 		return c.getDestination();
 	}
 
+	@Override
+	public boolean isConnected() {
+		return mConnection != null && mConnection.isConnected();
+	}
+	
+	
+
 }

@@ -29,9 +29,10 @@ import org.magnum.soda.server.wamp.client.WampClient;
 
 
 public class JettyClient {
-	
-	public String Host="192.168.137.1";//"172.31.211.12";
 
+	private JettyClientAdapter jettyClientAdapter;
+	private WebSocket.Connection connection;
+	
 	public void connect(URI uri, String protocol, int port) throws Exception {
 
 		WebSocketClientFactory factory = new WebSocketClientFactory();
@@ -52,8 +53,9 @@ public class JettyClient {
 		return jettyClientAdapter.getWampClient();
 	}
 
-	private JettyClientAdapter jettyClientAdapter;
-	private WebSocket.Connection connection;
+	public boolean isConnected(){
+		return connection != null && connection.isOpen();
+	}
 	
 	/**
 	 * @return

@@ -17,7 +17,6 @@ package org.magnum.soda.msg;
 
 import java.util.UUID;
 
-import org.junit.Ignore;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

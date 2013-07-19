@@ -71,8 +71,11 @@ public class PolymorphicUnmarshallingHelper {
 		Object rslt = null;
 		try {
 			Object pval = parser_.parse(data);
-			if(!(pval instanceof JSONObject)){
+			if(!(pval instanceof JSONObject) && !(pval instanceof JSONArray)){
 				return pval;
+			}
+			else if (pval instanceof JSONArray){
+				rslt = marshaller_.fromTransportFormat(type, data);
 			}
 			else if (isJsonObjRef((JSONObject)pval)) {
 				JSONObject obj = (JSONObject)pval;

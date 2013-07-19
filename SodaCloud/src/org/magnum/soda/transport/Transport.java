@@ -124,6 +124,8 @@ public abstract class Transport {
 	public void setExecutor(ExecutorService executor) {
 		executor_ = executor;
 	}
+	
+	public abstract boolean isConnected();
 
 	public abstract void connect(Address addr);
 

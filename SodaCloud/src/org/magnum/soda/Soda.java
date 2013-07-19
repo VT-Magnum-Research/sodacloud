@@ -54,10 +54,9 @@ public class Soda implements TransportListener {
 
 	private NamingService namingService_ = new DefaultNamingService();
 
-	private LocalAddress localAddress_ = new LocalAddress();
+	private LocalAddress localAddress_;
 	private MBassyMsgBus msgBus_ = new MBassyMsgBus();
-	private DefaultObjRegistry objRegistry_ = new DefaultObjRegistry(
-			localAddress_);
+	private DefaultObjRegistry objRegistry_;
 	private ProxyFactory proxyFactory_;
 	private ObjInvoker objInvoker_;
 	private ObjRegistryUpdater objRegistryUpdater_;
@@ -65,11 +64,18 @@ public class Soda implements TransportListener {
 
 	private Map<Object, SodaBinding> ctxPolyObjBinding_ = null;
 
-	public Soda() {
+	public Soda(){
+		this(new LocalAddress());
+	}
+	
+	public Soda(LocalAddress addr) {
+		localAddress_ = addr;
+		objRegistry_ = new DefaultObjRegistry(
+				addr);
 		proxyCreator_ = getProxyCreator();
 		proxyFactory_ = new ProxyFactory(objRegistry_, proxyCreator_,
 				localAddress_, msgBus_);
-		objInvoker_ = new ObjInvoker(localAddress_, msgBus_, objRegistry_,
+		objInvoker_ = new ObjInvoker(addr, msgBus_, objRegistry_,
 				proxyFactory_);
 		objRegistryUpdater_ = new ObjRegistryUpdater(proxyFactory_,
 				objRegistry_);
@@ -86,8 +92,8 @@ public class Soda implements TransportListener {
 		}
 	}
 
-	public Soda(Transport t) {
-		this();
+	public Soda(Transport t, LocalAddress addr) {
+		this(addr);
 		transport_ = t;
 		transport_.setListener(this);
 	}

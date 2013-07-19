@@ -63,6 +63,10 @@ public class LocalPipeTransport {
 		public void setCounterpart(BusHandler counterpart) {
 			counterpart_ = counterpart;
 		}
+		
+		public boolean isConnected(){
+			return true;
+		}
 
 	}
 
@@ -92,5 +96,6 @@ public class LocalPipeTransport {
 	public BusHandler getClientTransport() {
 		return client_;
 	}
+
 
 }

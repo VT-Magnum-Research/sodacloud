@@ -13,68 +13,33 @@
  *  See the License for the specific language governing permissions and      *
  *  limitations under the License.                                           *
  ****************************************************************************/
-package org.magnum.soda.server.wamp;
+package org.magnum.soda.transport;
 
-import org.eclipse.jetty.server.Server;
 import org.magnum.soda.Soda;
 import org.magnum.soda.msg.Protocol;
-import org.magnum.soda.protocol.generic.DefaultProtocol;
-import org.magnum.soda.svc.PingSvc;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.magnum.soda.protocol.java.NativeJavaProtocol;
 
-public class ServerSoda extends Soda {
+public class TestSoda {
 
-	private static final Logger Log = LoggerFactory.getLogger(ServerSoda.class);
-
-	private Server server_;
-
-	public ServerSoda(int port) {
-		this(new DefaultProtocol(), port);
+	private Soda client_ = new Soda();
+	private Soda server_ = new Soda(true);
+	private LocalPipeTransport pipe_;
+	
+	public TestSoda(){
+		this(new NativeJavaProtocol());
 	}
-
-	public ServerSoda(Protocol protoc, int port) {
-		super(true);
-		setTransport(new WebsocketTransport(protoc, getMsgBus(),
-				getLocalAddress(), port));
-
-		bind(new PingSvc() {
-
-			@Override
-			public void ping() {
-				Log.debug("The server recv'd a ping");
-			}
-
-			public void ping(PingMsg msg) {
-				for (int i = 0; i < msg.getTimes(); i++) {
-					Log.debug("Ping: [{}] from [{}]", msg.getMsg(),
-							msg.getFrom());
-				}
-			}
-
-			@Override
-			public void pingMe(PingSvc me) {
-				if (me != null) {
-					me.ping();
-				}
-			}
-
-		}, PingSvc.SVC_NAME);
+	
+	public TestSoda(Protocol proto){
+		pipe_ = new LocalPipeTransport(server_, client_, proto);
+		client_.connect(pipe_.getClientTransport(),null);
 	}
-
-	public Server getServer() {
+	
+	public Soda getClientSoda(){
+		return client_;
+	}
+	
+	public Soda getServerSoda(){
 		return server_;
 	}
 
-	public void setServer(Server Server) {
-		server_ = Server;
-	}
-
-	public void stop() {
-		try {
-			server_.stop();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 }
