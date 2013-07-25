@@ -1,41 +1,115 @@
 package org.magnum.soda.examples;
 
-
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
- 
-public class HttpServer extends AbstractHandler
-{
-    public void handle(String target,
-                       Request baseRequest,
-                       HttpServletRequest request,
-                       HttpServletResponse response) 
-        throws IOException, ServletException
-    {
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        baseRequest.setHandled(true);
-        response.getWriter().println("<h1>Hello World</h1>");
-    }
- 
-    public static void main(String[] args) throws Exception
-    {
-    	Report r = new Report("This is a report.");
-    	Reports manager = new Reports();
-    	manager.addReport(r);
-    	
-        Server server = new Server(8080);
-        server.setHandler(new HttpServer());
- 
-        server.start();
-        server.join();
-    }
-}
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.util.log.Log;
 
+public class HttpServer {
+
+	private static Reports manager = new Reports();
+	public static Queue<String> messageQueue = new LinkedList<String>();
+	
+	public static void main(String[] args) throws Exception {
+		
+		ContextHandler context = new ContextHandler("/get");
+		context.setContextPath("/");
+		context.setHandler(new HandlerGet());
+
+		ContextHandler contextPost = new ContextHandler("/addlistener");
+		contextPost.setHandler(new HandlerPost());
+
+		ContextHandler contextAdd = new ContextHandler("/addreport");
+		contextAdd.setHandler(new HandlerAdd());
+		
+		ContextHandlerCollection contexts = new ContextHandlerCollection();
+		contexts.setHandlers(new Handler[] { context, contextPost, contextAdd });
+
+		Server server = new Server(8080);
+		server.setHandler(contexts);
+
+		server.start();
+		server.join();
+	}
+
+	public static class HandlerGet extends AbstractHandler {
+
+		public void handle(String target, Request baseRequest,
+				HttpServletRequest request, HttpServletResponse response)
+				throws IOException, ServletException {
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(request.getInputStream(), writer);
+			String listenerId = writer.toString();
+			String res = null;
+			
+			for(String s: messageQueue){
+				String[] array = new String[2];
+				array = s.split(",");
+				System.out.println("queue:" + listenerId + " array:" + array[0] +" "+ array[1]);
+				
+				if(array[0].equals(listenerId)){
+					res = array[1];
+					messageQueue.remove(s);
+				}
+			}
+			response.setContentType("text/plain;charset=utf-8");
+			response.setStatus(HttpServletResponse.SC_OK);
+			baseRequest.setHandled(true);
+			response.getWriter().println(res);
+			
+		}
+	}
+
+	public static class HandlerPost extends AbstractHandler {
+
+		public void handle(String target, Request baseRequest,
+				HttpServletRequest request, HttpServletResponse response)
+				throws IOException, ServletException {
+
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(request.getInputStream(), writer);
+			String id = writer.toString();
+			manager.addListener(new ReportsListener(id));
+
+			response.setContentType("text/plain;charset=utf-8");
+			response.setStatus(HttpServletResponse.SC_OK);
+			baseRequest.setHandled(true);
+			response.getWriter()
+					.println("listener added: " + writer.toString());
+		}
+	}
+	
+	public static class HandlerAdd extends AbstractHandler {
+
+		public void handle(String target, Request baseRequest,
+				HttpServletRequest request, HttpServletResponse response)
+				throws IOException, ServletException {
+
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(request.getInputStream(), writer);
+			String content = writer.toString();
+			
+			manager.addReport(new Report(content));
+
+			response.setContentType("text/plain;charset=utf-8");
+			response.setStatus(HttpServletResponse.SC_OK);
+			baseRequest.setHandled(true);
+			response.getWriter()
+					.println("report added: " + content);
+		}
+	}
+
+}
