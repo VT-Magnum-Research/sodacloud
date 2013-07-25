@@ -1,19 +1,21 @@
 package org.magnum.soda.examples;
 
-import java.util.List;
-
-
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.http.HttpStatus;
+import org.eclipse.jetty.util.log.Log;
 
 
+//observerable object
 public class Reports {
 
 	private List<ReportsListener> listeners_ = new LinkedList<ReportsListener>();
 	private List<Report> reports_ = new LinkedList<Report>();
-
 
 	public void addReport(Report r) {
 		reports_.add(r);
@@ -21,6 +23,7 @@ public class Reports {
 			l.reportAdded(r);
 		}
 	}
+	
 	public void modifyReport(Report r){
 		for(Report m : reports_){
 			if(m.getContent().equals(r.getContent()))
@@ -36,7 +39,6 @@ public class Reports {
 		return reports_;
 	}
 
-	
 	public void addListener(ReportsListener l) {
 		listeners_.add(l);
 	}
@@ -47,3 +49,5 @@ public class Reports {
 	}
 
 }
+
+
