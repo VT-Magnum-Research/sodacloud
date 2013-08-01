@@ -13,21 +13,6 @@ def performance_measurement():
 #         print row
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app_node(ami="ami-3be88052",
            instances=1,
            type="m3.xlarge",
@@ -66,24 +51,24 @@ def petstore_node(node_state):
     #wait_for_http(["%s/petclinic" % node_state['petstore.url']])    
     
 
-# @test_node(ami="ami-57147e3e",
-#           instances=1,
-#           security_group="docker-ec2",
-#           user='ubuntu',
-#           key_pair="soda")
-# def load_generator(node_state):
-#     global petstore_instance
-#     url = petstore_instance['petstore.url']
-#     urls = ["%s/petclinic" % url]
-#     wait_for_http(urls)
-#     
-#     #start_load_capture('locust_load',[petstore_node])
-#     
-#     run("locust -H %s -c 200 -r 10 -n 1000 --no-web -f load_generator/locustfile.py" % url)
-#     
-#     #stop_load_capture([petstore_node])
-#     
-#     run("mv stats.csv output/")
-#     run("mv distribution.stats.csv output/")
+@test_node(ami="ami-57147e3e",
+          instances=1,
+          security_group="docker-ec2",
+          user='ubuntu',
+          key_pair="soda")
+def load_generator(node_state):
+    global petstore_instance
+    url = petstore_instance['petstore.url']
+    urls = ["%s/petclinic" % url]
+    wait_for_http(urls)
+     
+    #start_load_capture('locust_load',[petstore_node])
+     
+    run("locust -H %s -c 200 -r 10 -n 1000 --no-web -f load_generator/locustfile.py" % url)
+     
+    #stop_load_capture([petstore_node])
+     
+    run("mv stats.csv output/")
+    run("mv distribution.stats.csv output/")
    
     
