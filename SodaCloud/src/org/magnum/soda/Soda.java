@@ -29,6 +29,8 @@ import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.proxy.RecordingProxy;
+import org.magnum.soda.svc.AuthService;
+import org.magnum.soda.svc.AuthenticationListener;
 import org.magnum.soda.svc.DefaultNamingService;
 import org.magnum.soda.svc.InvocationDispatcher;
 import org.magnum.soda.svc.NamingService;
@@ -62,21 +64,21 @@ public class Soda implements TransportListener {
 	private ObjRegistryUpdater objRegistryUpdater_;
 	private ProxyCreator proxyCreator_;
 
+	private AuthService authService_;
+
 	private Map<Object, SodaBinding> ctxPolyObjBinding_ = null;
 
-	public Soda(){
+	public Soda() {
 		this(new LocalAddress());
 	}
-	
+
 	public Soda(LocalAddress addr) {
 		localAddress_ = addr;
-		objRegistry_ = new DefaultObjRegistry(
-				addr);
+		objRegistry_ = new DefaultObjRegistry(addr);
 		proxyCreator_ = getProxyCreator();
 		proxyFactory_ = new ProxyFactory(objRegistry_, proxyCreator_,
 				localAddress_, msgBus_);
-		objInvoker_ = new ObjInvoker(addr, msgBus_, objRegistry_,
-				proxyFactory_);
+		objInvoker_ = new ObjInvoker(addr, msgBus_, objRegistry_, proxyFactory_);
 		objRegistryUpdater_ = new ObjRegistryUpdater(proxyFactory_,
 				objRegistry_);
 		namingServiceRef_ = objRegistry_.publish(namingService_);
@@ -89,6 +91,8 @@ public class Soda implements TransportListener {
 		if (becomeserver) {
 			getObjRegistry().insert(NamingService.ROOT_NAMING_SVC,
 					getNamingService());
+			getObjRegistry()
+					.insert(AuthService.ROOT_AUTH_SVC, getAuthService());
 		}
 	}
 
@@ -100,6 +104,10 @@ public class Soda implements TransportListener {
 
 	protected synchronized ProxyCreator getProxyCreator() {
 		return new JavaReflectionProxyCreator();
+	}
+
+	protected synchronized AuthService getAuthService() {
+		return AuthService.NO_AUTH_SVC;
 	}
 
 	public <T> T invoke(T obj) {
@@ -243,13 +251,23 @@ public class Soda implements TransportListener {
 	public void connected() {
 		try {
 			ObjRef ref = NamingService.ROOT_NAMING_SVC;
-			
+
 			NamingService svc = (NamingService) proxyFactory_.createProxy(ref);
-			namingService_.setParent(svc,proxyFactory_);
+			namingService_.setParent(svc, proxyFactory_);
 		} catch (Exception e) {
 			Log.error("Error looking up root naming service", e);
 		}
 
+		try {
+			ObjRef ref = AuthService.ROOT_AUTH_SVC;
+			authService_ = (AuthService) proxyFactory_.createProxy(ref);
+		} catch (Exception e) {
+			Log.error("Error looking up auth service and authenticating", e);
+		}
+	}
+
+	public void authenticate(User u, AuthenticationListener l) {
+		authService_.authenticate(u, l);
 	}
 
 	@Override

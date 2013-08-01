@@ -13,13 +13,28 @@
  *  See the License for the specific language governing permissions and      *
  *  limitations under the License.                                           *
  ****************************************************************************/
-package org.magnum.soda.android;
+package org.magnum.soda.svc;
 
+import org.magnum.soda.User;
+import org.magnum.soda.msg.MetaAddress;
+import org.magnum.soda.proxy.ObjRef;
 
-public interface AndroidSodaListener {
+public interface AuthService {
 
-	public void connected(AndroidSoda s);
+	public static final String SVC_NAME = "auth";
+
+	public static final ObjRef ROOT_AUTH_SVC = new ObjRef(
+			ObjRef.createObjUri(MetaAddress.META_ADDRESS.toString(), SVC_NAME),
+			AuthService.class.getName());
 	
-	public void connectionFailure(AndroidSoda s, AndroidSodaConnectionException ex);
+	public static final AuthService NO_AUTH_SVC = new AuthService() {
+		
+		@Override
+		public void authenticate(User user, AuthenticationListener l) {
+			if(l != null){l.authenticated();}
+		}
+	};
+	
+	public void authenticate(User user, AuthenticationListener l);
 	
 }

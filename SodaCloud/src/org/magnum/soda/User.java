@@ -13,13 +13,11 @@
  *  See the License for the specific language governing permissions and      *
  *  limitations under the License.                                           *
  ****************************************************************************/
-package org.magnum.soda.android;
+package org.magnum.soda;
 
+import org.magnum.soda.proxy.SodaByValue;
 
-public interface AndroidSodaListener {
+@SodaByValue
+public class User {
 
-	public void connected(AndroidSoda s);
-	
-	public void connectionFailure(AndroidSoda s, AndroidSodaConnectionException ex);
-	
 }

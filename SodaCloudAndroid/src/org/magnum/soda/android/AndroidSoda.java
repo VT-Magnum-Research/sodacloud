@@ -23,9 +23,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.magnum.soda.Soda;
+import org.magnum.soda.User;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.java.NativeJavaProtocol;
+import org.magnum.soda.svc.AuthenticationListener;
 import org.magnum.soda.transport.UriAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,30 +39,60 @@ import android.os.Handler;
 public class AndroidSoda extends Soda {
 	private static final Logger Log = LoggerFactory
 			.getLogger(AndroidSoda.class);
-	
+
 	private static final ExecutorService executor_ = Executors
 			.newFixedThreadPool(5);
 
 	public static void init(final Context ctx, final String host,
 			final int port, final AndroidSodaListener l) {
-		init(ctx,new NativeJavaProtocol(),host,port,l);
+		init(ctx, new NativeJavaProtocol(), host, port, l);
 	}
-	
-	public static void init(final Context ctx, Protocol protocol, final String host,
-			final int port, final AndroidSodaListener l) {
+
+	public static void init(final Context ctx, Protocol protocol, String host,
+			int port, AndroidSodaListener l) {
+		init(ctx, protocol, host, port, l);
+	}
+
+	public static void init(final Context ctx, Protocol protocol,
+			final String host, final int port, final User u,
+			final AndroidSodaListener l) {
+		
 		context_ = ctx;
-		
+
 		LocalAddress addr = initLocalAddress();
-		
-		final AndroidSoda soda = new AndroidSoda(protocol,addr);
+
+		final AndroidSoda soda = new AndroidSoda(protocol, addr);
 		soda.connect(new UriAddress("ws://" + host + ":" + port));
 		Runnable r = new Runnable() {
 
 			@Override
 			public void run() {
-				soda.setContext(ctx);
-				soda.awaitConnect();
-				l.connected(soda);
+				try {
+					soda.setContext(ctx);
+					soda.awaitConnect();
+					if (u != null) {
+						soda.authenticate(u, new AuthenticationListener() {
+
+							@Override
+							public void authenticationFailed(int arg0,
+									String arg1) {
+								l.connectionFailure(soda,
+										new AndroidSodaConnectionException(
+												arg0, arg1));
+							}
+
+							@Override
+							public void authenticated() {
+								l.connected(soda);
+							}
+						});
+					} else {
+						l.connected(soda);
+					}
+				} catch (Exception e) {
+					l.connectionFailure(soda,
+							new AndroidSodaConnectionException(e));
+				}
 			}
 		};
 
@@ -68,9 +100,11 @@ public class AndroidSoda extends Soda {
 	}
 
 	private static LocalAddress initLocalAddress() {
-		SharedPreferences settings = context_.getSharedPreferences("soda.prefs", 0);
-	    String id = settings.getString("soda.clientId", UUID.randomUUID().toString());
-	    LocalAddress addr = new LocalAddress(id);
+		SharedPreferences settings = context_.getSharedPreferences(
+				"soda.prefs", 0);
+		String id = settings.getString("soda.clientId", UUID.randomUUID()
+				.toString());
+		LocalAddress addr = new LocalAddress(id);
 		return addr;
 	}
 
@@ -87,7 +121,7 @@ public class AndroidSoda extends Soda {
 	private static Context context_;
 
 	private Handler handler_;
-	
+
 	private LocalAddress address_;
 
 	private AndroidInvocationDispatcher dispatcher_;
@@ -97,12 +131,12 @@ public class AndroidSoda extends Soda {
 		super();
 		setTransport(new SodaAndroidTransport(getMsgBus(), getLocalAddress()));
 	}
-	
-	private AndroidSoda(Protocol proto,LocalAddress addr) {
-		super(addr);
-		setTransport(new SodaAndroidTransport(proto, getMsgBus(), getLocalAddress()));
-	}
 
+	private AndroidSoda(Protocol proto, LocalAddress addr) {
+		super(addr);
+		setTransport(new SodaAndroidTransport(proto, getMsgBus(),
+				getLocalAddress()));
+	}
 
 	@Override
 	public void connected() {
@@ -121,17 +155,17 @@ public class AndroidSoda extends Soda {
 		return context_;
 	}
 
-//	@Override
-//	protected synchronized ProxyCreator getProxyCreator() {	
-//		return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
-//	}
+	// @Override
+	// protected synchronized ProxyCreator getProxyCreator() {
+	// return new DexProxyCreator(context_.getDir("dx", Context.MODE_PRIVATE));
+	// }
 
 	public void setContext(Context context) {
 		context_ = context;
 		handler_ = new Handler(context_.getMainLooper());
 		dispatcher_ = new AndroidInvocationDispatcher(handler_);
 		inUiDispatcher_ = new AndroidInvocationDispatcher(handler_, true);
-		getInvoker().setDispatcher(dispatcher_);	
+		getInvoker().setDispatcher(dispatcher_);
 
 	}
 
@@ -142,5 +176,5 @@ public class AndroidSoda extends Soda {
 	public void inUi(Runnable r) {
 		handler_.post(r);
 	}
-	
+
 }
