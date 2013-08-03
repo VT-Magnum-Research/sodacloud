@@ -6,13 +6,14 @@
  */
 package org.magnum.soda.example.maint;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 import org.magnum.soda.proxy.SodaByValue;
 
 @SodaByValue
-public class MaintenanceReport {
+public class MaintenanceReport implements Serializable{
 
 	private UUID id_;
 	private String title_;
