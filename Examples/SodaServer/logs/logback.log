@@ -1,0 +1,216 @@
+634  [main] DEBUG org.eclipse.jetty.util.log - Logging to Logger[org.eclipse.jetty.util.log] via org.eclipse.jetty.util.log.Slf4jLog
+663  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + SelectChannelConnector@0.0.0.0:8081 as connector
+693  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + o.e.j.s.ServletContextHandler{/,null} as handler
+748  [main] DEBUG o.e.jetty.util.component.Container - Container org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7162e295 + org.eclipse.jetty.server.handler.DefaultHandler@1309de5b as handler
+748  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 - o.e.j.s.ServletContextHandler{/,null} as handler
+748  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7162e295 as handler
+749  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.Server@4b142196
+749  [main] INFO  org.eclipse.jetty.server.Server - jetty-8.1.8.v20121106
+773  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + qtp558529042{8<=0<=0/254,-1} as threadpool
+774  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7162e295
+774  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.handler.DefaultHandler@1309de5b
+774  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.eclipse.jetty.server.handler.DefaultHandler@1309de5b
+774  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.handler.DefaultHandler@1309de5b
+774  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7162e295
+775  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7162e295
+775  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.eclipse.jetty.server.Server@4b142196
+775  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting qtp558529042{8<=0<=0/254,-1}
+777  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED qtp558529042{8<=2<=8/254,0}
+778  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting SelectChannelConnector@0.0.0.0:8081
+787  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting null/null
+789  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED PooledBuffers [0/1024@6144,0/1024@16384,0/1024@-]/PooledBuffers [0/1024@6144,0/1024@32768,0/1024@-]
+789  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.nio.SelectChannelConnector$ConnectorSelectorManager@48fd918a
+815  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.nio.SelectChannelConnector$ConnectorSelectorManager@48fd918a
+815  [qtp558529042-9 Selector0] DEBUG org.eclipse.jetty.io.nio - Starting Thread[qtp558529042-9 Selector0,5,main] on org.eclipse.jetty.io.nio.SelectorManager$1@561777b1
+816  [main] INFO  o.e.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8081
+817  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED SelectChannelConnector@0.0.0.0:8081
+817  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.Server@4b142196
+1155 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.websocket.WebSocketClientFactory@a0b1cd0
+1155 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting qtp1010440244{8<=0<=0/254,-1}
+1156 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED qtp1010440244{8<=7<=8/254,0}
+1156 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.websocket.WebSocketClientFactory$WebSocketClientSelector@6b754699
+1157 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.websocket.WebSocketClientFactory$WebSocketClientSelector@6b754699
+1158 [qtp1010440244-21 Selector0] DEBUG org.eclipse.jetty.io.nio - Starting Thread[qtp1010440244-21 Selector0,5,main] on org.eclipse.jetty.io.nio.SelectorManager$1@606e1dec
+1158 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting SslContextFactory@5d6ea269(null,null)
+1158 [Thread-8] DEBUG o.e.j.util.ssl.SslContextFactory - No keystore or trust store configured.  ACCEPTING UNTRUSTED CERTIFICATES!!!!!
+1162 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED SslContextFactory@5d6ea269(null,null)
+1162 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.websocket.WebSocketClientFactory@a0b1cd0
+1343 [qtp1010440244-21 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@60cbf9bd{l(/10.0.1.25:8081)<->r(/10.0.1.25:56147),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{HandshakeConnection@2322bce}
+1347 [qtp1010440244-20] DEBUG org.eclipse.jetty.http.HttpParser - filled 0/0
+1364 [qtp558529042-9 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@643f96ee{l(/10.0.1.25:56147)<->r(/10.0.1.25:8081),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{AsyncHttpConnection@ace16ad,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=0},r=0}
+1364 [qtp558529042-14] DEBUG org.eclipse.jetty.http.HttpParser - filled 179/179
+1371 [qtp558529042-14 - /] DEBUG org.eclipse.jetty.server.Server - REQUEST / on AsyncHttpConnection@ace16ad,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-5,l=-1,c=0},r=1
+1378 [qtp558529042-14 - /] DEBUG o.e.j.websocket.WebSocketFactory - extensions=[]
+1388 [qtp1010440244-22] DEBUG org.eclipse.jetty.http.HttpParser - filled 129/129
+1389 [qtp1010440244-22] DEBUG o.e.j.w.WebSocketClientFactory - newWebSocketConnection()
+1494 [qtp1010440244-22] DEBUG org.eclipse.jetty.io.nio - WebSocketClientConnection p=WebSocketParserRFC6455@3a4c5b4 state=START buffer=null g=WebSocketGeneratorRFC6455@47db9852 closed=false buffer=-1 replaced HandshakeConnection@2322bce
+1495 [qtp1010440244-22] DEBUG org.eclipse.jetty.io.nio - upgrade HandshakeConnection@2322bce -> WebSocketClientConnection p=WebSocketParserRFC6455@3a4c5b4 state=START buffer=null g=WebSocketGeneratorRFC6455@47db9852 closed=false buffer=-1
+1663 [qtp558529042-14 - /] DEBUG o.e.j.websocket.WebSocketFactory - Websocket upgrade / 13 null WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@7e0b6ef8 state=START buffer=null g=WebSocketGeneratorRFC6455@20a29c6e closed=false buffer=-1
+1664 [qtp558529042-14 - /] DEBUG org.eclipse.jetty.server.Server - RESPONSE /  101 handled=true
+1665 [qtp558529042-14] DEBUG o.e.j.server.AsyncHttpConnection - Enabled read interest SCEP@643f96ee{l(/10.0.1.25:56147)<->r(/10.0.1.25:8081),d=true,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0r}-{AsyncHttpConnection@ace16ad,g=HttpGenerator{s=4,h=0,b=-1,c=-1},p=HttpParser{s=0,l=-1,c=0},r=1}
+1673 [qtp558529042-14] DEBUG org.eclipse.jetty.io.nio - WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@7e0b6ef8 state=START buffer=null g=WebSocketGeneratorRFC6455@20a29c6e closed=false buffer=-1 replaced AsyncHttpConnection@ace16ad,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=-3},r=1
+587  [main] DEBUG org.eclipse.jetty.util.log - Logging to Logger[org.eclipse.jetty.util.log] via org.eclipse.jetty.util.log.Slf4jLog
+607  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + SelectChannelConnector@0.0.0.0:8081 as connector
+628  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + o.e.j.s.ServletContextHandler{/,null} as handler
+655  [main] DEBUG o.e.jetty.util.component.Container - Container org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885 + org.eclipse.jetty.server.handler.DefaultHandler@7162e295 as handler
+655  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 - o.e.j.s.ServletContextHandler{/,null} as handler
+655  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885 as handler
+656  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.Server@4b142196
+656  [main] INFO  org.eclipse.jetty.server.Server - jetty-8.1.8.v20121106
+675  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + qtp425645657{8<=0<=0/254,-1} as threadpool
+675  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885
+675  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.handler.DefaultHandler@7162e295
+675  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.eclipse.jetty.server.handler.DefaultHandler@7162e295
+675  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.handler.DefaultHandler@7162e295
+676  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885
+676  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885
+676  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.eclipse.jetty.server.Server@4b142196
+676  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting qtp425645657{8<=0<=0/254,-1}
+678  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED qtp425645657{8<=7<=8/254,0}
+679  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting SelectChannelConnector@0.0.0.0:8081
+686  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting null/null
+688  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED PooledBuffers [0/1024@6144,0/1024@16384,0/1024@-]/PooledBuffers [0/1024@6144,0/1024@32768,0/1024@-]
+688  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.nio.SelectChannelConnector$ConnectorSelectorManager@337ec9f7
+715  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.nio.SelectChannelConnector$ConnectorSelectorManager@337ec9f7
+715  [qtp425645657-9 Selector0] DEBUG org.eclipse.jetty.io.nio - Starting Thread[qtp425645657-9 Selector0,5,main] on org.eclipse.jetty.io.nio.SelectorManager$1@460c5e9c
+716  [main] INFO  o.e.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8081
+717  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED SelectChannelConnector@0.0.0.0:8081
+717  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.Server@4b142196
+836  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.websocket.WebSocketClientFactory@298488ef
+837  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting qtp1512109123{8<=0<=0/254,-1}
+838  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED qtp1512109123{8<=7<=8/254,0}
+838  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.websocket.WebSocketClientFactory$WebSocketClientSelector@13e4a47e
+840  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.websocket.WebSocketClientFactory$WebSocketClientSelector@13e4a47e
+840  [qtp1512109123-20 Selector0] DEBUG org.eclipse.jetty.io.nio - Starting Thread[qtp1512109123-20 Selector0,5,main] on org.eclipse.jetty.io.nio.SelectorManager$1@7eb5666
+841  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting SslContextFactory@6b754699(null,null)
+841  [Thread-8] DEBUG o.e.j.util.ssl.SslContextFactory - No keystore or trust store configured.  ACCEPTING UNTRUSTED CERTIFICATES!!!!!
+844  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED SslContextFactory@6b754699(null,null)
+845  [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.websocket.WebSocketClientFactory@298488ef
+1083 [qtp1512109123-20 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@644cd580{l(/192.168.173.1:8081)<->r(/192.168.173.1:56307),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{HandshakeConnection@edc86eb}
+1087 [qtp1512109123-21] DEBUG org.eclipse.jetty.http.HttpParser - filled 0/0
+1105 [qtp425645657-9 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@6b9fe451{l(/192.168.173.1:56307)<->r(/192.168.173.1:8081),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{AsyncHttpConnection@4e46b90a,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=0},r=0}
+1105 [qtp425645657-11] DEBUG org.eclipse.jetty.http.HttpParser - filled 183/183
+1113 [qtp425645657-11 - /] DEBUG org.eclipse.jetty.server.Server - REQUEST / on AsyncHttpConnection@4e46b90a,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-5,l=-1,c=0},r=1
+1116 [qtp425645657-11 - /] DEBUG o.e.j.websocket.WebSocketFactory - extensions=[]
+1126 [qtp1512109123-22] DEBUG org.eclipse.jetty.http.HttpParser - filled 129/129
+1127 [qtp1512109123-22] DEBUG o.e.j.w.WebSocketClientFactory - newWebSocketConnection()
+1135 [qtp1512109123-22] DEBUG org.eclipse.jetty.io.nio - WebSocketClientConnection p=WebSocketParserRFC6455@47db9852 state=START buffer=null g=WebSocketGeneratorRFC6455@d6089a5 closed=false buffer=-1 replaced HandshakeConnection@edc86eb
+1136 [qtp1512109123-22] DEBUG org.eclipse.jetty.io.nio - upgrade HandshakeConnection@edc86eb -> WebSocketClientConnection p=WebSocketParserRFC6455@47db9852 state=START buffer=null g=WebSocketGeneratorRFC6455@d6089a5 closed=false buffer=-1
+1213 [qtp425645657-11 - /] DEBUG o.e.j.websocket.WebSocketFactory - Websocket upgrade / 13 null WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@ec0a9f9 state=START buffer=null g=WebSocketGeneratorRFC6455@ad72200 closed=false buffer=-1
+1214 [qtp425645657-11 - /] DEBUG org.eclipse.jetty.server.Server - RESPONSE /  101 handled=true
+1215 [qtp425645657-11] DEBUG o.e.j.server.AsyncHttpConnection - Enabled read interest SCEP@6b9fe451{l(/192.168.173.1:56307)<->r(/192.168.173.1:8081),d=true,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0r}-{AsyncHttpConnection@4e46b90a,g=HttpGenerator{s=4,h=0,b=-1,c=-1},p=HttpParser{s=0,l=-1,c=0},r=1}
+1223 [qtp425645657-11] DEBUG org.eclipse.jetty.io.nio - WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@ec0a9f9 state=START buffer=null g=WebSocketGeneratorRFC6455@ad72200 closed=false buffer=-1 replaced AsyncHttpConnection@4e46b90a,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=-3},r=1
+34230 [qtp425645657-9 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@6328edf2{l(/192.168.173.137:44965)<->r(/192.168.173.1:8081),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{AsyncHttpConnection@141dddba,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=0},r=0}
+34231 [qtp425645657-15] DEBUG org.eclipse.jetty.http.HttpParser - filled 0/0
+34309 [qtp425645657-16] DEBUG org.eclipse.jetty.http.HttpParser - filled 189/189
+34310 [qtp425645657-16 - /] DEBUG org.eclipse.jetty.server.Server - REQUEST / on AsyncHttpConnection@141dddba,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-5,l=2,c=0},r=1
+34311 [qtp425645657-16 - /] DEBUG o.e.j.websocket.WebSocketFactory - extensions=[]
+34313 [qtp425645657-16 - /] DEBUG o.e.j.websocket.WebSocketFactory - Websocket upgrade / 13 wamp WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@25071521 state=START buffer=null g=WebSocketGeneratorRFC6455@73fc3c84 closed=false buffer=-1
+34313 [qtp425645657-16 - /] DEBUG org.eclipse.jetty.server.Server - RESPONSE /  101 handled=true
+34315 [qtp425645657-16] DEBUG o.e.j.server.AsyncHttpConnection - Enabled read interest SCEP@6328edf2{l(/192.168.173.137:44965)<->r(/192.168.173.1:8081),d=true,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=1r}-{AsyncHttpConnection@141dddba,g=HttpGenerator{s=4,h=0,b=-1,c=-1},p=HttpParser{s=0,l=2,c=0},r=1}
+34316 [qtp425645657-16] DEBUG org.eclipse.jetty.io.nio - WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@25071521 state=START buffer=null g=WebSocketGeneratorRFC6455@73fc3c84 closed=false buffer=-1 replaced AsyncHttpConnection@141dddba,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=-3},r=1
+34939 [qtp1512109123-26] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://meta","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"get\",\"parameterTypes\":[\"java.lang.Class\",\"java.lang.String\"],\"parameters\":[\"[Ljava.lang.Object;\",[[\"java.lang.Class\",\"org.magnum.soda.example.Reports\"],\"report\"]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://meta\",\"types\":[\"org.magnum.soda.svc.NamingService\"],\"uri\":\"soda://meta#naming\"},\"destination\":\"soda://meta\",\"id\":\"a4ba0628-c1dc-4df6-b7dc-37c47064e2de\",\"responseTo\":null,\"source\":\"soda://4759d3b0-9b5a-42f7-80bc-65b7c52ae2b4\"}]"}]
+35064 [qtp1512109123-26] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+35081 [pool-4-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [org.magnum.soda.svc.DefaultNamingService@359b46dc] invocation: [InvocationInfo [method_=get, parameters_=[interface org.magnum.soda.example.Reports, report], parameterTypes_=[class java.lang.Class, class java.lang.String]]]
+35110 [pool-2-thread-1] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.proxy.ObjRef",{"host":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","uri":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4#21de12c3-d5cf-447a-9657-d0f889bfa847","types":["org.magnum.soda.example.Reports"]}],"id":"9bdbd295-6131-49bd-9807-463cab4c215f","source":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","destination":"soda://4759d3b0-9b5a-42f7-80bc-65b7c52ae2b4","responseTo":"a4ba0628-c1dc-4df6-b7dc-37c47064e2de"}]]
+35276 [qtp1512109123-21] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"getReports\",\"parameterTypes\":[],\"parameters\":[\"[Ljava.lang.Object;\",[]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4\",\"types\":[\"org.magnum.soda.example.Reports\"],\"uri\":\"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4#21de12c3-d5cf-447a-9657-d0f889bfa847\"},\"destination\":\"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4\",\"id\":\"aa9a8819-fea9-4882-a0ef-ec6d4199bae0\",\"responseTo\":null,\"source\":\"soda://4759d3b0-9b5a-42f7-80bc-65b7c52ae2b4\"}]"}]
+35279 [qtp1512109123-21] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+35281 [pool-7-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [org.magnum.soda.example.ReportsImpl@72940b84] invocation: [InvocationInfo [method_=getReports, parameters_=[], parameterTypes_=[]]]
+35285 [pool-2-thread-2] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.proxy.ObjRef",{"host":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","uri":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4#7403a8fb-6105-4c71-87a1-0f05a72d52e1","types":["java.util.Collection","java.util.Deque","java.util.List","java.lang.Cloneable","java.io.Serializable"]}],"id":"0f7fc756-d87f-476f-8ea7-232dda87dd3e","source":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","destination":"soda://4759d3b0-9b5a-42f7-80bc-65b7c52ae2b4","responseTo":"aa9a8819-fea9-4882-a0ef-ec6d4199bae0"}]]
+35320 [qtp1512109123-22] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"get\",\"parameterTypes\":[\"int\"],\"parameters\":[\"[Ljava.lang.Object;\",[0]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4\",\"types\":[\"java.util.Collection\",\"java.util.Deque\",\"java.util.List\",\"java.lang.Cloneable\",\"java.io.Serializable\"],\"uri\":\"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4#7403a8fb-6105-4c71-87a1-0f05a72d52e1\"},\"destination\":\"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4\",\"id\":\"a2243796-ffe0-4a29-9f30-fc64b075f958\",\"responseTo\":null,\"source\":\"soda://4759d3b0-9b5a-42f7-80bc-65b7c52ae2b4\"}]"}]
+35324 [qtp1512109123-22] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+35326 [pool-10-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [[org.magnum.soda.example.Report@1959e6e8]] invocation: [InvocationInfo [method_=get, parameters_=[0], parameterTypes_=[int]]]
+35331 [pool-2-thread-3] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.example.Report",{"content":"This is a report from server."}],"id":"dd634e51-1e45-47d1-9425-e8fb1250756b","source":"soda://8e9d5a1c-0ab4-4bd5-b210-f4e5d2e185c4","destination":"soda://4759d3b0-9b5a-42f7-80bc-65b7c52ae2b4","responseTo":"a2243796-ffe0-4a29-9f30-fc64b075f958"}]]
+676  [main] DEBUG org.eclipse.jetty.util.log - Logging to Logger[org.eclipse.jetty.util.log] via org.eclipse.jetty.util.log.Slf4jLog
+702  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + SelectChannelConnector@0.0.0.0:8081 as connector
+724  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + o.e.j.s.ServletContextHandler{/,null} as handler
+776  [main] DEBUG o.e.jetty.util.component.Container - Container org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885 + org.eclipse.jetty.server.handler.DefaultHandler@7162e295 as handler
+776  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 - o.e.j.s.ServletContextHandler{/,null} as handler
+776  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885 as handler
+777  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.Server@4b142196
+777  [main] INFO  org.eclipse.jetty.server.Server - jetty-8.1.8.v20121106
+800  [main] DEBUG o.e.jetty.util.component.Container - Container org.eclipse.jetty.server.Server@4b142196 + qtp425645657{8<=0<=0/254,-1} as threadpool
+800  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885
+800  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.handler.DefaultHandler@7162e295
+800  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.eclipse.jetty.server.handler.DefaultHandler@7162e295
+801  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.handler.DefaultHandler@7162e295
+801  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885
+801  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler@7a7c3885
+801  [main] DEBUG o.e.j.s.handler.AbstractHandler - starting org.eclipse.jetty.server.Server@4b142196
+801  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting qtp425645657{8<=0<=0/254,-1}
+804  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED qtp425645657{8<=7<=8/254,0}
+804  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting SelectChannelConnector@0.0.0.0:8081
+811  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting null/null
+813  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED PooledBuffers [0/1024@6144,0/1024@16384,0/1024@-]/PooledBuffers [0/1024@6144,0/1024@32768,0/1024@-]
+813  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.server.nio.SelectChannelConnector$ConnectorSelectorManager@337ec9f7
+834  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.nio.SelectChannelConnector$ConnectorSelectorManager@337ec9f7
+834  [qtp425645657-10 Selector0] DEBUG org.eclipse.jetty.io.nio - Starting Thread[qtp425645657-10 Selector0,5,main] on org.eclipse.jetty.io.nio.SelectorManager$1@460c5e9c
+836  [main] INFO  o.e.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:8081
+836  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED SelectChannelConnector@0.0.0.0:8081
+836  [main] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.server.Server@4b142196
+1195 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.websocket.WebSocketClientFactory@298488ef
+1195 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting qtp1512109123{8<=0<=0/254,-1}
+1196 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED qtp1512109123{8<=7<=8/254,0}
+1197 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting org.eclipse.jetty.websocket.WebSocketClientFactory$WebSocketClientSelector@13e4a47e
+1198 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.websocket.WebSocketClientFactory$WebSocketClientSelector@13e4a47e
+1198 [qtp1512109123-20 Selector0] DEBUG org.eclipse.jetty.io.nio - Starting Thread[qtp1512109123-20 Selector0,5,main] on org.eclipse.jetty.io.nio.SelectorManager$1@7eb5666
+1199 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - starting SslContextFactory@6b754699(null,null)
+1199 [Thread-8] DEBUG o.e.j.util.ssl.SslContextFactory - No keystore or trust store configured.  ACCEPTING UNTRUSTED CERTIFICATES!!!!!
+1201 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED SslContextFactory@6b754699(null,null)
+1202 [Thread-8] DEBUG o.e.j.u.component.AbstractLifeCycle - STARTED org.eclipse.jetty.websocket.WebSocketClientFactory@298488ef
+1362 [qtp1512109123-20 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@6e92b1a1{l(/192.168.173.1:8081)<->r(/192.168.173.1:54883),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{HandshakeConnection@47f08ed8}
+1388 [qtp1512109123-21] DEBUG org.eclipse.jetty.http.HttpParser - filled 0/0
+1390 [qtp425645657-10 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@1f90ef12{l(/192.168.173.1:54883)<->r(/192.168.173.1:8081),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{AsyncHttpConnection@643f96ee,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=0},r=0}
+1390 [qtp425645657-13] DEBUG org.eclipse.jetty.http.HttpParser - filled 183/183
+1401 [qtp425645657-13 - /] DEBUG org.eclipse.jetty.server.Server - REQUEST / on AsyncHttpConnection@643f96ee,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-5,l=-1,c=0},r=1
+1409 [qtp425645657-13 - /] DEBUG o.e.j.websocket.WebSocketFactory - extensions=[]
+1422 [qtp1512109123-22] DEBUG org.eclipse.jetty.http.HttpParser - filled 129/129
+1423 [qtp1512109123-22] DEBUG o.e.j.w.WebSocketClientFactory - newWebSocketConnection()
+1498 [qtp1512109123-22] DEBUG org.eclipse.jetty.io.nio - WebSocketClientConnection p=WebSocketParserRFC6455@4d91f801 state=START buffer=null g=WebSocketGeneratorRFC6455@36afae4a closed=false buffer=-1 replaced HandshakeConnection@47f08ed8
+1499 [qtp1512109123-22] DEBUG org.eclipse.jetty.io.nio - upgrade HandshakeConnection@47f08ed8 -> WebSocketClientConnection p=WebSocketParserRFC6455@4d91f801 state=START buffer=null g=WebSocketGeneratorRFC6455@36afae4a closed=false buffer=-1
+1647 [qtp425645657-13 - /] DEBUG o.e.j.websocket.WebSocketFactory - Websocket upgrade / 13 null WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@3fbfbfb8 state=START buffer=null g=WebSocketGeneratorRFC6455@45c3e9ba closed=false buffer=-1
+1649 [qtp425645657-13 - /] DEBUG org.eclipse.jetty.server.Server - RESPONSE /  101 handled=true
+1650 [qtp425645657-13] DEBUG o.e.j.server.AsyncHttpConnection - Enabled read interest SCEP@1f90ef12{l(/192.168.173.1:54883)<->r(/192.168.173.1:8081),d=true,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0r}-{AsyncHttpConnection@643f96ee,g=HttpGenerator{s=4,h=0,b=-1,c=-1},p=HttpParser{s=0,l=-1,c=0},r=1}
+1658 [qtp425645657-13] DEBUG org.eclipse.jetty.io.nio - WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@3fbfbfb8 state=START buffer=null g=WebSocketGeneratorRFC6455@45c3e9ba closed=false buffer=-1 replaced AsyncHttpConnection@643f96ee,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=-3},r=1
+27169 [qtp425645657-10 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@e9ac0f5{l(/192.168.173.137:38254)<->r(/192.168.173.1:8081),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{AsyncHttpConnection@51f21c50,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=0},r=0}
+27170 [qtp425645657-12] DEBUG org.eclipse.jetty.http.HttpParser - filled 0/0
+27222 [qtp425645657-13] DEBUG org.eclipse.jetty.http.HttpParser - filled 189/189
+27223 [qtp425645657-13 - /] DEBUG org.eclipse.jetty.server.Server - REQUEST / on AsyncHttpConnection@51f21c50,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-5,l=2,c=0},r=1
+27224 [qtp425645657-13 - /] DEBUG o.e.j.websocket.WebSocketFactory - extensions=[]
+27225 [qtp425645657-13 - /] DEBUG o.e.j.websocket.WebSocketFactory - Websocket upgrade / 13 wamp WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@1532021a state=START buffer=null g=WebSocketGeneratorRFC6455@62803d5 closed=false buffer=-1
+27226 [qtp425645657-13 - /] DEBUG org.eclipse.jetty.server.Server - RESPONSE /  101 handled=true
+27227 [qtp425645657-13] DEBUG o.e.j.server.AsyncHttpConnection - Enabled read interest SCEP@e9ac0f5{l(/192.168.173.137:38254)<->r(/192.168.173.1:8081),d=true,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=1r}-{AsyncHttpConnection@51f21c50,g=HttpGenerator{s=4,h=0,b=-1,c=-1},p=HttpParser{s=0,l=2,c=0},r=1}
+27229 [qtp425645657-13] DEBUG org.eclipse.jetty.io.nio - WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@1532021a state=START buffer=null g=WebSocketGeneratorRFC6455@62803d5 closed=false buffer=-1 replaced AsyncHttpConnection@51f21c50,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=-3},r=1
+27456 [qtp1512109123-24] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://meta","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"get\",\"parameterTypes\":[\"java.lang.Class\",\"java.lang.String\"],\"parameters\":[\"[Ljava.lang.Object;\",[[\"java.lang.Class\",\"org.magnum.soda.example.Reports\"],\"report\"]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://meta\",\"types\":[\"org.magnum.soda.svc.NamingService\"],\"uri\":\"soda://meta#naming\"},\"destination\":\"soda://meta\",\"id\":\"faf3bbdc-38a0-49b3-b1cd-01878f8d45bd\",\"responseTo\":null,\"source\":\"soda://feed3bc2-0094-45ab-9951-5e6c84068da6\"}]"}]
+27575 [qtp1512109123-24] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+27640 [pool-4-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [org.magnum.soda.svc.DefaultNamingService@359b46dc] invocation: [InvocationInfo [method_=get, parameters_=[interface org.magnum.soda.example.Reports, report], parameterTypes_=[class java.lang.Class, class java.lang.String]]]
+27679 [pool-2-thread-1] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.proxy.ObjRef",{"host":"soda://fcf3f638-3e9d-4725-8388-45da646356be","uri":"soda://fcf3f638-3e9d-4725-8388-45da646356be#6e74ed3e-5534-4bf5-b5a0-67c695c38f65","types":["org.magnum.soda.example.Reports"]}],"id":"0d340746-a434-4b98-83c1-2d5750bcb5d4","source":"soda://fcf3f638-3e9d-4725-8388-45da646356be","destination":"soda://feed3bc2-0094-45ab-9951-5e6c84068da6","responseTo":"faf3bbdc-38a0-49b3-b1cd-01878f8d45bd"}]]
+28039 [qtp1512109123-26] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://fcf3f638-3e9d-4725-8388-45da646356be","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"getReports\",\"parameterTypes\":[],\"parameters\":[\"[Ljava.lang.Object;\",[]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"types\":[\"org.magnum.soda.example.Reports\"],\"uri\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be#6e74ed3e-5534-4bf5-b5a0-67c695c38f65\"},\"destination\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"id\":\"60514b31-7d53-4a08-8362-5b31d1359504\",\"responseTo\":null,\"source\":\"soda://feed3bc2-0094-45ab-9951-5e6c84068da6\"}]"}]
+28041 [qtp1512109123-26] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+28044 [pool-7-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [org.magnum.soda.example.ReportsImpl@464d41e2] invocation: [InvocationInfo [method_=getReports, parameters_=[], parameterTypes_=[]]]
+28050 [pool-2-thread-2] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.proxy.ObjRef",{"host":"soda://fcf3f638-3e9d-4725-8388-45da646356be","uri":"soda://fcf3f638-3e9d-4725-8388-45da646356be#2008d92c-9741-43d9-9a48-5d4599807781","types":["java.util.Deque","java.util.List","java.util.Collection","java.lang.Cloneable","java.io.Serializable"]}],"id":"dbbd6474-b73b-4613-91dd-f07932b11b70","source":"soda://fcf3f638-3e9d-4725-8388-45da646356be","destination":"soda://feed3bc2-0094-45ab-9951-5e6c84068da6","responseTo":"60514b31-7d53-4a08-8362-5b31d1359504"}]]
+28094 [qtp1512109123-27] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://fcf3f638-3e9d-4725-8388-45da646356be","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"get\",\"parameterTypes\":[\"int\"],\"parameters\":[\"[Ljava.lang.Object;\",[0]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"types\":[\"java.util.Deque\",\"java.util.List\",\"java.util.Collection\",\"java.lang.Cloneable\",\"java.io.Serializable\"],\"uri\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be#2008d92c-9741-43d9-9a48-5d4599807781\"},\"destination\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"id\":\"d134c1ac-32ae-426e-9604-dff5683717d4\",\"responseTo\":null,\"source\":\"soda://feed3bc2-0094-45ab-9951-5e6c84068da6\"}]"}]
+28096 [qtp1512109123-27] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+28097 [pool-10-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [[org.magnum.soda.example.Report@74bfed5a]] invocation: [InvocationInfo [method_=get, parameters_=[0], parameterTypes_=[int]]]
+28103 [pool-2-thread-3] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.example.Report",{"content":"This is a report from server."}],"id":"41cb3238-ef8f-45ea-918a-23f25b2b5180","source":"soda://fcf3f638-3e9d-4725-8388-45da646356be","destination":"soda://feed3bc2-0094-45ab-9951-5e6c84068da6","responseTo":"d134c1ac-32ae-426e-9604-dff5683717d4"}]]
+654281 [qtp425645657-10 Selector0] DEBUG org.eclipse.jetty.io.nio - created SCEP@27958cc2{l(/192.168.173.137:54943)<->r(/192.168.173.1:8081),d=false,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=0}-{AsyncHttpConnection@4b4c28db,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=0},r=0}
+654283 [qtp425645657-14] DEBUG org.eclipse.jetty.http.HttpParser - filled 0/0
+654350 [qtp425645657-16] DEBUG org.eclipse.jetty.http.HttpParser - filled 189/189
+654351 [qtp425645657-16 - /] DEBUG org.eclipse.jetty.server.Server - REQUEST / on AsyncHttpConnection@4b4c28db,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-5,l=2,c=0},r=1
+654351 [qtp425645657-16 - /] DEBUG o.e.j.websocket.WebSocketFactory - extensions=[]
+654352 [qtp425645657-16 - /] DEBUG o.e.j.websocket.WebSocketFactory - Websocket upgrade / 13 wamp WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@fc8fb4b state=START buffer=null g=WebSocketGeneratorRFC6455@53ea0105 closed=false buffer=-1
+654353 [qtp425645657-16 - /] DEBUG org.eclipse.jetty.server.Server - RESPONSE /  101 handled=true
+654353 [qtp425645657-16] DEBUG o.e.j.server.AsyncHttpConnection - Enabled read interest SCEP@27958cc2{l(/192.168.173.137:54943)<->r(/192.168.173.1:8081),d=true,open=true,ishut=false,oshut=false,rb=false,wb=false,w=true,i=1r}-{AsyncHttpConnection@4b4c28db,g=HttpGenerator{s=4,h=0,b=-1,c=-1},p=HttpParser{s=0,l=2,c=0},r=1}
+654354 [qtp425645657-16] DEBUG org.eclipse.jetty.io.nio - WebSocketServletConnectionRFC6455 p=WebSocketParserRFC6455@fc8fb4b state=START buffer=null g=WebSocketGeneratorRFC6455@53ea0105 closed=false buffer=-1 replaced AsyncHttpConnection@4b4c28db,g=HttpGenerator{s=0,h=-1,b=-1,c=-1},p=HttpParser{s=-14,l=0,c=-3},r=1
+655516 [qtp1512109123-24] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://meta","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"get\",\"parameterTypes\":[\"java.lang.Class\",\"java.lang.String\"],\"parameters\":[\"[Ljava.lang.Object;\",[[\"java.lang.Class\",\"org.magnum.soda.example.Reports\"],\"report\"]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://meta\",\"types\":[\"org.magnum.soda.svc.NamingService\"],\"uri\":\"soda://meta#naming\"},\"destination\":\"soda://meta\",\"id\":\"2d60e3b0-9ea7-4407-8910-df281ce473b0\",\"responseTo\":null,\"source\":\"soda://cb350c0d-5df5-44b8-bd90-b3105c11ee4c\"}]"}]
+655518 [qtp1512109123-24] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+655520 [pool-3-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [org.magnum.soda.svc.DefaultNamingService@359b46dc] invocation: [InvocationInfo [method_=get, parameters_=[interface org.magnum.soda.example.Reports, report], parameterTypes_=[class java.lang.Class, class java.lang.String]]]
+655522 [pool-2-thread-1] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.proxy.ObjRef",{"host":"soda://fcf3f638-3e9d-4725-8388-45da646356be","uri":"soda://fcf3f638-3e9d-4725-8388-45da646356be#6e74ed3e-5534-4bf5-b5a0-67c695c38f65","types":["org.magnum.soda.example.Reports"]}],"id":"34748d4e-9c2e-49e1-bb13-44225e1b0618","source":"soda://fcf3f638-3e9d-4725-8388-45da646356be","destination":"soda://cb350c0d-5df5-44b8-bd90-b3105c11ee4c","responseTo":"2d60e3b0-9ea7-4407-8910-df281ce473b0"}]]
+656263 [qtp1512109123-27] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://fcf3f638-3e9d-4725-8388-45da646356be","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"getReports\",\"parameterTypes\":[],\"parameters\":[\"[Ljava.lang.Object;\",[]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"types\":[\"org.magnum.soda.example.Reports\"],\"uri\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be#6e74ed3e-5534-4bf5-b5a0-67c695c38f65\"},\"destination\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"id\":\"86412c50-cd88-49d3-b71c-b92a13299e81\",\"responseTo\":null,\"source\":\"soda://cb350c0d-5df5-44b8-bd90-b3105c11ee4c\"}]"}]
+656265 [qtp1512109123-27] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+656269 [pool-5-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [org.magnum.soda.example.ReportsImpl@464d41e2] invocation: [InvocationInfo [method_=getReports, parameters_=[], parameterTypes_=[]]]
+656270 [pool-2-thread-2] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.proxy.ObjRef",{"host":"soda://fcf3f638-3e9d-4725-8388-45da646356be","uri":"soda://fcf3f638-3e9d-4725-8388-45da646356be#2008d92c-9741-43d9-9a48-5d4599807781","types":["java.util.Deque","java.util.List","java.util.Collection","java.lang.Cloneable","java.io.Serializable"]}],"id":"4deca329-2e59-4eda-8c30-6deb8d879c43","source":"soda://fcf3f638-3e9d-4725-8388-45da646356be","destination":"soda://cb350c0d-5df5-44b8-bd90-b3105c11ee4c","responseTo":"86412c50-cd88-49d3-b71c-b92a13299e81"}]]
+657465 [qtp1512109123-22] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Receiving: [{"destination":"soda://fcf3f638-3e9d-4725-8388-45da646356be","msg":"[\"org.magnum.soda.svc.ObjInvocationMsg\",{\"invocation\":[\"org.magnum.soda.svc.InvocationInfo\",{\"method\":\"get\",\"parameterTypes\":[\"int\"],\"parameters\":[\"[Ljava.lang.Object;\",[0]]}],\"responseMsgId\":null,\"targetObjectId\":{\"type\":\"ObjRef\",\"host\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"types\":[\"java.util.Deque\",\"java.util.List\",\"java.util.Collection\",\"java.lang.Cloneable\",\"java.io.Serializable\"],\"uri\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be#2008d92c-9741-43d9-9a48-5d4599807781\"},\"destination\":\"soda://fcf3f638-3e9d-4725-8388-45da646356be\",\"id\":\"92af8f87-a7e8-4204-95b1-aef5da03ccb0\",\"responseTo\":null,\"source\":\"soda://cb350c0d-5df5-44b8-bd90-b3105c11ee4c\"}]"}]
+657466 [qtp1512109123-22] ERROR o.m.soda.marshalling.Marshaller - Ignoring unknown property [host] while deserializing [ObjRef [uri_=null, types_=null]]
+657487 [pool-6-thread-1] DEBUG org.magnum.soda.svc.ObjInvoker - Invoking method on: [[org.magnum.soda.example.Report@74bfed5a]] invocation: [InvocationInfo [method_=get, parameters_=[0], parameterTypes_=[int]]]
+657492 [pool-2-thread-3] DEBUG o.m.s.s.wamp.WebsocketTransport - Srvr Sending [["org.magnum.soda.svc.ObjInvocationRespMsg",{"exception":null,"result":["org.magnum.soda.example.Report",{"content":"This is a report from server."}],"id":"2454f4e0-8056-4845-b7bb-f7722cd5f5dc","source":"soda://fcf3f638-3e9d-4725-8388-45da646356be","destination":"soda://cb350c0d-5df5-44b8-bd90-b3105c11ee4c","responseTo":"92af8f87-a7e8-4204-95b1-aef5da03ccb0"}]]
