@@ -43,9 +43,31 @@ ObjInvoker.prototype.onEvent = function(evt){
         var params = evt.parameters;
         Soda.namingSvc.get(uri,function(target){
              console.log('dispatching invocation ['+uri+"("+target+")."+func+"("+JSON.stringify(params)+")]");
-             if(target != null){
-                 target[func].apply(target,params);
-             }            
+         	 try{
+         		 
+         		 for(var i in params){
+         			 params[i] = Soda.proxyIfNeeded(params[i]);
+         		 }
+         		 
+	             var reply = new Msg({
+	        		type : "response",
+	        		responseTo : evt.id,
+	        		destination : evt.source,
+	        		result: null
+	        	 });
+	            
+	             try{
+	            	 if(target != null){
+	            		 reply.result = target[func].apply(target,params);
+	            	 }   
+	             }catch(ex){
+	            	 reply.exception = ex;
+	             }
+	             
+	             Soda.send(reply);
+         	 }catch(ex){
+         		 console.log(ex);
+         	 }
         });
 
     }
@@ -188,6 +210,17 @@ SodaBase = function() {
     this.objInvoker = new ObjInvoker(this.msgBus);
 };
 
+SodaBase.prototype.proxyIfNeeded = function(obj) {
+	return this.toProxy(obj);
+}
+
+SodaBase.prototype.toProxy = function(obj) {
+   if(obj && obj.type == "ObjRef"){
+        obj = new SodaSvc(obj);   
+   }
+   return obj;
+}
+
 SodaBase.prototype.createObjRef = function(uri, name) {
 	return new ObjRef(uri, name);
 };
@@ -239,16 +272,4 @@ SodaBase.prototype.connect = function(server,callback){
 var Soda = new SodaBase();
 
 
-// connect to WAMP server
-Soda.connect("ws://localhost:8081",function(){
-    Soda.namingSvc.get("ping",
-        function(pingsvc){
-          //pingsvc.ping();
-          //pingsvc.ping();
-          pingsvc.ping();
-            
-          var myping = {ping:function(){alert('ping');}};
-          pingsvc.pingMe(myping);
-        }
-    );
-});
+
