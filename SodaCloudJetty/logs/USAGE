@@ -1,7 +1,0 @@
-Logstash only logs *new* file/log data, so if you restart the 
-watchdog you have to also pipe all of the current log input
-into logstash via something like a TCP connection
-
-Other than that, usage is to run the Jetty server, run logstash 
-on the same host, and point logstash to where the jetty server 
-is storing logs
