@@ -18,15 +18,15 @@ package org.magnum.soda.proxy;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=As.PROPERTY, property="type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "type")
 @JsonTypeName("ObjRef")
 public class ObjRef {
 
 	private static final boolean objRefFlag_ = true;
-	
+
 	private String uri_;
 	private String[] types_;
 
@@ -42,8 +42,8 @@ public class ObjRef {
 	public ObjRef(String uri, String type) {
 		this(uri, new String[] { type });
 	}
-	
-	public ObjRef(String uri){
+
+	public ObjRef(String uri) {
 		uri_ = uri;
 		types_ = new String[0];
 	}
@@ -64,15 +64,15 @@ public class ObjRef {
 		types_ = types;
 	}
 
-	public String getHost(){
-		return uri_.substring(0,uri_.indexOf("#"));
+	public String getHost() {
+		return uri_.substring(0, uri_.indexOf("#"));
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		boolean match = false;
-		if(obj instanceof ObjRef){
-			String uri = ((ObjRef)obj).getUri();
+		if (obj instanceof ObjRef) {
+			String uri = ((ObjRef) obj).getUri();
 			match = uri_.equals(uri);
 		}
 		return match;
@@ -89,13 +89,12 @@ public class ObjRef {
 				+ "]";
 	}
 
-	public static String createObjUri(String uribase, String oid){
-		return uribase +"#"+oid;
+	public static String createObjUri(String uribase, String oid) {
+		return uribase + "#" + oid;
 	}
-	
-	public static ObjRef fromObjUri(String uri){
+
+	public static ObjRef fromObjUri(String uri) {
 		return new ObjRef(uri);
 	}
-	
-	
+
 }

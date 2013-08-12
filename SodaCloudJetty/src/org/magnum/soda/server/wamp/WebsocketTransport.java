@@ -31,6 +31,7 @@ import org.magnum.soda.server.wamp.messages.EventMessage;
 import org.magnum.soda.transport.Address;
 import org.magnum.soda.transport.MsgContainer;
 import org.magnum.soda.transport.Transport;
+import org.magnum.soda.transport.UriAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,8 @@ public class WebsocketTransport extends Transport {
 	private ServerPubSubHandler handler_;
 
 	private ObjectMapper marshaller_ = new ObjectMapper();
+	
+	private UriAddress serverAddress_;
 
 	public WebsocketTransport(MsgBus msgBus, LocalAddress addr, int port) {
 		super(new DefaultProtocol(), msgBus, addr);
@@ -59,6 +62,7 @@ public class WebsocketTransport extends Transport {
 	@Override
 	public void connect(Address addr) {
 		try {
+			
 			EventReceiver rcvr = new EventReceiver() {
 
 				@Override
@@ -104,7 +108,5 @@ public class WebsocketTransport extends Transport {
 	public boolean isConnected() {
 		return handler_.isConnected();
 	}
-	
-	
 
 }

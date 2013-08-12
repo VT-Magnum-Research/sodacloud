@@ -35,7 +35,7 @@ public class JettyServer implements OnTextMessage {
 
 	@Override
 	public void onOpen(Connection connection) {
-
+		
 		System.out.println("JettyServer: "+"Open Connection");
 		if(connection instanceof WebSocket.FrameConnection)
 		{

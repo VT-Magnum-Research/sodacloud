@@ -17,14 +17,20 @@ package org.magnum.soda.server.wamp;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
 import org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler;
+import org.magnum.soda.svc.AuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ServerSodaLauncher {
 
+	
+	private static final Logger Log = LoggerFactory
+			.getLogger(ServerSodaLauncher.class);
+	
 	public static void main(String[] args){
 		ServerSodaLauncher server = new ServerSodaLauncher();
 		server.launch(8081, null);
@@ -34,27 +40,46 @@ public class ServerSodaLauncher {
 		launch(new DefaultProtocol(), tcpPort, l);
 	}
 	
-	public void launch(final Protocol protoc, int tcpPort, final ServerSodaListener l) {
-	    final Server jettyServer = new Server(tcpPort);
+	public void launch(Protocol protoc, int tcpPort, ServerSodaListener l) {
+		launch(protoc,tcpPort,l,new Subscriptions());
+	}
+	
+	public void launch(final Protocol protoc, int tcpPort, final ServerSodaListener l, Subscriptions subs) {
+		launch(protoc, tcpPort, l, AuthService.NO_AUTH_SVC, subs);
+	}
+	
+	public void launch(final Protocol protoc, int tcpPort, ServerSodaListener l, AuthService auth, Subscriptions subs) {
+	   ServerConfig config = new ServerConfig();
+	   config.setProtocol(protoc);
+	   config.setPort(tcpPort);
+	   config.setSubscriptions(subs);
+	   config.setAuthService(auth);
+	   launch(config,l);
+	}
+	
+	public void launch(final ServerConfig config, final ServerSodaListener l){
+		final Server jettyServer = new Server(config.getPort());
 
-		ServletContextHandler context = new ServletContextHandler(
-				ServletContextHandler.SESSIONS);
-		jettyServer.setHandler(context);
-
-		WampServer wampocServer = new WampServer();
+		final WampServer wampocServer = new WampServer();
+		SourceHonestyFilter filter = new SourceHonestyFilter(config.getProtocol());
+		wampocServer.addListener(filter);
+		wampocServer.addPublishFilter(filter);
+		wampocServer.setSubscriptions(config.getSubscriptions());
 		JettyServerHandler webSocketHandler = new JettyServerHandler(
 				wampocServer);
 		webSocketHandler.setHandler(new DefaultHandler());
-		jettyServer.setHandler(webSocketHandler);
+		
+		config.configure(jettyServer, webSocketHandler);
 
-		System.err.println("Starting the WS server on TCP port: " + tcpPort);
+		Log.info("Starting the Soda server on TCP port: " + config.getPort());
 		try {
 			jettyServer.start();
 			Thread t = new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
-					ServerSoda soda = new ServerSoda(protoc, 8081);
+					ServerSoda soda = new ServerSoda(config.getProtocol(), config.getAuthService(), config.getPort());
+					wampocServer.addListener(soda);
 					soda.setServer(jettyServer);
 					soda.connect(null);
 					if(l != null){
@@ -65,7 +90,7 @@ public class ServerSodaLauncher {
 			t.start();
 			jettyServer.join();
 		} catch (Exception e) {
-			System.err.println("Failed to start the WS server:\n" + e);
+			Log.error("Failed to start the Soda server:",e);
 		}
 	}
 

@@ -23,6 +23,9 @@ import java.util.Map;
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.Mode;
 
+import org.magnum.soda.aop.DefaultInvocationProcessorFactory;
+import org.magnum.soda.aop.InvocationProcessorFactory;
+import org.magnum.soda.auth.AuthInvocationProcessor;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
@@ -78,7 +81,9 @@ public class Soda implements TransportListener {
 		proxyCreator_ = getProxyCreator();
 		proxyFactory_ = new ProxyFactory(objRegistry_, proxyCreator_,
 				localAddress_, msgBus_);
-		objInvoker_ = new ObjInvoker(addr, msgBus_, objRegistry_, proxyFactory_);
+		objInvoker_ = new ObjInvoker(msgBus_, objRegistry_, proxyFactory_);
+		objInvoker_.setProcessorFactory(getInvocationProcessorFactory());
+		
 		objRegistryUpdater_ = new ObjRegistryUpdater(proxyFactory_,
 				objRegistry_);
 		namingServiceRef_ = objRegistry_.publish(namingService_);
@@ -87,12 +92,17 @@ public class Soda implements TransportListener {
 	}
 
 	public Soda(boolean becomeserver) {
+		this(becomeserver, null);
+	}
+	
+	public Soda(boolean becomeserver, AuthService svc) {
 		this();
 		if (becomeserver) {
+			svc = (svc == null)? getAuthService() : svc;
 			getObjRegistry().insert(NamingService.ROOT_NAMING_SVC,
 					getNamingService());
 			getObjRegistry()
-					.insert(AuthService.ROOT_AUTH_SVC, getAuthService());
+					.insert(AuthService.ROOT_AUTH_SVC, svc);
 		}
 	}
 
@@ -108,6 +118,12 @@ public class Soda implements TransportListener {
 
 	protected synchronized AuthService getAuthService() {
 		return AuthService.NO_AUTH_SVC;
+	}
+	
+	protected synchronized InvocationProcessorFactory getInvocationProcessorFactory(){
+		DefaultInvocationProcessorFactory fact = new DefaultInvocationProcessorFactory();
+		fact.addProcessor(SodaAuth.class, AuthInvocationProcessor.class);
+		return fact;
 	}
 
 	public <T> T invoke(T obj) {
@@ -162,6 +178,11 @@ public class Soda implements TransportListener {
 
 	public DefaultObjRegistry getObjRegistry() {
 		return objRegistry_;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T get(Class<T> type, ObjRef ref){
+		return (T)proxyFactory_.createProxy(new Class[]{type}, ref);
 	}
 
 	public <T> T get(Class<T> type, String name) {

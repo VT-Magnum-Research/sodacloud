@@ -27,6 +27,7 @@ import java.util.concurrent.Future;
 import org.junit.Test;
 import org.magnum.soda.Soda;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
+import org.magnum.soda.svc.AuthService;
 import org.magnum.soda.transport.LocalPipeTransport;
 
 public class SodaPipedClientServerTest {
@@ -119,5 +120,62 @@ public class SodaPipedClientServerTest {
 		verify(r).run();
 	}
 	
+	
+	@Test
+	public void testNativeJavaProtocolWithAuth() throws Exception {
+		
+		// This test emulates both a client and server on the same machine
+		// but does full messaging and marshalling as if a real network
+		// connection were being used.
+		AuthService auth = mock(AuthService.class);
+		
+		Soda server = new Soda(true, auth);
+		Soda client = new Soda();
+		
+		// Extra boiler plate code b/c we want to fake a network connection
+		// with this funky pipe transport
+		LocalPipeTransport transport = new LocalPipeTransport(server, client);
+		client.connect(transport.getClientTransport(),null);
+		
+		// A fake runnable
+		Runnable r = mock(Runnable.class);
+		
+		
+		// First, we create an executor service and bind
+		// it to the name "executor" on the server's NamingService
+		ExecutorService exc = Executors.newFixedThreadPool(2);
+		server.bind(exc, "executor");
+		
+		// Now, on the client side, we lookup a proxy to the ExecutorService
+		// that is sitting on the server
+		ExecutorService r2 = client.get(ExecutorService.class, "executor");
+		
+		// <CrazyStuff>
+		//
+		// Once we have the proxy to the ExecutorService, we can use it like
+		// a normal object and submit tasks to it. The Runnable that we pass in
+		// is automatically converted to an ObjRef and passed to the server. The
+		// server constructs a Java dynamic proxy using the ref, the executor
+		// invokes run() on the proxy, the proxy sends a msg back to the client
+		// to invoke run, the server blocks until it receives a response msg
+		// indicating run() has returned, the server returns a future, the
+		// client receives the future as an ObjRef, the client constructs a
+		// proxy with the ref, the code below invokes get() on the proxy, the
+		// proxy sends a msg to the server to invoke get... yeah...it works!
+		//
+		// </CrazyStuff>
+		
+		// f is actually a proxy to the real future which is on the
+		// server-side
+		Future<?> f = r2.submit(r);
+		
+		// This is invoking get() on the proxy which delegates the call
+		// to the server via a msg and waits for a response msg with the
+		// return value
+		f.get();
+		
+		// Prove that this crazy interaction just worked
+		verify(r).run();
+	}
 
 }

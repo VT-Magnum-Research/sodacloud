@@ -50,7 +50,7 @@ public class AndroidSoda extends Soda {
 
 	public static void init(final Context ctx, Protocol protocol, String host,
 			int port, AndroidSodaListener l) {
-		init(ctx, protocol, host, port, l);
+		init(ctx, protocol, host, port, null, l);
 	}
 
 	public static void init(final Context ctx, Protocol protocol,

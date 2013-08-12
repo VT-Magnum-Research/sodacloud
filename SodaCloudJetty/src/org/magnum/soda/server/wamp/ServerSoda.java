@@ -15,29 +15,37 @@
  ****************************************************************************/
 package org.magnum.soda.server.wamp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jetty.server.Server;
 import org.magnum.soda.Soda;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
+import org.magnum.soda.svc.AuthService;
 import org.magnum.soda.svc.PingSvc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServerSoda extends Soda {
-
+public class ServerSoda extends Soda implements WampServerListener {
+	
 	private static final Logger Log = LoggerFactory.getLogger(ServerSoda.class);
 
 	private Server server_;
+	
+	private List<ClientId> clients_ = new ArrayList<ClientId>();
 
 	public ServerSoda(int port) {
-		this(new DefaultProtocol(), port);
+		this(new DefaultProtocol(), AuthService.NO_AUTH_SVC, port);
 	}
 
-	public ServerSoda(Protocol protoc, int port) {
+	public ServerSoda(Protocol protoc, AuthService auth, int port) {
 		super(true);
 		setTransport(new WebsocketTransport(protoc, getMsgBus(),
 				getLocalAddress(), port));
 
+		bind(auth,AuthService.SVC_NAME);
+		
 		bind(new PingSvc() {
 
 			@Override
@@ -76,5 +84,25 @@ public class ServerSoda extends Soda {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public void clientConnected(ClientId client) {
+		clients_.add(client);
+	}
+
+	@Override
+	public void clientDisconnected(ClientId client) {
+		clients_.remove(client);
+	}
+
+	@Override
+	public void clientSubscribedToTopic(ClientId id, String topic) {
+		
+	}
+
+	@Override
+	public void clientUnSubscribedFromTopic(ClientId id, String topic) {
+		
 	}
 }

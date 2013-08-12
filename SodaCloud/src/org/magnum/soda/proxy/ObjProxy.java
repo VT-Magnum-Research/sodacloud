@@ -30,11 +30,16 @@ import org.magnum.soda.svc.InvocationInfoBuilder;
 import org.magnum.soda.svc.ObjInvocationMsg;
 import org.magnum.soda.svc.ObjInvocationMsgBuilder;
 import org.magnum.soda.svc.ObjInvocationRespMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.eventbus.Subscribe;
 
 public class ObjProxy implements InvocationHandler {
 
+	
+	private static final Logger Log = LoggerFactory.getLogger(ObjProxy.class);
+	
 	public class ResponseCatcher {
 		private String respId_;
 		private MsgBus msgBus_;
@@ -152,6 +157,8 @@ public class ObjProxy implements InvocationHandler {
 
 		ObjInvocationRespMsg resp = catcher.getResponse();
 
+		Log.debug("Recv'd response to invocation: [{}] response: [{}]",msg,resp);
+		
 		if (resp.getException() != null) {
 			throw resp.getException();
 		}

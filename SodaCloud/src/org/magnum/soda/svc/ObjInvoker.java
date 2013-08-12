@@ -22,6 +22,7 @@ import net.engio.mbassy.listener.Mode;
 
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
+import org.magnum.soda.aop.InvocationProcessorFactory;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
@@ -38,19 +39,18 @@ public class ObjInvoker {
 
 	private ProxyFactory factory_;
 
-	private LocalAddress myAddress_;
-
 	private MsgBus msgBus_;
+
+	private InvocationProcessorFactory processorFactory_;
 
 	private InvocationDispatcher dispatcher_ = InvocationDispatcher.DEFAULT_DISPATCHER;
 
-	public ObjInvoker(LocalAddress addr, MsgBus bus, ObjRegistry registry,
+	public ObjInvoker(MsgBus bus, ObjRegistry registry,
 			ProxyFactory factory) {
 		super();
 		factory_ = factory;
 		msgBus_ = bus;
 		registry_ = registry;
-		myAddress_ = addr;
 		msgBus_.subscribe(this);
 	}
 
@@ -60,9 +60,9 @@ public class ObjInvoker {
 		InvocationInfo inv = msg.getInvocation();
 		ObjRef targetid = msg.getTargetObjectId();
 
+		
 		Object o = registry_.get(targetid);
 		if (o != null && !Proxy.isProxyClass(o.getClass())) {
-			
 
 			ObjInvocationRespMsg resp = (ObjInvocationRespMsg) msg
 					.createReply();
@@ -70,19 +70,23 @@ public class ObjInvoker {
 			try {
 				inv.bind(o);
 				Object[] ex = inv.getParameters();
-				
+
 				Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
 				// this method will directly update the
 				// ex array in place
 				factory_.createProxiesFromRefsIfNeeded(ex);
+				
+				if(msg.getSource() != null){Session.set(SessionData.forClient(msg.getSource()));};
+
+				if(processorFactory_ != null){inv.setProcessorFactory(processorFactory_);}
 
 				Object rslt = dispatcher_.dispatch(inv, o);
 				rslt = factory_.convertToObjectRefIfNeeded(rslt);
 
 				resp.setResult(rslt);
 			} catch (Exception t) {
-				Log.error("Exception executing invocation msg [{}]",msg);
-				Log.error("Error:",t);
+				Log.error("Exception executing invocation msg [{}]", msg);
+				Log.error("Error:", t);
 				resp.setException(t);
 			}
 
@@ -96,6 +100,14 @@ public class ObjInvoker {
 
 	public void setDispatcher(InvocationDispatcher dispatcher) {
 		dispatcher_ = dispatcher;
+	}
+
+	public InvocationProcessorFactory getProcessorFactory() {
+		return processorFactory_;
+	}
+
+	public void setProcessorFactory(InvocationProcessorFactory processorFactory) {
+		processorFactory_ = processorFactory;
 	}
 
 }

@@ -15,12 +15,14 @@
  ****************************************************************************/
 package org.magnum.soda.android;
 
+import java.net.URLEncoder;
 import java.util.concurrent.CountDownLatch;
 
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.java.NativeJavaProtocol;
+import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.transport.Address;
 import org.magnum.soda.transport.MsgContainer;
 import org.magnum.soda.transport.Transport;
@@ -36,22 +38,22 @@ import android.os.Handler;
 public class SodaAndroidTransport extends Transport implements
 		Wamp.ConnectionHandler, EventHandler {
 
-	
 	private static final Logger Log = LoggerFactory
 			.getLogger(SodaAndroidTransport.class);
-	
+
 	private final WampConnection mConnection = new WampConnection();
 
 	private CountDownLatch connectGate_;
 
 	private LocalAddress myAddress_;
 
-	public SodaAndroidTransport(MsgBus msgBus,
-			LocalAddress addr) {
+	private UriAddress serverAddress_;
+
+	public SodaAndroidTransport(MsgBus msgBus, LocalAddress addr) {
 		super(new NativeJavaProtocol(), msgBus, addr);
 		myAddress_ = addr;
 	}
-	
+
 	public SodaAndroidTransport(Protocol protocol, MsgBus msgBus,
 			LocalAddress addr) {
 		super(protocol, msgBus, addr);
@@ -73,7 +75,8 @@ public class SodaAndroidTransport extends Transport implements
 	@Override
 	public void connect(final Address arg0) {
 		if (arg0 instanceof UriAddress) {
-			String srvr = ((UriAddress) arg0).getUri().toString();
+			serverAddress_ = (UriAddress) arg0;
+			String srvr = serverAddress_.getUri().toString();
 			mConnection.connect(srvr, SodaAndroidTransport.this);
 		} else {
 			throw new RuntimeException(
@@ -89,11 +92,10 @@ public class SodaAndroidTransport extends Transport implements
 	@Override
 	public void onEvent(String arg0, Object arg1) {
 		final MsgContainer c = (MsgContainer) arg1;
-		Log.debug("Client Receiving topic:[{}] msg:[{}]",arg0, c.getMsg());
-		if(c.getMsg() == null){
-			Log.error("Malformed msg received [{}]",c.getMsg());
-		}
-		else {
+		Log.debug("Client Receiving topic:[{}] msg:[{}]", arg0, c.getMsg());
+		if (c.getMsg() == null) {
+			Log.error("Malformed msg received [{}]", c.getMsg());
+		} else {
 			receive(c);
 		}
 	}
@@ -101,7 +103,7 @@ public class SodaAndroidTransport extends Transport implements
 	@Override
 	public void send(MsgContainer arg0) {
 		String chnl = getOutboundChannel(arg0);
-		Log.debug("Client Sending topic:[{}] msg:[{}]",chnl, arg0.getMsg());
+		Log.debug("Client Sending topic:[{}] msg:[{}]", chnl, arg0.getMsg());
 		mConnection.publish(chnl, arg0);
 	}
 
@@ -117,7 +119,5 @@ public class SodaAndroidTransport extends Transport implements
 	public boolean isConnected() {
 		return mConnection != null && mConnection.isConnected();
 	}
-	
-	
 
 }

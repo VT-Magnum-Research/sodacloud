@@ -18,7 +18,12 @@ package org.magnum.soda.svc;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import org.magnum.soda.aop.InvocationProcessor;
+import org.magnum.soda.aop.InvocationProcessorFactory;
 
 public class InvocationInfo {
 
@@ -26,6 +31,8 @@ public class InvocationInfo {
 
 	private Object[] parameters_;
 
+	private InvocationProcessorFactory factory_;
+	
 	private Class<?>[] parameterTypes_;
 
 	public String getMethod() {
@@ -58,7 +65,26 @@ public class InvocationInfo {
 		bind(target);
 		Method m = resolve(target.getClass());
 		if(!m.isAccessible() && Modifier.isPublic(m.getModifiers())){ m.setAccessible(true); }
+		
+		List<InvocationProcessor<?>> processors = null;
+		if(factory_ != null){
+			processors = getProcessors(m);
+
+			for (InvocationProcessor<?> proc : processors) {
+				proc.preProcess(this);
+			}
+		}
+		
 		Object rslt = m.invoke(target, getParameters());
+		
+		if(processors != null){
+			processors = getProcessors(m);
+
+			for (InvocationProcessor<?> proc : processors) {
+				rslt = proc.postProcess(this,rslt);
+			}
+		}
+		
 		return rslt;
 	}
 	
@@ -71,6 +97,20 @@ public class InvocationInfo {
 		}catch(Exception e){}
 		
 		return m;
+	}
+	
+	public List<InvocationProcessor<?>> getProcessors(Method method) {
+		
+		List<InvocationProcessor<?>> processors = new ArrayList<InvocationProcessor<?>>();
+
+		for (Annotation anno : method.getAnnotations()) {
+			InvocationProcessor<?> proc = factory_.getProcessor(anno);
+			if(proc != null){
+				processors.add(proc);
+			}
+		}
+
+		return processors;
 	}
 	
 	public boolean checkForAnnotation(Class<?>[] targets, Class<? extends Annotation> anno){
@@ -91,5 +131,15 @@ public class InvocationInfo {
 				+ Arrays.toString(parameters_) + ", parameterTypes_="
 				+ Arrays.toString(parameterTypes_) + "]";
 	}
+
+	public InvocationProcessorFactory getProcessorFactory() {
+		return factory_;
+	}
+
+	public void setProcessorFactory(InvocationProcessorFactory factory) {
+		factory_ = factory;
+	}
+	
+	
 
 }

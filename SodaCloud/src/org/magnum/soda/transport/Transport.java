@@ -15,6 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.transport;
 
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,6 +26,7 @@ import org.magnum.soda.MsgBus;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.Msg;
 import org.magnum.soda.msg.Protocol;
+import org.magnum.soda.proxy.ObjRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
