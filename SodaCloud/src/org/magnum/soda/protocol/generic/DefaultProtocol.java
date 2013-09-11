@@ -165,4 +165,9 @@ public class DefaultProtocol implements Protocol {
 		return mc;
 	}
 
+	@Override
+	public String getName() {
+		return "soda-default";
+	}
+
 }

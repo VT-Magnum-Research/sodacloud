@@ -37,6 +37,7 @@ public class ProxyFactory {
 					.put(String.class.getName(), true)
 					.put(Boolean.class.getName(), true)
 					.put(Integer.class.getName(), true)
+					.put(Long.class.getName(), true)
 					.put(Double.class.getName(), true)
 					.put(Float.class.getName(), true)
 					.put(Byte.class.getName(), true)

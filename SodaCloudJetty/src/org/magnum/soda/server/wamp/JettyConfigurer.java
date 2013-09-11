@@ -11,6 +11,6 @@ import org.magnum.soda.server.wamp.adapters.jetty.JettyServerHandler;
 
 public interface JettyConfigurer {
 
-	public void configure(Server s, JettyServerHandler hdlr);
+	public void configure(Server s, WampServer wamp, JettyServerHandler hdlr);
 	
 }

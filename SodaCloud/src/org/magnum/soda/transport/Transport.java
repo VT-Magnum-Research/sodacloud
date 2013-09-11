@@ -50,9 +50,9 @@ public abstract class Transport {
 		msgBus_ = msgBus;
 		myAddress_ = addr;
 		protocol_ = protocol;
-		
+
 		msgBus_.subscribe(this);
-		
+
 		init(myAddress_);
 	}
 
@@ -67,7 +67,7 @@ public abstract class Transport {
 	 * @param m
 	 */
 	@Subscribe
-	@Listener(delivery=Mode.Concurrent)
+	@Listener(delivery = Mode.Concurrent)
 	public void handleLocalOutboundMsg(final Msg m) {
 		try {
 			if (!m.isMarked()) {
@@ -125,6 +125,14 @@ public abstract class Transport {
 
 	public void setExecutor(ExecutorService executor) {
 		executor_ = executor;
+	}
+
+	public Protocol getProtocol() {
+		return protocol_;
+	}
+
+	public void setProtocol(Protocol protocol) {
+		protocol_ = protocol;
 	}
 	
 	public abstract boolean isConnected();

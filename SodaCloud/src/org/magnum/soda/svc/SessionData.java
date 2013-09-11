@@ -16,6 +16,7 @@
 package org.magnum.soda.svc;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -47,9 +48,15 @@ public class SessionData {
 				.build(loader_);
 	}
 
-	public static SessionData forClient(String id) {
+	public static SessionData forClient(final String id) {
 		try {
-			return sessions_.get(id);
+			return sessions_.get(id,new Callable<SessionData>() {
+
+				@Override
+				public SessionData call() throws Exception {
+					return loader_.load(id);
+				}
+			});
 		} catch (ExecutionException e) {
 			throw new RuntimeException(e);
 		}

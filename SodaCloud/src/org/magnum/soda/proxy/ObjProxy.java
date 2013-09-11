@@ -74,6 +74,7 @@ public class ObjProxy implements InvocationHandler {
 							condition_.wait();
 						}
 					} catch (Exception e) {
+						throw new RuntimeException(e);
 					}
 				}
 			}
@@ -130,7 +131,7 @@ public class ObjProxy implements InvocationHandler {
 		
 		Object rslt = null;
 		
-		if(arg1.getReturnType() == void.class && arg1.getAnnotation(SodaAsync.class) != null){
+		if(arg1.getReturnType() == void.class && arg1.getAnnotation(SodaSync.class) == null){
 			invokeAsync(msg);
 		}
 		else {

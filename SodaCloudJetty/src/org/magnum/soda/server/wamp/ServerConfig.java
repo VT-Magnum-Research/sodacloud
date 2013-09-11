@@ -18,19 +18,19 @@ import org.slf4j.LoggerFactory;
 
 public class ServerConfig {
 
-	
 	private static final Logger Log = LoggerFactory
 			.getLogger(ServerConfig.class);
-	
+
 	private Protocol protocol_ = new DefaultProtocol();
 	private int port_ = 8081;
 	private AuthService authService_ = AuthService.NO_AUTH_SVC;
 	private Subscriptions subscriptions_ = new Subscriptions();
-	
+	private String path_ = "/";
+
 	private JettyConfigurer configurer_ = new JettyConfigurer() {
-		
+
 		@Override
-		public void configure(Server s, JettyServerHandler hdlr) {
+		public void configure(Server s, WampServer wamp, JettyServerHandler hdlr) {
 			s.setHandler(hdlr);
 		}
 	};
@@ -67,7 +67,25 @@ public class ServerConfig {
 		subscriptions_ = subscriptions;
 	}
 
-	public void configure(Server jettyServer, JettyServerHandler sodahdlr){
-		configurer_.configure(jettyServer, sodahdlr);
+	public void configure(Server jettyServer, WampServer wamp,
+			JettyServerHandler sodahdlr) {
+		configurer_.configure(jettyServer, wamp, sodahdlr);
 	}
+
+	public JettyConfigurer getConfigurer() {
+		return configurer_;
+	}
+
+	public void setConfigurer(JettyConfigurer configurer) {
+		configurer_ = configurer;
+	}
+
+	public String getPath() {
+		return path_;
+	}
+
+	public void setPath(String path) {
+		path_ = path;
+	}
+
 }

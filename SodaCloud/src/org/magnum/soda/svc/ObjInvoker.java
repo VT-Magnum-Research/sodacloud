@@ -60,7 +60,6 @@ public class ObjInvoker {
 		InvocationInfo inv = msg.getInvocation();
 		ObjRef targetid = msg.getTargetObjectId();
 
-		
 		Object o = registry_.get(targetid);
 		if (o != null && !Proxy.isProxyClass(o.getClass())) {
 

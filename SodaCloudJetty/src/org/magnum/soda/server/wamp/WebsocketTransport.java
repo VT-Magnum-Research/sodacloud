@@ -21,6 +21,8 @@
  ****************************************************************************/
 package org.magnum.soda.server.wamp;
 
+import java.net.URI;
+
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.msg.MetaAddress;
@@ -49,14 +51,14 @@ public class WebsocketTransport extends Transport {
 	
 	private UriAddress serverAddress_;
 
-	public WebsocketTransport(MsgBus msgBus, LocalAddress addr, int port) {
+	public WebsocketTransport(MsgBus msgBus, LocalAddress addr, String path, int port) {
 		super(new DefaultProtocol(), msgBus, addr);
-		handler_ = new ServerPubSubHandler(port);
+		handler_ = new ServerPubSubHandler(path, getProtocol().getName(), port);
 	}
 	
-	public WebsocketTransport(Protocol proto, MsgBus msgBus, LocalAddress addr, int port) {
+	public WebsocketTransport(Protocol proto, MsgBus msgBus, LocalAddress addr,  String path, int port) {
 		super(proto, msgBus, addr);
-		handler_ = new ServerPubSubHandler(port);
+		handler_ = new ServerPubSubHandler(path, getProtocol().getName(), port);
 	}
 
 	@Override

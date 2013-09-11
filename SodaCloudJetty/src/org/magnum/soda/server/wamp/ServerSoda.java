@@ -15,6 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.server.wamp;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.eclipse.jetty.server.Server;
 import org.magnum.soda.Soda;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
+import org.magnum.soda.proxy.ProxyCreator;
 import org.magnum.soda.svc.AuthService;
 import org.magnum.soda.svc.PingSvc;
 import org.slf4j.Logger;
@@ -36,13 +38,17 @@ public class ServerSoda extends Soda implements WampServerListener {
 	private List<ClientId> clients_ = new ArrayList<ClientId>();
 
 	public ServerSoda(int port) {
-		this(new DefaultProtocol(), AuthService.NO_AUTH_SVC, port);
+		this("/",port);
 	}
 
-	public ServerSoda(Protocol protoc, AuthService auth, int port) {
+	public ServerSoda(String path, int port) {
+		this(new DefaultProtocol(), AuthService.NO_AUTH_SVC, path, port);
+	}
+
+	public ServerSoda(Protocol protoc, AuthService auth, String path, int port) {
 		super(true);
 		setTransport(new WebsocketTransport(protoc, getMsgBus(),
-				getLocalAddress(), port));
+				getLocalAddress(), path, port));
 
 		bind(auth,AuthService.SVC_NAME);
 		
@@ -70,6 +76,11 @@ public class ServerSoda extends Soda implements WampServerListener {
 		}, PingSvc.SVC_NAME);
 	}
 
+	@Override
+	protected synchronized ProxyCreator getProxyCreator() {
+		return new CglibProxyCreator();
+	}
+	
 	public Server getServer() {
 		return server_;
 	}

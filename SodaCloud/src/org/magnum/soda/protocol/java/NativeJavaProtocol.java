@@ -89,4 +89,9 @@ public class NativeJavaProtocol implements Protocol {
 		return cont;
 	}
 
+	@Override
+	public String getName() {
+		return "soda-native-java";
+	}
+
 }

@@ -16,6 +16,7 @@
 package org.magnum.soda.server.wamp;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.magnum.soda.server.wamp.adapters.jetty.JettyClient;
 import org.magnum.soda.server.wamp.client.EventReceiver;
@@ -27,10 +28,14 @@ public class ServerPubSubHandler {
 	private JettyClient client_;
 
 	public ServerPubSubHandler(int port) {
+		this("/","ws-soda",port);
+	}
+	
+	public ServerPubSubHandler(String path, String webSocketProtocolName, int port) {
 
 		try {
 			JettyClient client_ = new JettyClient();
-			client_.connect(null, "", port);
+			client_.connect(path, webSocketProtocolName, port);
 			wampClient_ = client_.getWampClient();
 		} catch (Exception e) {
 			throw new RuntimeException(e);

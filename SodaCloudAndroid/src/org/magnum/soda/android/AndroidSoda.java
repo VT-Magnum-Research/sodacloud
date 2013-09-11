@@ -47,14 +47,24 @@ public class AndroidSoda extends Soda {
 			final int port, final AndroidSodaListener l) {
 		init(ctx, new NativeJavaProtocol(), host, port, l);
 	}
+	
+	public static void init(final Context ctx, final String host, String path,
+			final int port, final AndroidSodaListener l) {
+		init(ctx, new NativeJavaProtocol(), host, path, port, l);
+	}
 
 	public static void init(final Context ctx, Protocol protocol, String host,
 			int port, AndroidSodaListener l) {
-		init(ctx, protocol, host, port, null, l);
+		init(ctx, protocol, host, "/", port, null, l);
+	}
+	
+	public static void init(final Context ctx, Protocol protocol, String host, String path,
+			int port, AndroidSodaListener l) {
+		init(ctx, protocol, host, path, port, null, l);
 	}
 
 	public static void init(final Context ctx, Protocol protocol,
-			final String host, final int port, final User u,
+			final String host, final String path, final int port, final User u,
 			final AndroidSodaListener l) {
 		
 		context_ = ctx;
@@ -62,7 +72,7 @@ public class AndroidSoda extends Soda {
 		LocalAddress addr = initLocalAddress();
 
 		final AndroidSoda soda = new AndroidSoda(protocol, addr);
-		soda.connect(new UriAddress("ws://" + host + ":" + port));
+		soda.connect(new UriAddress("ws://" + host + ":" + port + path));
 		Runnable r = new Runnable() {
 
 			@Override

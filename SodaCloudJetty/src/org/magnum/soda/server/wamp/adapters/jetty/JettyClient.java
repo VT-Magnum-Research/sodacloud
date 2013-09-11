@@ -33,7 +33,7 @@ public class JettyClient {
 	private JettyClientAdapter jettyClientAdapter;
 	private WebSocket.Connection connection;
 	
-	public void connect(URI uri, String protocol, int port) throws Exception {
+	public void connect(String path, String protocol, int port) throws Exception {
 
 		WebSocketClientFactory factory = new WebSocketClientFactory();
 		try {
@@ -46,7 +46,7 @@ public class JettyClient {
 		client.setProtocol(protocol);
 
 		jettyClientAdapter = new JettyClientAdapter();
-		connection = client.open(new URI("ws://"+getHost()+":"+port+"/"), jettyClientAdapter).get(5, TimeUnit.SECONDS);
+		connection = client.open(new URI("ws://"+getHost()+":"+port+path), jettyClientAdapter).get(5, TimeUnit.SECONDS);
 	}
 
 	public WampClient getWampClient() {

@@ -19,6 +19,7 @@ import org.magnum.soda.transport.MsgContainer;
 
 public interface Protocol {
 
+	public String getName();
 	public Msg inbound(String msg) throws Exception;
 	public MsgContainer outbound(Msg msg) throws Exception;
 }
