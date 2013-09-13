@@ -6,6 +6,10 @@ import org.magnum.soda.proxy.SodaByValue;
 public class Report {
 		private String content;
 
+		public Report(){
+			
+		}
+		
 		public Report(String s){
 			content = s;
 		}
