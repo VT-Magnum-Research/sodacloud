@@ -1,41 +1,22 @@
 Sodacloud Documentation
 =========
-
-Overview of SodaCloud
+Motivation
 ------------
-SodaCloud is a shared object distribution architecture for cloud systems. 
-SodaCloud provides a platform that automatically creates mobile/cloud applications with optimized communications,
-cloud-based data sharding, cyber-physical information usage (e.g. geo-located data), 
-and code generation / testing methods for ensuring platform correctness. 
+Mobile devices are pervasive now. Due to the application scenarios as well as limited storage capacity, Apps
+on mobile devices usually need to interact with cloud. Therefore there is a strong demand for fast and easy 
+development of such application. 
 
-Using SodaCloud, the developer will be able to build a model of the client/server services, data, and 
-security requirements and automatically generate an entire system backbone. The backbone will allow developers 
-to enter key system logic manually, while the backbone will take care of client/cloud communications, 
-automatic platform instrumentation and replay of request data for QA, data marshaling infrastructure, 
-and capture of key performance / cloud resource sizing data to aid in resource allocation decisions and 
-operations cost optimization.
+The current trend in computing is to have mobile/cloud systems that use HTTP to broker interactions between
+mobile clients and cloud objects. However, the most commonly used
+software design patterns, such as observer, are extremely difficult to implement when the objects span hosts.
 
-![Soda L](Docs/images/architecture.PNG "Soda")
+For comparison, we implemented the observer pattern in HTTP([client][httpclient],[server][httpserver]) 
+and SodaCloud ([client][sodaclient],[server][sodaserver])).
 
-SodaCloud supports automatic creation of cloud mobile client to cloud server communication infrastructure,
-including data marshaling mechanisms, that alleviate the need for developers to hand-code complex 
-asynchronous communication pathways and optimize underlying protocols for the target API. 
-
-SodaCloud is built on top of an HTTP + push messaging communication system. A key challenge with HTTP-based 
-communication from apps is the API-boundaries that transition from traditional OO-based programming to high-latency, 
-non-OO, request-response style communication. SodaCloud builds an OO-based abstraction on top of this communication 
-pathway to hide these complexities from developers and simplify testing. 
-
-Moreover, when using HTTP-based communication approaches, they are biased towards client-initiated communication
-and make server-to-device pushing of data challenging. Other mechanisms for pushing data to devices, 
-such as Android’s C2DM push messaging are available, but they required complex authentication and negotiation 
-between both the client and server and the server and third-party messaging servers. Further, these push notification
-systems have multiple asynchronous operations that must complete and state management requirements that 
-add another layer of complexity on communications. SodaCloud provides a seamless abstraction
-on top of both HTTP and these push messaging mechanisms to provide simplified two-way client/server interaction 
-initiation.
-
-![Soda L](Docs/images/layer.png "Soda")
+[httpclient]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/HttpClient
+[httpserver]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/HttpServer
+[sodaclient]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/SodaClient
+[sodaserver]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/SodaServer
 
 A simple example with the Observer pattern 
 ------------
@@ -48,7 +29,7 @@ to handle this.
 - In Java server-side: 
 
 Class “MaintenanceReports” is declared. It stores the reports and listeners for the reports in lists. When a new
-report is uploaded, it will be added to the list of report and all the listeners will be notified.
+report is uploaded, it will be added to the list of reports and all the listeners will be notified.
   
 ```java  
 public class MaintenanceReportsImpl implements MaintenanceReports {
@@ -106,6 +87,44 @@ AndroidSoda.async(new Runnable() {
 	}
 }
 ```
+
+Overview of SodaCloud
+------------
+SodaCloud is a shared object distribution architecture for cloud systems. 
+SodaCloud provides a platform that automatically creates mobile/cloud applications with optimized communications,
+cloud-based data sharding, cyber-physical information usage (e.g. geo-located data), 
+and code generation / testing methods for ensuring platform correctness. 
+
+Using SodaCloud, the developer will be able to build a model of the client/server services, data, and 
+security requirements and automatically generate an entire system backbone. The backbone will allow developers 
+to enter key system logic manually, while the backbone will take care of client/cloud communications, 
+automatic platform instrumentation and replay of request data for QA, data marshaling infrastructure, 
+and capture of key performance / cloud resource sizing data to aid in resource allocation decisions and 
+operations cost optimization.
+
+![Soda L](Docs/images/architecture.PNG "Soda")
+
+SodaCloud supports automatic creation of mobile client to server communication infrastructure,
+including data marshaling mechanisms, that alleviate the need for developers to hand-code complex 
+asynchronous communication pathways and optimize underlying protocols for the target API. 
+
+SodaCloud is built on top of an HTTP + push messaging communication system. A key challenge with HTTP-based 
+communication from apps is the API-boundaries that transition from traditional OO-based programming to high-latency, 
+non-OO, request-response style communication. SodaCloud builds an OO-based abstraction on top of this communication 
+pathway to hide these complexities from developers and simplify testing. 
+
+Moreover, when using HTTP-based communication approaches, they are biased towards client-initiated communication
+and make server-to-device pushing of data challenging. Other mechanisms for pushing data to devices, 
+such as Android’s C2DM push messaging are available, but they required complex authentication and negotiation 
+between both the client and server and the server and third-party messaging servers. Further, these push notification
+systems have multiple asynchronous operations that must complete and state management requirements that 
+add another layer of complexity on communications. SodaCloud provides a seamless abstraction
+on top of both HTTP and these push messaging mechanisms to provide simplified two-way client/server interaction 
+initiation.
+
+![Soda L](Docs/images/layer.png "Soda")
+
+
 - Javascript client-side
 
 Overview of supported platforms
@@ -117,7 +136,8 @@ Setting up a Java server-side project
 1.Download SodaCloud and SodaCloudJetty project. SodaCloud is the fundamental library project for all the marshalling 
 and abstraction logic. SodaCloudJetty is a built upon Jetty which provides HTTP server and servlet container.
 
-2.Create a Java project in eclipse and add SodaCloud and SodaCloudJetty to the build path.
+2.Create a new Java project in eclipse. Right click on the project and click on the `properites`. Select Java Build Path -> Projects 
+and add `SodaCloud` and `SodaCloudJetty` to the build path.
 
 3.To create a basic server with Jetty. Create the main class implements ServerSodaListener interface. The started() will
 be called when the server is launched.
@@ -136,7 +156,7 @@ be called when the server is launched.
 4.Defining interfaces for remoteable objects
 
 Here we define the manage interface “MaintenanceReports”.
-A unique string needs to be defined for the object. It can be used later for looking up objects with naming service.
+A unique string(SVC_NAME) needs to be defined for the object. It can be used later for looking up objects with naming service.
 ```java
 public interface MaintenanceReports {
 		public static final String SVC_NAME = "maintenance";
@@ -148,23 +168,17 @@ public interface MaintenanceReports {
 ```
 5.How to bind objects
 
+To support reference of objects between client and server, a unique identity of the object is needed for looking up.
+In SodaCloud, this is achieved by a naming service mechanism where an object is bind to SVC_NAME.
+
 To bind an object, call the function soda.bind(object, SVC_NAME); 
 Where the first parameter is the object to be bind and the second parameter is the String of its SVC name.
 
 ```java
 soda.bind(reports, MaintenanceReports.SVC_NAME);
 ```
-6.How dynamic proxies are created
 
-After the call of soda.bind(), the proxies of the object are created automatically by Soda. The process happens in DefaultNamingService.java.
-
-```java
-ObjRef ref = new ObjRef("" + data.get("uri"),type.getName());
-obj = (T)proxyFactory_.createProxy(new Class[]{type}, ref);
-```
-
-
-7.Java implementation limitations
+6.Java implementation limitations
 
 a.	In Java, only parameters that are of an interface type can be
 passed by reference.
@@ -175,13 +189,15 @@ value types because Java does not have reified generic types.
 Setting up an Android project
 ------------
 
-1.Create a new Android project in eclipse and import the SodaCloudAndroid library project.
+1.Create a new Android project in eclipse. Right click on the project and click on the `properites`. Select Java Build Path -> Projects 
+and add project `SodaCloud` to the build path. Select `Android` to add `SodaCloudAndroid` to library.
 
-2.Setting the correct permissions in AndroidManifest.xml file.
+2.Add `"android.permission.INTERNET"` as user permission in AndroidManifest.xml file.
 
 3.Initializing AndroidSoda and connecting
 
-a)The activity will need to implement AndroidSodaListener interface and override the connected() method. 
+a)Instead of sending HTTP request every time, SodaCloud uses object AndroidSoda to manage the connection with the server.
+The activity will need to implement AndroidSodaListener interface and override the connected() method. 
 Then AndroidSoda.init() will call the connected() method and return the AndroidSoda object. After that, 
 you can use AndroidSoda for any connection with the server.
 
@@ -205,7 +221,9 @@ you can use AndroidSoda for any connection with the server.
 
 4.Looking up objects on the server with the naming service
 
-To start a query, call AndroidSoda.async() method. The lookup is by calling the get() method of AndroidSoda. 
+To start a query without blocking the UI, call AndroidSoda.async() method. It will start a new thread for the network 
+connection. The lookup is by calling the get() method of AndroidSoda. It will return the objects in server
+with the SVC_NAME you have bind previously.
 
 ```java
  		AndroidSoda.async(new Runnable() {
@@ -248,11 +266,12 @@ public void bindQRContext(Soda s, MaintenanceReport r) {
 		s.bind(r).to(qr);
 	}
 ```
-To lookup object based on QR code, use soda.find() method where the first parameter is the class type and 
+To lookup object based on QR code, first build the SodaQR object from the image byte[] with fromImageData() method.
+Then use soda.find() method where the first parameter is the class type and 
 second parameter is SodaContext. The returned SodaQuery is passed in to callback for asynchronized running.
 
 ```java
-SodaQR _objQR = SodaQR.fromImageData(b);
+SodaQR _objQR = SodaQR.fromImageData(captured_image);
 SodaQuery<MaintenanceReport> _objSQ = s.find(MaintenanceReport.class,_objQR);
 callback.handle(_objSQ.getList_());
 ```
