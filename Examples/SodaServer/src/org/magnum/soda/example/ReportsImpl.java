@@ -14,6 +14,7 @@ public class ReportsImpl implements Reports {
 	public void addReport(Report r) {
 		reports_.add(r);
 		for(ReportsListener l : listeners_){
+			System.err.println("Before reportAdded in server: " + System.currentTimeMillis());
 			l.reportAdded(r);
 		}
 	}
@@ -42,4 +43,7 @@ public class ReportsImpl implements Reports {
 		listeners_.remove(l);
 	}
 
+	public List<ReportsListener> getListeners(){
+		return listeners_;
+	}
 }

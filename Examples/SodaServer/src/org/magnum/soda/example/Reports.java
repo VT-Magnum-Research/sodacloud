@@ -10,5 +10,5 @@ public interface Reports {
 	public void addListener(ReportsListener l);
 
 	public void removeListener(ReportsListener l);
-
+	public List<ReportsListener> getListeners();
 }
