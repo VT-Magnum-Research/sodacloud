@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 
@@ -21,7 +22,7 @@ public class Reports {
 		reports_.add(r);
 		
 		AddReportTask t = new AddReportTask(r.getContent());
-		t.execute();
+		 t.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		
 		for(ReportsListener l : listeners_){
 			l.reportAdded(r);
@@ -47,7 +48,7 @@ public class Reports {
 		listeners_.add(l);
 		
 		AddListenerTask t = new AddListenerTask(l.getID());
-		t.execute();	
+		 t.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	

@@ -30,16 +30,14 @@ public class AddReportTask extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		Log.d("httpclient", "addReportTask content: " + content);
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost request = new HttpPost("http://10.0.2.2:8080/addreport/");
+		HttpPost request = new HttpPost(Host.hostaddress + "addreport/");
    	
 			try {
 				HttpEntity myEntity = new StringEntity(content);
 				request.setEntity(myEntity);
-				
-				Log.d("httpclient", "addReportTask before execute");
+
 				HttpResponse response = httpclient.execute(request);
-				Log.d("httpclient", "status code: "
-						+ response.getStatusLine().getStatusCode());
+				
 				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 					BufferedReader rd = new BufferedReader(
 							new InputStreamReader(response.getEntity()
