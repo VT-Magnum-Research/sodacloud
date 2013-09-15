@@ -33,13 +33,14 @@ public class MainActivity extends Activity implements AndroidSodaListener{
 		status = (TextView) findViewById(R.id.textView_status);
 		addReportButton_ = (Button) findViewById(R.id.button_add);
 		addReportButton_.setOnClickListener(new View.OnClickListener() {	
-			@Override
+			@Override 
 			public void onClick(View v) {
 				addReport();
 			}
 		});
-		
-		AndroidSoda.init(this, "192.168.173.1", 8081, this);
+		 
+		 AndroidSoda.init(this, "192.168.173.1", 8081, this);
+		// AndroidSoda.init(this, "10.0.2.2", 8081, this); 
 
 	}
 
@@ -69,7 +70,7 @@ public class MainActivity extends Activity implements AndroidSodaListener{
 						@Override
 						@SodaInvokeInUi
 						public void reportAdded(Report r){
-							Log.d("SODA","reportAdded: " + System.currentTimeMillis());
+							Log.d("SODA","reportAdded:#4 " + System.currentTimeMillis());
 							Log.d("SODA","reportAdded: "+ r.getContent());
 							status.setText(r.getContent());
 							Toast.makeText(MainActivity.this, "Add new report:" + r.getContent(),
@@ -92,13 +93,13 @@ public class MainActivity extends Activity implements AndroidSodaListener{
    
    
    public void addReport(){
-	   Log.d("SODA","addReport: " + System.currentTimeMillis());
+	   Log.d("SODA","addReport#1: " + System.currentTimeMillis());
 	   AndroidSoda.async(new Runnable() {
 				@Override
 				public void run() {
 					reports = as_.get(Reports.class,Reports.SVC_NAME);
 					Log.d("SODA","listeners size: "+ reports.getListeners().size());
-					Report r = new Report("New report.");
+					Report r = new Report("First report.");
 					reports.addReport(r);
 					
 				}

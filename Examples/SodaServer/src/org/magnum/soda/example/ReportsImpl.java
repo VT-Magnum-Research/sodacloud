@@ -3,18 +3,24 @@ package org.magnum.soda.example;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.engio.mbassy.listener.Listener;
+import org.magnum.soda.transport.Transport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReportsImpl implements Reports {
 
+	private static final Logger Log = LoggerFactory.getLogger(ReportsImpl.class);
+	
 	private List<ReportsListener> listeners_ = new LinkedList<ReportsListener>();
 	private List<Report> reports_ = new LinkedList<Report>();
 
 
 	public void addReport(Report r) {
+		System.err.println("addReport #2: " + System.currentTimeMillis());
+		Log.debug("addReport #2: " + System.nanoTime());
 		reports_.add(r);
 		for(ReportsListener l : listeners_){
-			System.err.println("Before reportAdded in server: " + System.currentTimeMillis());
+			System.err.println("Before reportAdded in server#3: " + System.currentTimeMillis());
 			l.reportAdded(r);
 		}
 	}

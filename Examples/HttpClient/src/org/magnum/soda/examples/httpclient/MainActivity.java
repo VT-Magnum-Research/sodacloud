@@ -15,54 +15,84 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private TextView status_;
+	private Button addButton_;
+	public final static int POLLING_INTERVAL = 100; // ms
+	public final static int ADD_REPORT = 100;
+	private Reports reports = new Reports();
+	private ReportsListener listener;
+	
+	public Handler myHandler = new Handler() {  
+        public void handleMessage(Message msg) {  
+        	 Log.d("Httpclient", "before switch");
+             switch (msg.what) {                	
+                  case ADD_REPORT:  
+                	   Log.d("SODA","reportAdded:#4 " + System.currentTimeMillis());
+                	   status_.setText(msg.getData().getString("content")); 
+                       break;   
+             }   
+             super.handleMessage(msg);   
+        }   
+   };
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		status_ = (TextView) findViewById(R.id.status);
-		
-		Reports reports = new Reports();
-		ReportsListener listener = new ReportsListener();
+		addButton_ = (Button) findViewById(R.id.button_add);
+		addButton_.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d("SODA","reportAdded:#1 " + System.currentTimeMillis());
+				reports.addReport(new Report("First Report"));
+			}
+		});
+
+		listener = new ReportsListener();
 		reports.addListener(listener);
-		 
-		reports.addReport(new Report("First Report"));
-		
-		CheckUpdateTask t = new CheckUpdateTask(listener.getID());
-		t.execute();
-		
-		
-				
+
+		new Thread(new CheckUpdatesTask(listener.getID())).start(); 
 
 	}
-
-	private class CheckUpdateTask extends AsyncTask<Void, Void, Void> {
+	public class CheckUpdatesTask implements Runnable {
 		String fromServer = null;
-		String id;
-		public CheckUpdateTask(String listenerId){
-			id = listenerId;
+		String id = null;
+
+		public CheckUpdatesTask(String id) {
+			this.id = id;
 		}
-		@Override
-		protected Void doInBackground(Void... params) {
-			Log.d("httpclient", "CheckUpdateTask:" + id);
+
+		public void run() {
+			polling();
+		}
+
+		private void polling() {
+
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost request = new HttpPost("http://10.0.2.2:8080/get");
-			
-			// polling with an interval of 1000ms
+			HttpPost request = new HttpPost(Host.hostaddress + "get");
+
+			// polling with an interval of POLLING_INTERVAL ms
 			while (true) {
-				try {  
-					Thread.sleep(1000);
-				} catch (InterruptedException ex) {  
+				try {
+					Thread.sleep(POLLING_INTERVAL);
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 				try {
 					HttpEntity myEntity = new StringEntity(id);
 					request.setEntity(myEntity);
-					
+
 					HttpResponse response = httpclient.execute(request);
 					Log.d("httpclient", "status code: "
 							+ response.getStatusLine().getStatusCode());
@@ -70,25 +100,32 @@ public class MainActivity extends Activity {
 						BufferedReader rd = new BufferedReader(
 								new InputStreamReader(response.getEntity()
 										.getContent()));
-						while ((fromServer = rd.readLine()) != null) {
-							Log.e("Httpclient", "response: " + fromServer);
+						fromServer = rd.readLine();					
+						
+						Log.e("Httpclient", "fromServer: " + fromServer);
+						
+						if (!fromServer.equals("null")) {
+							
+							Message message = new Message();
+							message.what = MainActivity.ADD_REPORT;
+							
+							Bundle bundle = new Bundle();
+							bundle.putString("Content", fromServer);
+							message.setData(bundle);
+							
+							myHandler.sendMessage(message);
+							break; 
 						}
-
-						if (fromServer != null )
-							break;
+						
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			return null;
-		}
 
-		@Override
-		protected void onPostExecute(Void result) {
-			status_.setText(fromServer);
 		}
-
 	}
+	
+	
 
 }
