@@ -10,8 +10,6 @@ import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.util.log.Log;
 
-
-//observerable object
 public class Reports {
 
 	private List<ReportsListener> listeners_ = new LinkedList<ReportsListener>();
@@ -27,9 +25,9 @@ public class Reports {
 	public void modifyReport(Report r){
 		for(Report m : reports_){
 			if(m.getContent().equals(r.getContent()))
-				m.setContent(r.getContent());
-				
+				m.setContent(r.getContent());		
 		}
+		
 		for(ReportsListener l : listeners_){
 			l.reportchanged(r);
 		}
@@ -43,11 +41,11 @@ public class Reports {
 		listeners_.add(l);
 	}
 
-	
 	public void removeListener(ReportsListener l) {
 		listeners_.remove(l);
 	}
 
 }
+//36
 
 

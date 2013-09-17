@@ -40,13 +40,11 @@ public class AddReportTask extends AsyncTask<Void, Void, Void> {
 				
 				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 					BufferedReader rd = new BufferedReader(
-							new InputStreamReader(response.getEntity()
-									.getContent()));
+							new InputStreamReader(response.getEntity().getContent()));
 					while ((fromServer = rd.readLine()) != null) {
 						Log.d("Httpclient", "addReportTask response: " + fromServer);
 					}
-					
-				
+							
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -60,3 +58,4 @@ public class AddReportTask extends AsyncTask<Void, Void, Void> {
 
 	}
 }
+//39

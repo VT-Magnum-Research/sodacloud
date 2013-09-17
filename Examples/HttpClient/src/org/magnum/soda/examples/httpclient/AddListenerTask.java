@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class AddListenerTask extends AsyncTask<Void, Void, Void> {
+	
 	String fromServer = null;
 	String id = null;
 
@@ -45,8 +46,7 @@ public class AddListenerTask extends AsyncTask<Void, Void, Void> {
 				BufferedReader rd = new BufferedReader(new InputStreamReader(
 						response.getEntity().getContent()));
 				while ((fromServer = rd.readLine()) != null) {
-					Log.d("Httpclient", "addlistenerTask response: "
-							+ fromServer);
+					Log.d("Httpclient", "addlistenerTask response: "+ fromServer);
 				}
 
 			}
@@ -58,3 +58,4 @@ public class AddListenerTask extends AsyncTask<Void, Void, Void> {
 	}
 
 }
+//41
