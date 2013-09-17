@@ -14,22 +14,21 @@ public class ReportsImpl implements Reports {
 	private List<ReportsListener> listeners_ = new LinkedList<ReportsListener>();
 	private List<Report> reports_ = new LinkedList<Report>();
 
-
 	public void addReport(Report r) {
 		System.err.println("addReport #2: " + System.currentTimeMillis());
-		Log.debug("addReport #2: " + System.nanoTime());
 		reports_.add(r);
+		
 		for(ReportsListener l : listeners_){
 			System.err.println("Before reportAdded in server#3: " + System.currentTimeMillis());
 			l.reportAdded(r);
 		}
 	}
-	public void modifyReport(Report r){
+	public void modifyReport(Report r){		
 		for(Report m : reports_){
 			if(m.getContent().equals(r.getContent()))
 				m.setContent(r.getContent());
-
 		}
+		
 		for(ReportsListener l : listeners_){
 			l.reportchanged(r);
 		}
@@ -53,3 +52,4 @@ public class ReportsImpl implements Reports {
 		return listeners_;
 	}
 }
+//44

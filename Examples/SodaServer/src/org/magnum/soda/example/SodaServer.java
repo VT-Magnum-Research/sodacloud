@@ -14,13 +14,9 @@ import org.magnum.soda.svc.PingSvc;
 
 public class SodaServer implements ServerSodaListener {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		ServerSodaLauncher launcher = new ServerSodaLauncher();
 		launcher.launch(new NativeJavaProtocol(), 8081, new SodaServer());
-
 	}
 
 	@Override
@@ -29,8 +25,7 @@ public class SodaServer implements ServerSodaListener {
 		Reports manager = new ReportsImpl();
 		manager.addReport(r);
 		soda.bind(manager, Reports.SVC_NAME);
-
-
 	}
 
 }
+//16

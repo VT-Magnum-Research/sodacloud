@@ -23,10 +23,10 @@ public class MainActivity extends Activity implements AndroidSodaListener{
     private AndroidSodaListener asl_; 
     private Reports reports;
     private Report r;
+    private static final String server_address_ = "192.168.173.1";
     
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
+	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -39,15 +39,12 @@ public class MainActivity extends Activity implements AndroidSodaListener{
 			}
 		});
 		 
-		 AndroidSoda.init(this, "192.168.173.1", 8081, this);
-		// AndroidSoda.init(this, "10.0.2.2", 8081, this); 
+		 AndroidSoda.init(this, server_address_, 8081, this);
 
 	}
 
 	@Override
 	public void connected(AndroidSoda soda) {
-		Log.d("SODA","connected ");
-		
 		this.as_ = soda;
 		getReport();
 	}
@@ -90,8 +87,7 @@ public class MainActivity extends Activity implements AndroidSodaListener{
 			});
 
     }
-   
-   
+      
    public void addReport(){
 	   Log.d("SODA","addReport#1: " + System.currentTimeMillis());
 	   AndroidSoda.async(new Runnable() {
@@ -100,13 +96,10 @@ public class MainActivity extends Activity implements AndroidSodaListener{
 					reports = as_.get(Reports.class,Reports.SVC_NAME);
 					Log.d("SODA","listeners size: "+ reports.getListeners().size());
 					Report r = new Report("First report.");
-					reports.addReport(r);
-					
+					reports.addReport(r);				
 				}
 			});
-
     }
-   
    
    @SodaInvokeInUi
    public void updateStatus(String content){
@@ -114,5 +107,5 @@ public class MainActivity extends Activity implements AndroidSodaListener{
 	   status.setText(content);
    }
 
-
 }
+//93-6=87

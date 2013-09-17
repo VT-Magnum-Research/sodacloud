@@ -91,8 +91,7 @@ public class HttpServer {
 			response.setContentType("text/plain;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
 			baseRequest.setHandled(true);
-			response.getWriter()
-		       .println("listener added: " + writer.toString());
+			response.getWriter().println("listener added: " + writer.toString());
 		}
 	}
 	
@@ -114,9 +113,9 @@ public class HttpServer {
 			response.setContentType("text/plain;charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
 			baseRequest.setHandled(true);
-			response.getWriter()
-					.println("report added: " + content);
+			response.getWriter().println("report added: " + content);
 		}
 	}
 
 }
+//100-4=96

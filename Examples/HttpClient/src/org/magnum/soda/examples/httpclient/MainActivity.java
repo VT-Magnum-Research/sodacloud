@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+	
 	private TextView status_;
 	private Button addButton_;
 	public final static int POLLING_INTERVAL = 100; // ms
@@ -32,7 +33,6 @@ public class MainActivity extends Activity {
 	
 	public Handler myHandler = new Handler() {  
         public void handleMessage(Message msg) {  
-        	 Log.d("Httpclient", "before switch");
              switch (msg.what) {                	
                   case ADD_REPORT:  
                 	   Log.d("SODA","reportAdded:#4 " + System.currentTimeMillis());
@@ -42,7 +42,6 @@ public class MainActivity extends Activity {
              super.handleMessage(msg);   
         }   
    };
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +93,7 @@ public class MainActivity extends Activity {
 					request.setEntity(myEntity);
 
 					HttpResponse response = httpclient.execute(request);
-					Log.d("httpclient", "status code: "
-							+ response.getStatusLine().getStatusCode());
+
 					if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 						BufferedReader rd = new BufferedReader(
 								new InputStreamReader(response.getEntity()
@@ -124,8 +122,7 @@ public class MainActivity extends Activity {
 			}
 
 		}
-	}
-	
-	
+	}	
 
 }
+//104-4=100
