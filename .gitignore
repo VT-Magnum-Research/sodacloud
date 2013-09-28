@@ -32,3 +32,6 @@ proguard/
 *.iws
 .idea/
 
+#eclipse related
+.metadata/*
+
