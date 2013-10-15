@@ -32,6 +32,7 @@ import org.mockito.ArgumentCaptor;
 
 public class SodaQRTest {
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testQRDrivenLookup() {
 		Soda soda = new Soda();
@@ -57,7 +58,6 @@ public class SodaQRTest {
 	public void testQRDrivenAsyncLookup() {
 		Soda soda = new Soda();
 		Runnable r = mock(Runnable.class);
-		Callback<Runnable> hdlr = mock(Callback.class);
 		
 		SodaQR qr = SodaQR.create();
 		soda.bind(r).to(qr);
@@ -80,6 +80,7 @@ public class SodaQRTest {
 	public interface TestB {}	
 	public class B1 implements TestB{}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testQRDrivenLookupPolymorphic() {
 		Soda soda = new Soda();
@@ -120,7 +121,6 @@ public class SodaQRTest {
 		
 		TestUtil.sleep(100);
 
-		ArgumentCaptor<List> captor1;
 		captor = ArgumentCaptor.forClass(List.class);
 		verify(hdlr1).handle(captor.capture());
 		l = captor.getValue();

@@ -28,13 +28,8 @@ import org.junit.Test;
 import org.magnum.soda.Callback;
 import org.magnum.soda.Soda;
 import org.magnum.soda.ctx.SodaLocation;
-import org.magnum.soda.ctx.SodaQR;
 import org.magnum.soda.ctx.SodaLocation.Accuracy;
 import org.magnum.soda.ctx.SodaLocation.Proximity;
-import org.magnum.soda.test.SodaQRTest.A1;
-import org.magnum.soda.test.SodaQRTest.A2;
-import org.magnum.soda.test.SodaQRTest.TestA;
-import org.magnum.soda.test.SodaQRTest.TestB;
 import org.mockito.ArgumentCaptor;
 
 public class SodaLocationTest {
@@ -71,6 +66,7 @@ public class SodaLocationTest {
 		assertSame(r, l.get(0));
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testWriterDrivenAsyncGeoLookup() {
 
@@ -92,6 +88,7 @@ public class SodaLocationTest {
 		assertTrue(l.contains(r));
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testWriterDrivenAsyncListGeoLookup() {
 
@@ -127,6 +124,7 @@ public class SodaLocationTest {
 		assertSame(r, r2.get(0));
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testReaderDrivenAsyncGeoLookup() {
 		Soda soda = new Soda();
@@ -157,6 +155,7 @@ public class SodaLocationTest {
 	public interface TestB {}	
 	public class B1 implements TestB{}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testPolymorphicLookup() {
 		Soda soda = new Soda();

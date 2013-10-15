@@ -15,7 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -30,7 +30,6 @@ import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.ObjInvoker;
-import org.magnum.soda.svc.ObjRegistryUpdater;
 
 public class MsgBusIntegrationTest {
 
@@ -38,8 +37,8 @@ public class MsgBusIntegrationTest {
 	private MBassyMsgBus bus = new MBassyMsgBus();
 	private DefaultObjRegistry reg = new DefaultObjRegistry(addr);
 	private ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
-	private ObjInvoker inovker = new ObjInvoker(bus, reg, factory);
-	private ObjRegistryUpdater updater = new ObjRegistryUpdater(factory, reg);
+	@SuppressWarnings("unused")
+	private ObjInvoker inovker = new ObjInvoker(bus, reg, factory, true);
 	
 	@Test
 	public void testSimpleProxying() {
@@ -51,6 +50,8 @@ public class MsgBusIntegrationTest {
 		Runnable proxy = factory.createProxy(Runnable.class, ref);
 		
 		proxy.run();
+		
+		TestUtil.sleep(20);
 		
 		verify(run).run();
 	}

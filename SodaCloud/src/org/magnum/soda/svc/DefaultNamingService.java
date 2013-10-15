@@ -19,10 +19,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
-import org.magnum.soda.proxy.SodaInferReturnTypeFromArgument;
 
 public class DefaultNamingService implements NamingService {
 
@@ -62,6 +60,7 @@ public class DefaultNamingService implements NamingService {
 			// a dynamic proxy, it is possible that it will return
 			// an Object.
 			if(obj instanceof LinkedHashMap){
+				@SuppressWarnings("rawtypes")
 				LinkedHashMap data = (LinkedHashMap)obj;
 				ObjRef ref = new ObjRef("" + data.get("uri"),type.getName());
 				obj = (T)proxyFactory_.createProxy(new Class[]{type}, ref);

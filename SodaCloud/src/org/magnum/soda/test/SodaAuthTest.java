@@ -83,7 +83,7 @@ public class SodaAuthTest {
 		when(reg.publish(svc)).thenReturn(ref);
 		
 		
-		ObjInvoker invoker = new ObjInvoker( bus, reg, factory);
+		ObjInvoker invoker = new ObjInvoker( bus, reg, factory, true);
 		invoker.setProcessorFactory(fact);
 		
 		Object[] args = new Object[]{};

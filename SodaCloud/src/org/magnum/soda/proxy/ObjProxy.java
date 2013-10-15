@@ -15,7 +15,6 @@
  ****************************************************************************/
 package org.magnum.soda.proxy;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -24,7 +23,6 @@ import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.Mode;
 
 import org.magnum.soda.MsgBus;
-import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.svc.InvocationInfo;
 import org.magnum.soda.svc.InvocationInfoBuilder;
 import org.magnum.soda.svc.ObjInvocationMsg;
@@ -89,8 +87,11 @@ public class ObjProxy implements InvocationHandler {
 
 	private ObjRef objectRef_;
 	
-	public ObjProxy(ProxyFactory fact, MsgBus msgBus, ObjRef objid) {
+	private InvocationSettings invocationSettings_;
+	
+	public ObjProxy(ProxyFactory fact, InvocationSettings settings, MsgBus msgBus, ObjRef objid) {
 		super();
+		invocationSettings_ = settings;
 		objectRef_ = objid;
 		msgBus_ = msgBus;
 		factory_ = fact;
@@ -131,7 +132,7 @@ public class ObjProxy implements InvocationHandler {
 		
 		Object rslt = null;
 		
-		if(arg1.getReturnType() == void.class && arg1.getAnnotation(SodaSync.class) == null){
+		if(invocationSettings_.shouldInvokeAsync(arg0, arg1, arg2)){
 			invokeAsync(msg);
 		}
 		else {

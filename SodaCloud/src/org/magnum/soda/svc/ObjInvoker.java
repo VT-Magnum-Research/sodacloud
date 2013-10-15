@@ -23,7 +23,6 @@ import net.engio.mbassy.listener.Mode;
 import org.magnum.soda.MsgBus;
 import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.aop.InvocationProcessorFactory;
-import org.magnum.soda.msg.LocalAddress;
 import org.magnum.soda.proxy.ObjRef;
 import org.magnum.soda.proxy.ProxyFactory;
 import org.slf4j.Logger;
@@ -45,12 +44,19 @@ public class ObjInvoker {
 
 	private InvocationDispatcher dispatcher_ = InvocationDispatcher.DEFAULT_DISPATCHER;
 
-	public ObjInvoker(MsgBus bus, ObjRegistry registry,
-			ProxyFactory factory) {
+	private boolean invokeProxies_;
+
+	public ObjInvoker(MsgBus bus, ObjRegistry registry, ProxyFactory factory) {
+		this(bus, registry, factory, false);
+	}
+
+	public ObjInvoker(MsgBus bus, ObjRegistry registry, ProxyFactory factory,
+			boolean invokeProxies) {
 		super();
 		factory_ = factory;
 		msgBus_ = bus;
 		registry_ = registry;
+		invokeProxies_ = invokeProxies;
 		msgBus_.subscribe(this);
 	}
 
@@ -60,36 +66,45 @@ public class ObjInvoker {
 		InvocationInfo inv = msg.getInvocation();
 		ObjRef targetid = msg.getTargetObjectId();
 
-		Object o = registry_.get(targetid);
-		if (o != null && !Proxy.isProxyClass(o.getClass())) {
+		if (invokeProxies_ || registry_.isLocalObject(targetid)) {
 
-			ObjInvocationRespMsg resp = (ObjInvocationRespMsg) msg
-					.createReply();
+			Object o = registry_.get(targetid);
+			if (o != null && !Proxy.isProxyClass(o.getClass())) {
 
-			try {
-				inv.bind(o);
-				Object[] ex = inv.getParameters();
+				ObjInvocationRespMsg resp = (ObjInvocationRespMsg) msg
+						.createReply();
 
-				Log.debug("Invoking method on: [{}] invocation: [{}]", o, inv);
-				// this method will directly update the
-				// ex array in place
-				factory_.createProxiesFromRefsIfNeeded(ex);
-				
-				if(msg.getSource() != null){Session.set(SessionData.forClient(msg.getSource()));};
+				try {
+					inv.bind(o);
+					Object[] ex = inv.getParameters();
 
-				if(processorFactory_ != null){inv.setProcessorFactory(processorFactory_);}
+					Log.debug("Invoking method on: [{}] invocation: [{}]", o,
+							inv);
+					// this method will directly update the
+					// ex array in place
+					factory_.createProxiesFromRefsIfNeeded(ex);
 
-				Object rslt = dispatcher_.dispatch(inv, o);
-				rslt = factory_.convertToObjectRefIfNeeded(rslt);
+					if (msg.getSource() != null) {
+						Session.set(SessionData.forClient(msg.getSource()));
+					}
+					;
 
-				resp.setResult(rslt);
-			} catch (Exception t) {
-				Log.error("Exception executing invocation msg [{}]", msg);
-				Log.error("Error:", t);
-				resp.setException(t);
+					if (processorFactory_ != null) {
+						inv.setProcessorFactory(processorFactory_);
+					}
+
+					Object rslt = dispatcher_.dispatch(inv, o);
+					rslt = factory_.convertToObjectRefIfNeeded(rslt);
+
+					resp.setResult(rslt);
+				} catch (Exception t) {
+					Log.error("Exception executing invocation msg [{}]", msg);
+					Log.error("Error:", t);
+					resp.setException(t);
+				}
+
+				msgBus_.publish(resp);
 			}
-
-			msgBus_.publish(resp);
 		}
 	}
 
@@ -107,6 +122,10 @@ public class ObjInvoker {
 
 	public void setProcessorFactory(InvocationProcessorFactory processorFactory) {
 		processorFactory_ = processorFactory;
+	}
+
+	public void setInvokeProxies(boolean invokeProxies) {
+		invokeProxies_ = invokeProxies;
 	}
 
 }

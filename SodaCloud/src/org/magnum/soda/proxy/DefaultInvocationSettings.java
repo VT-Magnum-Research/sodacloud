@@ -13,18 +13,37 @@
  *  See the License for the specific language governing permissions and      *
  *  limitations under the License.                                           *
  ****************************************************************************/
-package org.magnum.soda.test;
+package org.magnum.soda.proxy;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
-@RunWith(Suite.class)
-@SuiteClasses({ LocalAddressTest.class, MarshallerTest.class,
-		MsgBusIntegrationTest.class, ObjInvokerTest.class, ObjProxyTest.class,
-		RecordingProxyTest.class, SodaAuthTest.class, SodaLocationTest.class,
-		SodaPipedClientServerTest.class, SodaQRTest.class, StatsTest.class,
-		UnmarshallingInvocationInfoTest.class })
-public class AllTests {
+public class DefaultInvocationSettings implements InvocationSettings {
+
+	private boolean invokeVoidMethodsAsync_ = false;
+	
+	private Set<String> asyncMethodList_ = new HashSet<String>();
+
+	@Override
+	public boolean shouldInvokeAsync(Object target, Method m, Object[] args) {
+		return m.getReturnType() == void.class
+				&& (m.getAnnotation(SodaAsync.class) != null
+				|| invokeVoidMethodsAsync_
+				|| asyncMethodList_.contains(m));
+	}
+	
+	public void invokeAsync(Method m){
+		String key = getMethodKey(m);
+		asyncMethodList_.add(key);
+	}
+	
+	private String getMethodKey(Method m){
+		return m.getDeclaringClass().getName() + "." + m.getName();
+	}
+
+	public void setInvokeVoidMethodsAsync(boolean invokeVoidMethodsAsync) {
+		invokeVoidMethodsAsync_ = invokeVoidMethodsAsync;
+	}
 
 }

@@ -12,9 +12,11 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.magnum.soda.proxy.ProxyCreator;
+import org.mockito.cglib.proxy.Callback;
 import org.mockito.cglib.proxy.Enhancer;
 import org.mockito.cglib.proxy.MethodInterceptor;
 import org.mockito.cglib.proxy.MethodProxy;
+import org.objenesis.ObjenesisHelper;
 
 public class CglibProxyCreator implements ProxyCreator {
 
@@ -38,8 +40,11 @@ public class CglibProxyCreator implements ProxyCreator {
 		Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(types[0]);
         CglibProxy intercept = new CglibProxy(hdlr);
-        enhancer.setCallback(intercept);
-        Object proxy = enhancer.create();
+        enhancer.setCallbackType(intercept.getClass());
+        
+		final Class<?> proxyClass = enhancer.createClass();
+		Enhancer.registerCallbacks(proxyClass, new Callback[]{intercept});
+		Object proxy = ObjenesisHelper.newInstance(proxyClass);
 		
 		proxies_.put(proxy,hdlr);
 		return proxy;

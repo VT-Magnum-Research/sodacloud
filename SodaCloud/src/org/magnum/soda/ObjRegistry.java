@@ -37,4 +37,6 @@ public interface ObjRegistry {
 	public Object get(ObjRef ObjRef);
 	
 	public ObjRef publish(Object o);
+	
+	public boolean isLocalObject(ObjRef ref);
 }

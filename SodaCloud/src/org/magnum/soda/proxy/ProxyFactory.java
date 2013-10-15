@@ -50,11 +50,13 @@ public class ProxyFactory {
 	private LocalAddress myAddress_;
 
 	private ObjRegistry objRegistry_;
-	
+
 	private ProxyCreator creator_;
-	
-	
-	public ProxyFactory(ObjRegistry reg, ProxyCreator creator, LocalAddress myaddr, MsgBus msgBus) {
+
+	private InvocationSettings invocationSettings_ = new DefaultInvocationSettings();
+
+	public ProxyFactory(ObjRegistry reg, ProxyCreator creator,
+			LocalAddress myaddr, MsgBus msgBus) {
 		super();
 		creator_ = creator;
 		msgBus_ = msgBus;
@@ -71,8 +73,8 @@ public class ProxyFactory {
 
 		Log.debug("Creating a proxy for ref [{}]", objid);
 
-		Object proxy = creator_.createProxy(getClass().getClassLoader(),
-				types, new ObjProxy(this, msgBus_, objid));
+		Object proxy = creator_.createProxy(getClass().getClassLoader(), types,
+				new ObjProxy(this, invocationSettings_, msgBus_, objid));
 
 		return proxy;
 	}
@@ -152,6 +154,14 @@ public class ProxyFactory {
 		}
 
 		return v;
+	}
+
+	public InvocationSettings getInvocationSettings() {
+		return invocationSettings_;
+	}
+
+	public void setInvocationSettings(InvocationSettings invocationSettings) {
+		invocationSettings_ = invocationSettings;
 	}
 
 	public void passByValue(Class<?> type) {

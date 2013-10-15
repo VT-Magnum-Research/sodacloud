@@ -27,9 +27,9 @@
 @interface MaintenanceListener : NSObject<SodaObject>
 @end
 @implementation MaintenanceListener
-SODA_METHODS(
-             SODA_VOID_METHOD(@"reportAdded", PARAM(MaintenanceReport))
-             )
+    SODA_METHODS(
+        SODA_VOID_METHOD(@"reportAdded", PARAM(MaintenanceReport))
+    )
 @end
 
 @interface MaintenanceReports : NSObject<SodaObject>
@@ -37,7 +37,7 @@ SODA_METHODS(
 @end
 @implementation MaintenanceReports
     SODA_METHODS(
-             SODA_VOID_METHOD(@"addListener",REF(MaintenanceListener))
+        SODA_VOID_METHOD(@"addListener",REF(MaintenanceListener))
     )
 @end
 

@@ -23,6 +23,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.magnum.soda.msg.LocalAddress;
+import org.magnum.soda.msg.MetaAddress;
 import org.magnum.soda.proxy.ObjRef;
 
 /**
@@ -44,8 +45,15 @@ public class DefaultObjRegistry implements ObjRegistry {
 
 	private LocalAddress myAddress_;
 
+	private final boolean isServer_;
+
 	public DefaultObjRegistry(LocalAddress myAddress) {
+		this(myAddress, false);
+	}
+
+	public DefaultObjRegistry(LocalAddress myAddress, boolean isserver) {
 		super();
+		isServer_ = isserver;
 		myAddress_ = myAddress;
 	}
 
@@ -84,6 +92,13 @@ public class DefaultObjRegistry implements ObjRegistry {
 			localObjects_.add(ref.getUri());
 		}
 		return ref;
+	}
+
+	@Override
+	public boolean isLocalObject(ObjRef ref) {
+		return myAddress_.toString().equals(ref.getHost())
+				|| (isServer_ && ref.getHost().startsWith(
+						MetaAddress.META_ADDRESS.toString()));
 	}
 
 }

@@ -13,54 +13,16 @@
  *  See the License for the specific language governing permissions and      *
  *  limitations under the License.                                           *
  ****************************************************************************/
-package org.magnum.soda.svc;
+package org.magnum.soda.proxy;
 
-import org.magnum.soda.msg.Msg;
-import org.magnum.soda.proxy.ObjRef;
+import java.lang.reflect.Method;
 
-public class ObjAdvertisementMsg extends Msg {
+public interface InvocationSettings {
 
-	private String server_;
-	private String topicId_;
-	private ObjRef objectId_;
-	private String type_;
-
-	public String getServer() {
-		return server_;
-	}
-
-	public void setServer(String server) {
-		server_ = server;
-	}
-
-	public String getTopicId() {
-		return topicId_;
-	}
-
-	public void setTopicId(String topicId) {
-		topicId_ = topicId;
-	}
-
-	public ObjRef getObjectId() {
-		return objectId_;
-	}
-
-	public void setObjectId(ObjRef objectId) {
-		objectId_ = objectId;
-	}
-
-	public String getType() {
-		return type_;
-	}
-
-	public void setType(String type) {
-		type_ = type;
-	}
-
-	@Override
-	public Msg createReplyMsg() {
-		return null;
-	}
-
+	public boolean shouldInvokeAsync(Object target, Method m, Object[] args);
+	
+	public void setInvokeVoidMethodsAsync(boolean invokeVoidMethodsAsync);
+	
+	public void invokeAsync(Method m);
 	
 }

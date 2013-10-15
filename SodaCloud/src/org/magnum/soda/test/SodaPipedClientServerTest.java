@@ -15,7 +15,7 @@
  ****************************************************************************/
 package org.magnum.soda.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -26,7 +26,6 @@ import java.util.concurrent.Future;
 
 import org.junit.Test;
 import org.magnum.soda.Soda;
-import org.magnum.soda.protocol.generic.DefaultProtocol;
 import org.magnum.soda.svc.AuthService;
 import org.magnum.soda.transport.LocalPipeTransport;
 
@@ -49,6 +48,9 @@ public class SodaPipedClientServerTest {
 	public void testBinary() throws Exception {
 		Soda server = new Soda(true);
 		Soda client = new Soda();
+		
+		server.setAllowNonLocalProxyInvocations(true);
+		client.setAllowNonLocalProxyInvocations(true);
 		
 		LocalPipeTransport transport = new LocalPipeTransport(server, client);
 		client.connect(transport.getClientTransport(),null);
@@ -73,6 +75,9 @@ public class SodaPipedClientServerTest {
 		// connection were being used.
 		Soda server = new Soda(true);
 		Soda client = new Soda();
+		
+		server.setAllowNonLocalProxyInvocations(true);
+		client.setAllowNonLocalProxyInvocations(true);
 		
 		// Extra boiler plate code b/c we want to fake a network connection
 		// with this funky pipe transport
@@ -131,6 +136,9 @@ public class SodaPipedClientServerTest {
 		
 		Soda server = new Soda(true, auth);
 		Soda client = new Soda();
+		
+		server.setAllowNonLocalProxyInvocations(true);
+		client.setAllowNonLocalProxyInvocations(true);
 		
 		// Extra boiler plate code b/c we want to fake a network connection
 		// with this funky pipe transport

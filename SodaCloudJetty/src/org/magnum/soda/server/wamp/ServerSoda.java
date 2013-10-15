@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jetty.server.Server;
+import org.magnum.soda.DefaultObjRegistry;
+import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.Soda;
 import org.magnum.soda.msg.Protocol;
 import org.magnum.soda.protocol.generic.DefaultProtocol;
@@ -50,6 +52,8 @@ public class ServerSoda extends Soda implements WampServerListener {
 		setTransport(new WebsocketTransport(protoc, getMsgBus(),
 				getLocalAddress(), path, port));
 
+	
+		
 		bind(auth,AuthService.SVC_NAME);
 		
 		bind(new PingSvc() {
@@ -76,6 +80,12 @@ public class ServerSoda extends Soda implements WampServerListener {
 		}, PingSvc.SVC_NAME);
 	}
 
+	@Override
+	protected ObjRegistry createObjRegistry(){
+		return new DefaultObjRegistry(getLocalAddress(),true);
+	}
+
+	
 	@Override
 	protected synchronized ProxyCreator getProxyCreator() {
 		return new CglibProxyCreator();

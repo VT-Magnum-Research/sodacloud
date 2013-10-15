@@ -15,14 +15,10 @@
  ****************************************************************************/
 package org.magnum.soda.test.protocols;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.junit.Test;
 import org.magnum.soda.Soda;
@@ -40,6 +36,9 @@ public class DefaultProtocolTest {
 		// connection were being used.
 		Soda server = new Soda(true);
 		Soda client = new Soda();
+		
+		server.setAllowNonLocalProxyInvocations(true);
+		client.setAllowNonLocalProxyInvocations(true);
 		
 		// Extra boiler plate code b/c we want to fake a network connection
 		// with this funky pipe transport

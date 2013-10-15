@@ -19,28 +19,18 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-import java.awt.Event;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.magnum.soda.MsgBus;
-import org.magnum.soda.ObjRegistry;
 import org.magnum.soda.marshalling.Marshaller;
 import org.magnum.soda.msg.LocalAddress;
-import org.magnum.soda.proxy.JavaReflectionProxyCreator;
 import org.magnum.soda.proxy.ObjRef;
-import org.magnum.soda.proxy.ProxyFactory;
 import org.magnum.soda.svc.InvocationInfo;
 import org.magnum.soda.svc.InvocationInfoBuilder;
 import org.magnum.soda.svc.ObjInvocationMsg;
 import org.magnum.soda.svc.ObjInvocationMsgBuilder;
 import org.magnum.soda.test.ObjInvokerTest.TestMe;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MarshallerTest {
 
@@ -64,11 +54,8 @@ public class MarshallerTest {
 	
 	@Test
 	public void test() throws Exception {
-		ObjRegistry reg = mock(ObjRegistry.class);
-		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
-
+		
 		TestMe testme = mock(TestMe.class);
 
 		ObjRef ref = addr.createObjRef(testme);
@@ -78,7 +65,7 @@ public class MarshallerTest {
 		// the right object
 		Object[] args = new Object[] { new String[] { "a", "b" }, 2,
 				new Integer[] { 4, 5 }, ref };
-		Class[] types = new Class[] { String[].class, int.class,
+		Class<?>[] types = new Class[] { String[].class, int.class,
 				Integer[].class, TestMe.class };
 
 		InvocationInfo target = InvocationInfoBuilder.invocationInfo()

@@ -16,6 +16,7 @@
 package org.magnum.soda;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,7 +39,6 @@ import org.magnum.soda.svc.DefaultNamingService;
 import org.magnum.soda.svc.InvocationDispatcher;
 import org.magnum.soda.svc.NamingService;
 import org.magnum.soda.svc.ObjInvoker;
-import org.magnum.soda.svc.ObjRegistryUpdater;
 import org.magnum.soda.svc.ObtainNamingServiceMsg;
 import org.magnum.soda.svc.ObtainNamingServiceRespMsg;
 import org.magnum.soda.transport.Address;
@@ -61,10 +61,9 @@ public class Soda implements TransportListener {
 
 	private LocalAddress localAddress_;
 	private MBassyMsgBus msgBus_ = new MBassyMsgBus();
-	private DefaultObjRegistry objRegistry_;
+	private ObjRegistry objRegistry_;
 	private ProxyFactory proxyFactory_;
 	private ObjInvoker objInvoker_;
-	private ObjRegistryUpdater objRegistryUpdater_;
 	private ProxyCreator proxyCreator_;
 
 	private AuthService authService_;
@@ -77,15 +76,13 @@ public class Soda implements TransportListener {
 
 	public Soda(LocalAddress addr) {
 		localAddress_ = addr;
-		objRegistry_ = new DefaultObjRegistry(addr);
+		objRegistry_ = createObjRegistry();
 		proxyCreator_ = getProxyCreator();
 		proxyFactory_ = new ProxyFactory(objRegistry_, proxyCreator_,
 				localAddress_, msgBus_);
 		objInvoker_ = new ObjInvoker(msgBus_, objRegistry_, proxyFactory_);
 		objInvoker_.setProcessorFactory(getInvocationProcessorFactory());
 		
-		objRegistryUpdater_ = new ObjRegistryUpdater(proxyFactory_,
-				objRegistry_);
 		namingServiceRef_ = objRegistry_.publish(namingService_);
 		msgBus_.subscribe(this);
 		ctxPolyObjBinding_ = new HashMap<Object, SodaBinding>();
@@ -110,6 +107,10 @@ public class Soda implements TransportListener {
 		this(addr);
 		transport_ = t;
 		transport_.setListener(this);
+	}
+	
+	protected ObjRegistry createObjRegistry(){
+		return new DefaultObjRegistry(getLocalAddress());
 	}
 
 	protected synchronized ProxyCreator getProxyCreator() {
@@ -167,6 +168,26 @@ public class Soda implements TransportListener {
 	public void passByValue(Class<?> type) {
 		proxyFactory_.passByValue(type);
 	}
+	
+	public void invokeAsync(Class<?> c){
+		for(Method m : c.getMethods()){
+			if(m.getReturnType() == void.class){
+				invokeAsync(m);
+			}
+		}
+	}
+	
+	public void invokeAsync(Method m){
+		proxyFactory_.getInvocationSettings().invokeAsync(m);
+	}
+	
+	public void setInvokeVoidMethodsToAsync(boolean async){
+		proxyFactory_.getInvocationSettings().setInvokeVoidMethodsAsync(async);
+	}
+	
+	public void setAllowNonLocalProxyInvocations(boolean allow){
+		objInvoker_.setInvokeProxies(allow);
+	}
 
 	public LocalAddress getLocalAddress() {
 		return localAddress_;
@@ -176,7 +197,7 @@ public class Soda implements TransportListener {
 		return msgBus_;
 	}
 
-	public DefaultObjRegistry getObjRegistry() {
+	public ObjRegistry getObjRegistry() {
 		return objRegistry_;
 	}
 	
@@ -225,6 +246,7 @@ public class Soda implements TransportListener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> SodaQuery<T> find(Class<T> type, SodaContext ctx) {
 
 		SodaQuery<Object> sq = new SodaQuery<Object>();
