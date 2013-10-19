@@ -2,15 +2,122 @@ Sodacloud Documentation
 =========
 Motivation
 ------------
-Mobile devices are pervasive now. Due to the application scenarios as well as limited storage capacity, Apps
-on mobile devices usually need to interact with cloud. Therefore there is a strong demand for fast and easy 
-development of such application. 
+The immense mobile application market and its rapid growth have resulted in numerous developers publishing 
+thousands of innovative applications for mobile platforms. However, the communication architecture for mobile 
+applications still echoes the tradition where HTTP communication is combined with object-oriented programming.
+The developers must consider data marshaling, threading, synchronization, and identity management which are all
+time-consuming and error-prone.
 
-The current trend in computing is to have mobile/cloud systems that use HTTP to broker interactions between
-mobile clients and cloud objects. However, the most commonly used
-software design patterns, such as observer, are extremely difficult to implement when the objects span hosts.
+Take Android as an example, usually there are two ways to do network communication: use Handler or AsyncTask. 
 
-For comparison, we implemented the observer pattern in HTTP([client][httpclient],[server][httpserver]) 
+AsyncTask works like this:
+```java  
+public class AddReportTask extends AsyncTask<Void, Void, Void> {
+	String fromServer = null;
+	String content = null;
+
+	public AddReportTask(String content){
+		this.content = content;
+	}
+	@Override
+	protected Void doInBackground(Void... params) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost request = new HttpPost(Host.hostaddress + "addreport/");
+   	
+			try {
+				HttpEntity myEntity = new StringEntity(content);
+				request.setEntity(myEntity);
+
+				HttpResponse response = httpclient.execute(request);
+
+				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+					BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+					while ((fromServer = rd.readLine()) != null) {
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		return null;
+	}
+
+	@Override
+	protected void onPostExecute(Void result) {
+        status_.setText(fromServer);
+	}
+}
+```
+Handler works like this:
+```java  
+public Handler myHandler = new Handler() {
+        public void handleMessage(Message msg) {
+             switch (msg.what) {                	
+                  case ADD_REPORT:
+                       status_.setText(msg.getData().getString(HANDLER_TAG));
+                       break;
+             }
+             super.handleMessage(msg);
+        }
+};
+......
+Button_.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onClick(View v) {	
+		new Thread(new CheckUpdatesTask()).start();
+	}
+});
+......
+public class CheckUpdatesTask implements Runnable {
+        String fromServer = null;
+	public CheckUpdatesTask() {
+	}
+
+	public void run() {
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost request = new HttpPost(HOST_ADDRESS);
+            HttpEntity myEntity = new StringEntity(id);
+	    request.setEntity(myEntity);
+            HttpResponse response = httpclient.execute(request);
+            
+	    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+			BufferedReader rd = new BufferedReader(newInputStreamReader(response.getEntity().getContent()));
+			fromServer = rd.readLine();		
+			
+			Message message = new Message();
+			message.what = MainActivity.ADD_REPORT;
+							
+			Bundle bundle = new Bundle();
+			bundle.putString(HANDLER_TAG, fromServer);
+			message.setData(bundle);
+							
+			myHandler.sendMessage(message);
+            	}
+	}
+}
+```
+The problem with above approach is:
+
+1. You cannot pass object through HTTP directly. Each time you want to send an object, you need to marshall the 
+object to some separate primitive and when you receive it, you need to assemble them again.
+
+2. Each time you try to create a different kind of request, you need to create an AsyncTask or Handler for it. 
+The lines of code increase rapidly as the program becomes complex.
+
+3. If you need to have multiple AsyncTask running at the same time and update the UI, you have to be cautious since 
+the things will get complicated and error-prone. Actually the behavior of AsyncTask has changed several
+times during the revolution of Android. When first introduced, AsyncTask were executed serially on a single 
+background thread. Starting with DONUT(1.6), this was changed to a pool of threads allowing multiple tasks to 
+operate in parallel. Starting with HONEYCOMB(3.1), tasks are executed on a single thread to avoid common application
+errors caused by parallel execution. The inconsistency adds burdens to developers who wish to distribute their 
+apps to multiple platforms.
+
+We propose an object-oriented communication framework, SodaCloud, which hides the complexity of low-level 
+network communication and allows developers to focus solely on business logic. We implement a distributed 
+object middleware that supports 2-way object-oriented communication, eliminating the transition between 
+object-oriented programming and non-OO, request-response style communication.
+
+For a complete comparison, see the implementation of an observer pattern in HTTP([client][httpclient],[server][httpserver]) 
 and SodaCloud ([client][sodaclient],[server][sodaserver])).
 
 [httpclient]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/HttpClient
@@ -18,8 +125,13 @@ and SodaCloud ([client][sodaclient],[server][sodaserver])).
 [sodaclient]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/SodaClient
 [sodaserver]: https://github.com/VT-Magnum-Research/sodacloud/tree/master/Examples/SodaServer
 
+
 A simple example with the Observer pattern 
 ------------
+
+Observer pattern is a design pattern  that is widely used in mobile development because it describes the 
+very behavior of a large proportion of mobile applications. We use the observer pattern to illustrate the convenience 
+SodaCloud brings.
 
 In the following example, “MaintenanceReports” is an observable object on the server and there is MaintenanceListener 
 on the client as observer.
@@ -88,7 +200,7 @@ AndroidSoda.async(new Runnable() {
 }
 ```
 
-Overview of SodaCloud
+Introduction of SodaCloud
 ------------
 SodaCloud is a shared object distribution architecture for cloud systems. 
 SodaCloud provides a platform that automatically creates mobile/cloud applications with optimized communications,
