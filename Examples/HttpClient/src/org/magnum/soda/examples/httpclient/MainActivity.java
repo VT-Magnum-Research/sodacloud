@@ -13,37 +13,39 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity { 
 	
 	private TextView status_;
 	private Button addButton_;
-	public final static int POLLING_INTERVAL = 100; // ms
+	public final static int POLLING_INTERVAL = 100; // ms 
 	public final static int ADD_REPORT = 100;
-	private Reports reports = new Reports();
+	public final static String HANDLER_TAG = "content";
+	private Reports reports = new Reports(); 
 	private ReportsListener listener;
 	
 	public Handler myHandler = new Handler() {  
         public void handleMessage(Message msg) {  
              switch (msg.what) {                	
                   case ADD_REPORT:  
-                	   Log.d("SODA","reportAdded:#4 " + System.currentTimeMillis());
-                	   status_.setText(msg.getData().getString("content")); 
+                	   Log.d("httpclient","reportAdded:#4 " + System.currentTimeMillis());
+                	   status_.setText(msg.getData().getString(HANDLER_TAG)); 
                        break;   
-             }   
+             }    
              super.handleMessage(msg);   
         }   
    };
 
-	@Override
+	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -53,7 +55,7 @@ public class MainActivity extends Activity {
 		addButton_.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d("SODA","reportAdded:#1 " + System.currentTimeMillis());
+				Log.d("httpclient","reportAdded:#1 " + System.currentTimeMillis());
 				reports.addReport(new Report("First Report"));
 			}
 		});
@@ -64,6 +66,15 @@ public class MainActivity extends Activity {
 		new Thread(new CheckUpdatesTask(listener.getID())).start(); 
 
 	}
+	
+	@Override
+	protected void onPause() {
+//		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//		PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
+//		wl.acquire();
+		super.onPause();
+	}
+
 	public class CheckUpdatesTask implements Runnable {
 		String fromServer = null;
 		String id = null;
@@ -108,7 +119,7 @@ public class MainActivity extends Activity {
 							message.what = MainActivity.ADD_REPORT;
 							
 							Bundle bundle = new Bundle();
-							bundle.putString("Content", fromServer);
+							bundle.putString(HANDLER_TAG, fromServer);
 							message.setData(bundle);
 							
 							myHandler.sendMessage(message);
