@@ -8,7 +8,5 @@
   <artifactId>Examples</artifactId>
 <packaging>pom</packaging>
 <modules>
-    <module>SodaCloudMaintenanceAndroid</module>
-    <module>SodaCloudMaintenanceServer</module>
   </modules>
 </project>
