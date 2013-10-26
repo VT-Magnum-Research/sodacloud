@@ -19,7 +19,10 @@ import org.mockito.cglib.proxy.MethodProxy;
 import org.objenesis.ObjenesisHelper;
 
 public class CglibProxyCreator implements ProxyCreator {
-
+	
+	public CglibProxyCreator(ClassLoader cl) {
+		classLoader_ = cl;
+	}
 	private class CglibProxy implements MethodInterceptor {
         private InvocationHandler handler_;
 
@@ -32,6 +35,7 @@ public class CglibProxyCreator implements ProxyCreator {
         }
     }
 	
+	private ClassLoader classLoader_;
 	private Map<Object,InvocationHandler> proxies_ = new WeakHashMap<Object, InvocationHandler>();
 	
 	@Override
@@ -58,6 +62,11 @@ public class CglibProxyCreator implements ProxyCreator {
 	@Override
 	public boolean supportsNonInterfaceProxies() {
 		return true;
+	}
+
+	@Override
+	public ClassLoader getProxyClassLoader() {
+		return classLoader_;
 	}
 
 }

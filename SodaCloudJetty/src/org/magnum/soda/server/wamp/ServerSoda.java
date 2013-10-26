@@ -86,10 +86,10 @@ public class ServerSoda extends Soda implements WampServerListener {
 	}
 
 	
-	@Override
-	protected synchronized ProxyCreator getProxyCreator() {
-		return new CglibProxyCreator();
-	}
+//	@Override
+//	protected synchronized ProxyCreator getProxyCreator() {
+//		return new CglibProxyCreator();
+//	}
 	
 	public Server getServer() {
 		return server_;

@@ -17,7 +17,12 @@ import org.magnum.soda.proxy.ProxyCreator;
 import com.google.dexmaker.stock.ProxyBuilder;
 
 public class DexProxyCreator implements ProxyCreator {
+	
+	public DexProxyCreator(ClassLoader cl) {
+		classLoader_ = cl;
+	}
 
+	private ClassLoader classLoader_;
 	private Map<Object, InvocationHandler> proxies_ = new HashMap<Object, InvocationHandler>();
 
 	private File dexCache_;
@@ -37,7 +42,7 @@ public class DexProxyCreator implements ProxyCreator {
 				proxy = ProxyBuilder.forClass(arg1[0]).dexCache(dexCache_)
 						.handler(arg2).build();
 			} else {
-				proxy = Proxy.newProxyInstance(getClass().getClassLoader(),
+				proxy = Proxy.newProxyInstance(classLoader_,
 						arg1, arg2);
 			}
 			
@@ -59,6 +64,11 @@ public class DexProxyCreator implements ProxyCreator {
 	@Override
 	public boolean supportsNonInterfaceProxies() {
 		return true;
+	}
+
+	@Override
+	public ClassLoader getProxyClassLoader() {
+		return classLoader_;
 	}
 
 }

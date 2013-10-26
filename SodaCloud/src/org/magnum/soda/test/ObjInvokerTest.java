@@ -52,7 +52,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(getClass().getClassLoader()), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
@@ -90,7 +90,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(getClass().getClassLoader()), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
@@ -131,7 +131,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(getClass().getClassLoader()), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				
@@ -181,7 +181,7 @@ public class ObjInvokerTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(getClass().getClassLoader()), addr, bus);
 		
 		TestMe testme = mock(TestMe.class);
 				

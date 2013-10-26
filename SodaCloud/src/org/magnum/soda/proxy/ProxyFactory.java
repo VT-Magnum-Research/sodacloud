@@ -73,7 +73,7 @@ public class ProxyFactory {
 
 		Log.debug("Creating a proxy for ref [{}]", objid);
 
-		Object proxy = creator_.createProxy(getClass().getClassLoader(), types,
+		Object proxy = creator_.createProxy(creator_.getProxyClassLoader(), types,
 				new ObjProxy(this, invocationSettings_, msgBus_, objid));
 
 		return proxy;

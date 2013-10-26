@@ -36,8 +36,8 @@ public class CglibProxyCreatorTest {
 	
 	@Test
 	public void testProxyConcreteWithoutConstructor() {
-		CglibProxyCreator ctor = new CglibProxyCreator();
-		Foo foo = (Foo)ctor.createProxy(getClass().getClassLoader(), new Class[]{Foo.class}, new InvocationHandler() {
+		CglibProxyCreator ctor = new CglibProxyCreator(getClass().getClassLoader());
+		Foo foo = (Foo)ctor.createProxy(ctor.getProxyClassLoader(), new Class[]{Foo.class}, new InvocationHandler() {
 			
 			private Foo foo_ = new Foo();
 			
@@ -59,8 +59,8 @@ public class CglibProxyCreatorTest {
 	
 	@Test
 	public void testProxyConcreteWithConstructor() {
-		CglibProxyCreator ctor = new CglibProxyCreator();
-		FooWCons foo = (FooWCons)ctor.createProxy(getClass().getClassLoader(), new Class[]{FooWCons.class}, new InvocationHandler() {
+		CglibProxyCreator ctor = new CglibProxyCreator(getClass().getClassLoader());
+		FooWCons foo = (FooWCons)ctor.createProxy(ctor.getProxyClassLoader(), new Class[]{FooWCons.class}, new InvocationHandler() {
 			
 			private FooWCons foo_ = new FooWCons(false);
 			

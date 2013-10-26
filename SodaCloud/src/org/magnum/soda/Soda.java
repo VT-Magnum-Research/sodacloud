@@ -65,6 +65,11 @@ public class Soda implements TransportListener {
 	private ProxyFactory proxyFactory_;
 	private ObjInvoker objInvoker_;
 	private ProxyCreator proxyCreator_;
+	
+	// use the default classloader by default, but this allows us to
+	// specify a different classloader if we want proxies to be created
+	// for classes loaded in at runtime (rather than compiletime)
+	private ClassLoader classLoader_ = getClass().getClassLoader();
 
 	private AuthService authService_;
 
@@ -114,7 +119,7 @@ public class Soda implements TransportListener {
 	}
 
 	protected synchronized ProxyCreator getProxyCreator() {
-		return new JavaReflectionProxyCreator();
+		return new JavaReflectionProxyCreator(classLoader_);
 	}
 
 	protected synchronized AuthService getAuthService() {
@@ -141,7 +146,7 @@ public class Soda implements TransportListener {
 			types = obj.getClass().getInterfaces();
 		}
 
-		T proxy = (T) proxyCreator_.createProxy(getClass().getClassLoader(),
+		T proxy = (T) proxyCreator_.createProxy(classLoader_,
 				types, recorder);
 		return proxy;
 	}
@@ -315,6 +320,10 @@ public class Soda implements TransportListener {
 
 	@Override
 	public void disconnected() {
+	}
+	
+	public void setClassLoader(ClassLoader cl) {
+		classLoader_ = cl;
 	}
 
 }

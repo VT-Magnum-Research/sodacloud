@@ -36,7 +36,7 @@ public class MsgBusIntegrationTest {
 	private LocalAddress addr = new LocalAddress();
 	private MBassyMsgBus bus = new MBassyMsgBus();
 	private DefaultObjRegistry reg = new DefaultObjRegistry(addr);
-	private ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
+	private ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(getClass().getClassLoader()), addr, bus);
 	@SuppressWarnings("unused")
 	private ObjInvoker inovker = new ObjInvoker(bus, reg, factory, true);
 	

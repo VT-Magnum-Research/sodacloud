@@ -72,7 +72,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -98,7 +98,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -123,7 +123,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -147,7 +147,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -174,7 +174,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -206,7 +206,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);
@@ -233,7 +233,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		ObjRef ref2 = myAddress_.createObjRef(TestObj.class);
@@ -288,7 +288,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(ObjectSync.class);
 		final ObjectSync b = factory.createProxy(ObjectSync.class, ref);
@@ -329,7 +329,7 @@ public class ObjProxyTest {
 		MsgBus bus = mock(MsgBus.class);
 		ObjRegistry reg = mock(ObjRegistry.class);
 		ProxyFactory factory = new ProxyFactory(reg,
-				new JavaReflectionProxyCreator(), myAddress_, bus);
+				new JavaReflectionProxyCreator(getClass().getClassLoader()), myAddress_, bus);
 
 		ObjRef ref = myAddress_.createObjRef(TestObj.class);
 		final TestObj b = factory.createProxy(TestObj.class, ref);

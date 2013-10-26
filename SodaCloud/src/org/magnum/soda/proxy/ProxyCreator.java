@@ -24,4 +24,6 @@ public interface ProxyCreator {
 	public InvocationHandler getInvocationHandler(Object proxy);
 	
 	public boolean supportsNonInterfaceProxies();
+	
+	public ClassLoader getProxyClassLoader();
 }

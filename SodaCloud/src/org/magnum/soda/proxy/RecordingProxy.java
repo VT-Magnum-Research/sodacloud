@@ -110,7 +110,7 @@ public class RecordingProxy implements InvocationHandler, Runnable {
 				types = rtype.getInterfaces();
 			}
 			
-			return proxyCreator_.createProxy(getClass().getClassLoader(),
+			return proxyCreator_.createProxy(proxyCreator_.getProxyClassLoader(),
 					types, this);
 		} else {
 			return null;

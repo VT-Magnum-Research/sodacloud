@@ -16,20 +16,24 @@
 package org.magnum.soda.proxy;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 public class JavaReflectionProxyCreator implements ProxyCreator {
+	
+	public JavaReflectionProxyCreator(ClassLoader cl) {
+		classLoader_ = cl;
+	}
 
+	private ClassLoader classLoader_;
 	private Map<Object,InvocationHandler> proxies_ = new WeakHashMap<Object, InvocationHandler>();
 	
 	@Override
 	public Object createProxy(ClassLoader cl, Class<?>[] types,
 			InvocationHandler hdlr) {
 
-		Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(),
+		Object proxy = Proxy.newProxyInstance(classLoader_,
 				types, hdlr);
 
 		
@@ -45,6 +49,11 @@ public class JavaReflectionProxyCreator implements ProxyCreator {
 	@Override
 	public boolean supportsNonInterfaceProxies() {
 		return false;
+	}
+
+	@Override
+	public ClassLoader getProxyClassLoader() {
+		return classLoader_;
 	}
 
 }

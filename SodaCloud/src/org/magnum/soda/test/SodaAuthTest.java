@@ -75,7 +75,7 @@ public class SodaAuthTest {
 		ObjRegistry reg = mock(ObjRegistry.class);
 		MsgBus bus = mock(MsgBus.class);
 		LocalAddress addr = new LocalAddress();
-		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(), addr, bus);
+		ProxyFactory factory = new ProxyFactory(reg, new JavaReflectionProxyCreator(getClass().getClassLoader()), addr, bus);
 				
 		TestSvc svc = new TestSvcImpl();
 		ObjRef ref = addr.createObjRef(svc);
